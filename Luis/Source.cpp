@@ -32,7 +32,7 @@ struct Solucion {
 
 };
 
-
+//En varios hay soluciones mas cortas, podriamos dejar de comprobar en cuanto consiga una solucion o adoptar una nueva estructura si contiene menos operaciones
 //En cada operacion (suma resta division multiplicacion saco y meto los mismo numeros al vector y actualizo los marcadores)
 //no hace falta hacerlo todo el rato de hecho es ineficiente pero es una primera version muy bruta en la que no quiero refactorizar nada
 
@@ -66,6 +66,7 @@ int recursivoBruto(int nivel, int solParcial, int& mejorSol, vector<bool>& marca
             marcador[i] = true;
 
             //si tenemos una solucion mas cercana al numero objetivo sin excederlo
+           // if ((numObjetivo - solParcial < numObjetivo - mejorSol || (numObjetivo - solParcial == numObjetivo - mejorSol && operacionesEnOrden.size() < sol.operacionesEnOrden.size())) && solParcial >= 0 && numObjetivo - solParcial > 0) {
             if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial>0) {
                 mejorSol = solParcial;
                 sol.operacionesEnOrden = operacionesEnOrden;
@@ -101,6 +102,7 @@ int recursivoBruto(int nivel, int solParcial, int& mejorSol, vector<bool>& marca
                     marcador[i] = true;
 
                     //actualizamos sol
+                    //if ((numObjetivo - solParcial < numObjetivo - mejorSol || (numObjetivo - solParcial == numObjetivo - mejorSol && operacionesEnOrden.size() < sol.operacionesEnOrden.size())) && solParcial >= 0 && numObjetivo - solParcial > 0) {
                     if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial >= 0) {
                         mejorSol = solParcial;
                         sol.operacionesEnOrden = operacionesEnOrden;
@@ -126,6 +128,7 @@ int recursivoBruto(int nivel, int solParcial, int& mejorSol, vector<bool>& marca
                 marcador[i] = true;
 
                 //actualizamos sol
+                //if ((numObjetivo - solParcial < numObjetivo - mejorSol || (numObjetivo - solParcial == numObjetivo - mejorSol && operacionesEnOrden.size() < sol.operacionesEnOrden.size())) && solParcial >= 0 && numObjetivo - solParcial > 0) {
                 if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial>0) {
                     mejorSol = solParcial;
                     sol.operacionesEnOrden = operacionesEnOrden;
@@ -151,6 +154,7 @@ int recursivoBruto(int nivel, int solParcial, int& mejorSol, vector<bool>& marca
                     marcador[i] = true;
 
                     //actualizamos sol
+                    //if ((numObjetivo - solParcial < numObjetivo - mejorSol || (numObjetivo - solParcial == numObjetivo - mejorSol && operacionesEnOrden.size() < sol.operacionesEnOrden.size())) && solParcial >= 0 && numObjetivo - solParcial > 0) {
                     if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial>0) {
 
                         mejorSol = solParcial;
