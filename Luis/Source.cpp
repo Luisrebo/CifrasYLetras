@@ -38,16 +38,12 @@ struct Solucion {
 
 int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int& numObjetivo, vector<int>& numerosCandidatos, vector<int> &ordenDeUso, vector<string> &operacionesEnOrden, Solucion& sol) {
 
-	if (nivel >= numerosCandidatos.size())
-		//return solParcial;
-
 		if (solParcial == numObjetivo) {
-			//mejorSol = solParcial;//estaba ya actualizada
 			return solParcial;
 		}
 
 	//Hacemos todas las combinaciones de dos cifras (2 a dos) aplicandole a cada combinacion todas las operaciones posibles
-	for (int i = k; i < numerosCandidatos.size() && numerosCandidatos.size()<16; i++)
+	for (int i = k; i < numerosCandidatos.size() && numerosCandidatos.size()<12; i++)
 		//si i esta desmarcado y se puede operar con el
 		if (!marcador[i]) {
 			marcador[i] = true;
@@ -257,7 +253,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 						//Actualizamos, si es necesario, la mejor solucion con respecto a la solucion parcial
 						//si hay menos diferencia entre la sol parcial y el numero objetivo que entre la solucion hasta el momento se actualiza la mejor sol
 						//Queremos soluciones mas cercanas aunque excedan al numero??
-						if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial>0) {
+						if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial>=0) {
 							mejorSol = solParcial;
 							sol.operacionesEnOrden = operacionesEnOrden;
 							sol.ordenDeUso = ordenDeUso;
@@ -372,6 +368,10 @@ void resuelveCaso() {
 	
 	// escribir la solución
 	recursivoBruto(0,0, 0, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
+
+	cout<<"Numeros candidatos:( ";
+	for (int i = 0; i < numerosCandidatos.size(); i++)cout << numerosCandidatos[i]<<" ";
+	cout<<")"<< "\n";
 
 	cout << "Numero Objetivo:" << numObjetivo << " Solucion:" << sol.solMejor;
 	if (sol.solMejor != numObjetivo)cout << "\n" << "NO HAY SOLUCION EXACTA";
