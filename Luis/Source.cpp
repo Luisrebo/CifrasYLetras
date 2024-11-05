@@ -7,6 +7,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <chrono>
+#include <queue>
 using namespace std;
 
 /*@ <answer>
@@ -22,6 +24,7 @@ using namespace std;
  // Escribe el código completo de tu solución aquí debajo
  // ================================================================
  //@ <answer>
+static int o = 0;
 
 //En este struct vamos a guardar las soluciones
 struct Solucion {
@@ -32,18 +35,224 @@ struct Solucion {
 
 };
 
+struct Problema {
+	Problema(int i, int j, int nivel, int solParcial, int mejorSol, vector<bool> marcador, vector<int> ordenDeUso, vector<string> operacionesEnOrden, vector<int> numCandidatos) {
+		_i = i;
+		_j = j;
+		_nivel = nivel;
+		_solParcial = solParcial;
+		_mejorSol = mejorSol;
+		_marcador = marcador;
+		_ordenDeUso = ordenDeUso;
+		_operacionesEnOrden = operacionesEnOrden;
+		_numCandidatos = numCandidatos;
+	}
+	int _i;
+	int _j;
+	int _nivel;
+	int _solParcial;
+	int _mejorSol;
+	vector<bool> _marcador;
+	vector<int> _ordenDeUso;
+	vector<string> _operacionesEnOrden;
+	vector<int> _numCandidatos;
+};
+
+//resolvemos con bfs
+
+void BFS(Solucion& sol, const int& numObjetivo, vector<int> numerosCandidatos) {
+
+	queue<Problema> cola;
+
+
+	vector<bool> marcador(numerosCandidatos.size(), false);
+	vector<int> ordenDeUso;
+	vector<string> operacionesEnOrden;
+
+	//problema que representa el nodo/vértice origen del bfs
+	Problema problema(0, 0, 0, 0, 0, marcador, ordenDeUso, operacionesEnOrden, numerosCandidatos);
+	cola.push(problema);
+
+
+
+	while (!cola.empty()) {
+		o += 1;
+		//creo una instancia de problema donde guardare los niveles que exploro en el bfs desapilando la cola 
+		//y profundizando nivel a nivel
+		Problema vertice = cola.front();
+		cola.pop();
+
+		//recorremos los candidatos
+		for (int i = vertice._i; i < vertice._numCandidatos.size() && vertice._numCandidatos.size() < 12; i++) {
+
+			//si no hemos utilizado el candidato iesimo en el vertice o en antecesores directos
+			if (!vertice._marcador[i]) {
+
+				vertice._marcador[i] = true;
+
+				//recorremos candidatos para operar con el i
+				for (int j = 0; j < vertice._numCandidatos.size(); j++) {
+
+					if (!vertice._marcador[j] && i != j) {
+
+						//marcamos i y j a usado ya que los vamos a combinar en todas las operaciones
+						vertice._marcador[j] = true;
+
+						//esta variable va aser reciclada para representar todos los hijos de vertice
+						//representara el hijo de la suma,la resta,multiplicacion y division de candidatos de los indices i,j
+						Problema verticeHijo = vertice;
+
+
+						//SUMA
+
+						//vertice hijo para la suma
+						// verticeHijo = vertice;
+						verticeHijo._i = i;
+						verticeHijo._j = j;
+						verticeHijo._ordenDeUso.push_back(vertice._numCandidatos[i]);
+						verticeHijo._ordenDeUso.push_back(vertice._numCandidatos[j]);
+						verticeHijo._marcador[i] = verticeHijo._marcador[j] = true;
+
+						verticeHijo._operacionesEnOrden.push_back("+");
+
+						verticeHijo._solParcial = vertice._numCandidatos[i] + vertice._numCandidatos[j];
+
+						verticeHijo._numCandidatos.push_back(verticeHijo._solParcial);
+
+
+						if (numObjetivo - verticeHijo._solParcial < numObjetivo - verticeHijo._mejorSol && verticeHijo._solParcial >= 0 && numObjetivo - verticeHijo._solParcial >= 0) {
+							verticeHijo._mejorSol = verticeHijo._solParcial;
+							sol.operacionesEnOrden = verticeHijo._operacionesEnOrden;
+							sol.ordenDeUso = verticeHijo._ordenDeUso;
+							sol.solMejor = verticeHijo._mejorSol;
+						}//nos guardamos aqui los array para reconstruir?
+
+						//apilamos el vertice que hizo la suma entre los numero candidatos de los indices i,j
+						cola.push(verticeHijo);
+
+
+						//RESTA
+
+						//si podemos restarle al candidato i el j..
+						if (vertice._numCandidatos[i] > vertice._numCandidatos[j]) {
+
+							//reciclamos el verticeHijo para a resta como la cola hace una copia podemos hacerlo sin afectar al vertice ya apilado
+							verticeHijo = vertice;
+							verticeHijo._i = i;
+							verticeHijo._j = j;
+
+							verticeHijo._ordenDeUso.push_back(vertice._numCandidatos[i]);
+							verticeHijo._ordenDeUso.push_back(vertice._numCandidatos[j]);
+
+							verticeHijo._operacionesEnOrden.push_back("-");
+
+							verticeHijo._solParcial = vertice._numCandidatos[i] - vertice._numCandidatos[j];
+
+							verticeHijo._numCandidatos.push_back(verticeHijo._solParcial);
+
+
+							if (numObjetivo - verticeHijo._solParcial < numObjetivo - verticeHijo._mejorSol && verticeHijo._solParcial >= 0 && numObjetivo - verticeHijo._solParcial >= 0) {
+								verticeHijo._mejorSol = verticeHijo._solParcial;
+								sol.operacionesEnOrden = verticeHijo._operacionesEnOrden;
+								sol.ordenDeUso = verticeHijo._ordenDeUso;
+								sol.solMejor = verticeHijo._mejorSol;
+							}//nos guardamos aqui los array para reconstruir?
+
+							//apilamos el vertice que hizo la resta entre los numero candidatos de los indices i,j
+							cola.push(verticeHijo);
+						}
+
+						//MULTIPLICACION
+
+						//reciclamos el verticeHijo para a multiplicacion como la cola hace una copia podemos hacerlo sin afectar al vertice ya apilado
+						verticeHijo = vertice;
+						verticeHijo._i = i;
+						verticeHijo._j = j;
+
+						verticeHijo._ordenDeUso.push_back(vertice._numCandidatos[i]);
+						verticeHijo._ordenDeUso.push_back(vertice._numCandidatos[j]);
+
+						verticeHijo._operacionesEnOrden.push_back("*");
+
+						verticeHijo._solParcial = vertice._numCandidatos[i] * vertice._numCandidatos[j];
+
+						verticeHijo._numCandidatos.push_back(verticeHijo._solParcial);
+
+						if (numObjetivo - verticeHijo._solParcial < numObjetivo - verticeHijo._mejorSol && verticeHijo._solParcial >= 0 && numObjetivo - verticeHijo._solParcial >= 0) {
+							verticeHijo._mejorSol = verticeHijo._solParcial;
+							sol.operacionesEnOrden = verticeHijo._operacionesEnOrden;
+							sol.ordenDeUso = verticeHijo._ordenDeUso;
+							sol.solMejor = verticeHijo._mejorSol;
+						}//nos guardamos aqui los array para reconstruir?
+
+						//apilamos el vertice que hizo la multiplicacion entre los numero candidatos de los indices i,j
+						cola.push(verticeHijo);
+
+
+						//DIVISION
+
+						//si el candidato i es divisible entre el candidato j..
+						if (vertice._numCandidatos[i] % vertice._numCandidatos[j] == 0) {
+
+							//reciclamos el verticeHijo para la division como la cola hace una copia podemos hacerlo sin afectar al vertice ya apilado
+							verticeHijo = vertice;
+							verticeHijo._i = i;
+							verticeHijo._j = j;
+
+							verticeHijo._ordenDeUso.push_back(vertice._numCandidatos[i]);
+							verticeHijo._ordenDeUso.push_back(vertice._numCandidatos[j]);
+
+							verticeHijo._operacionesEnOrden.push_back("/");
+
+							verticeHijo._solParcial = vertice._numCandidatos[i] / vertice._numCandidatos[j];
+
+							verticeHijo._numCandidatos.push_back(verticeHijo._solParcial);
+
+							if (numObjetivo - verticeHijo._solParcial < numObjetivo - verticeHijo._mejorSol && verticeHijo._solParcial >= 0 && numObjetivo - verticeHijo._solParcial >= 0) {
+								verticeHijo._mejorSol = verticeHijo._solParcial;
+								sol.operacionesEnOrden = verticeHijo._operacionesEnOrden;
+								sol.ordenDeUso = verticeHijo._ordenDeUso;
+								sol.solMejor = verticeHijo._mejorSol;
+							}//nos guardamos aqui los array para reconstruir?
+
+							//apilamos el vertice que hizo la division entre los numero candidatos de los indices i,j
+							cola.push(verticeHijo);
+						}
+
+
+
+					}
+					vertice._marcador[j] = false;
+				}
+
+			}
+			vertice._marcador[i] = false;
+		}
+
+	}
+
+
+
+
+}
+
+
+
+//De aqui para abajo se resuelve con dfs
+
+
 //En varios hay soluciones mas cortas, podriamos dejar de comprobar en cuanto consiga una solucion o adoptar una nueva estructura si contiene menos operaciones
 //En cada operacion (suma resta division multiplicacion saco y meto los mismo numeros al vector y actualizo los marcadores)
 //no hace falta hacerlo todo el rato de hecho es ineficiente pero es una primera version muy bruta en la que no quiero refactorizar nada
 
-int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int& numObjetivo, vector<int>& numerosCandidatos, vector<int> &ordenDeUso, vector<string> &operacionesEnOrden, Solucion& sol) {
-
-		if (solParcial == numObjetivo) {
-			return solParcial;
-		}
+void recursivoBruto(int k, int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int& numObjetivo, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<string>& operacionesEnOrden, Solucion& sol) {
+	o += 1;
+	if (solParcial == numObjetivo) {
+		return;
+	}
 
 	//Hacemos todas las combinaciones de dos cifras (2 a dos) aplicandole a cada combinacion todas las operaciones posibles
-	for (int i = k; i < numerosCandidatos.size() && numerosCandidatos.size()<12; i++)
+	for (int i = k; i < numerosCandidatos.size() && numerosCandidatos.size() < 12; i++)
 		//si i esta desmarcado y se puede operar con el
 		if (!marcador[i]) {
 			marcador[i] = true;
@@ -76,7 +285,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 					//Actualizamos, si es necesario, la mejor solucion con respecto a la solucion parcial
 					//si hay menos diferencia entre la sol parcial y el numero objetivo que entre la solucion hasta el momento se actualiza la mejor sol
 					//Queremos soluciones mas cercanas aunque excedan al numero??
-					if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial>=0) {
+					if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial >= 0) {
 						mejorSol = solParcial;
 						sol.operacionesEnOrden = operacionesEnOrden;
 						sol.ordenDeUso = ordenDeUso;
@@ -84,7 +293,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 					}//nos guardamos aqui los array para reconstruir?
 
 					//llamada recursiva
-					recursivoBruto(i,nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
+					recursivoBruto(i, nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
 
 					//revertimos los marcadores a lavuelta de la recursiva porque no se siguen aplicando en este nivel, en orden segun los ultimos que hicimos
 					//Así como las estructuras que nos ayudan a reconstruir la solucion
@@ -143,7 +352,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 						}//nos guardamos aqui los array para reconstruir?
 
 						//llamada recursiva
-						recursivoBruto(i,nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
+						recursivoBruto(i, nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
 
 						//revertimos los marcadores a lavuelta de la recursiva porque no se siguen aplicando en este nivel, en orden segun los ultimos que hicimos
 						//Así como las estructuras que nos ayudan a reconstruir la solucion
@@ -201,7 +410,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 					}//nos guardamos aqui los array para reconstruir?
 
 					//llamada recursiva
-					recursivoBruto(i,nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
+					recursivoBruto(i, nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
 
 					//revertimos los marcadores a lavuelta de la recursiva porque no se siguen aplicando en este nivel, en orden segun los ultimos que hicimos
 					//Así como las estructuras que nos ayudan a reconstruir la solucion
@@ -253,7 +462,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 						//Actualizamos, si es necesario, la mejor solucion con respecto a la solucion parcial
 						//si hay menos diferencia entre la sol parcial y el numero objetivo que entre la solucion hasta el momento se actualiza la mejor sol
 						//Queremos soluciones mas cercanas aunque excedan al numero??
-						if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial>=0) {
+						if (numObjetivo - solParcial < numObjetivo - mejorSol && solParcial >= 0 && numObjetivo - solParcial >= 0) {
 							mejorSol = solParcial;
 							sol.operacionesEnOrden = operacionesEnOrden;
 							sol.ordenDeUso = ordenDeUso;
@@ -261,7 +470,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 						}//nos guardamos aqui los array para reconstruir?
 
 					//llamada recursiva
-						recursivoBruto(i,nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
+						recursivoBruto(i, nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
 
 						//revertimos los marcadores a lavuelta de la recursiva porque no se siguen aplicando en este nivel, en orden segun los ultimos que hicimos
 						//Así como las estructuras que nos ayudan a reconstruir la solucion
@@ -293,7 +502,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 
 					//NO OPERAR
 					//no utilizamos la cifra numerosCandidatos[i] *APORTA ALGO??*
-					
+
 
 				}
 
@@ -302,7 +511,7 @@ int recursivoBruto(int k,int nivel, int solParcial, int& mejorSol, vector<bool>&
 			marcador[i] = false;
 
 		}
-			
+
 }
 int calcular(string operacion, int solucionparcial, int operando) {
 	if (operacion == "+") {
@@ -364,23 +573,24 @@ void resuelveCaso() {
 	sol.solMejor = 0;
 	int mejorSol = 0;
 
-	// resolver el caso posiblemente llamando a otras funciones
-	
-	// escribir la solución
-	recursivoBruto(0,0, 0, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
+	// DFS
+	//recursivoBruto(0, 0, 0, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
 
-	cout<<"Numeros candidatos:( ";
-	for (int i = 0; i < numerosCandidatos.size(); i++)cout << numerosCandidatos[i]<<" ";
-	cout<<")"<< "\n";
+	//BFS Solucion& sol, const int& numObjetivo, vector<int>& numerosCandidatos
+	BFS(sol, numObjetivo, numerosCandidatos);
+	cout << "o=" << o << "\n";
+	cout << "Numeros candidatos:( ";
+	for (int i = 0; i < numerosCandidatos.size(); i++)cout << numerosCandidatos[i] << " ";
+	cout << ")" << "\n";
 
 	cout << "Numero Objetivo:" << numObjetivo << " Solucion:" << sol.solMejor;
 	if (sol.solMejor != numObjetivo)cout << "\n" << "NO HAY SOLUCION EXACTA";
 	cout << "\n";
-	
+
 	//para llevar la cuenta
 	int solu;
-	for (int i = 0, j = 0; i < sol.ordenDeUso.size() - 1; i += 2,j++) {
-		cout << sol.ordenDeUso[i]<< sol.operacionesEnOrden[j] << sol.ordenDeUso[i + 1] <<"="<< calcular(sol.operacionesEnOrden[j], sol.ordenDeUso[i], sol.ordenDeUso[i + 1]) << '\n';
+	for (int i = 0, j = 0; i < sol.ordenDeUso.size() - 1; i += 2, j++) {
+		cout << sol.ordenDeUso[i] << sol.operacionesEnOrden[j] << sol.ordenDeUso[i + 1] << "=" << calcular(sol.operacionesEnOrden[j], sol.ordenDeUso[i], sol.ordenDeUso[i + 1]) << '\n';
 	}
 	cout << "\n";
 }
@@ -390,6 +600,8 @@ void resuelveCaso() {
 
 int main() {
 	// ajustes para que cin extraiga directamente de un fichero
+
+
 #ifndef DOMJUDGE
 	std::ifstream in("Texto.txt");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
@@ -397,8 +609,18 @@ int main() {
 
 	int numCasos;
 	std::cin >> numCasos;
+
+	//tiempo antes de ejecutar el algoritmo
+	auto start = std::chrono::high_resolution_clock::now();
+
 	for (int i = 0; i < numCasos; ++i)
 		resuelveCaso();
+
+	//guardamos el tiempo despues de ejecutar el algoritmo
+	auto end = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+	cout << "Tiempo en la resolucion de los " << numCasos << " casos de prueba  " << duration.count() << " milisegundos.\n";
 
 	// para dejar todo como estaba al principio
 #ifndef DOMJUDGE
