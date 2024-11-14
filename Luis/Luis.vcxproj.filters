@@ -23,5 +23,16 @@
     <Text Include="Texto2.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
+    <Text Include="Texto.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DFS.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="BFS.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
