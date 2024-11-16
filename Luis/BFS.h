@@ -86,7 +86,7 @@ private:
 	};
 	std::array<num_t, CIFRAS_INICIALES> numCandidatos; /*Numeros candidatos pero en array estatico*/
 
-	/*FUN*//*
+	/*FUN*//* 
 	void resolver() {
 	
 		Problema problema(0, marcador, ordenDeUso, operacionesEnOrden, numCandidatos, 0);
