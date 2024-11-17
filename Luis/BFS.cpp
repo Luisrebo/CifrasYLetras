@@ -1,118 +1,39 @@
-/*@ <authors>
- *
- * Nombre, apellidos y usuario del juez (TAISXX) de los autores de la solución.
- *
- *@ </authors> */
-
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <array>
-#include <chrono>
-#include <queue>
-#include <functional>  // lo necesito para std::function
-using namespace std;
-
-/*@ <answer>
-
- Escribe aquí un comentario general sobre la solución, explicando cómo
- se resuelve el problema y cuál es el coste de la solución, en función
- del tamaño del problema.
-
- @ </answer> */
+#include "BFS.h"
 
 
- // ================================================================
- // Escribe el código completo de tu solución aquí debajo
- // ================================================================
- //@ <answer>
-//2bytes en vez de 4 de int
-// -32,768 a 32,767.
-using num_t = short;
+//Vertice del arbol (solo en bfs)
+Problema::Problema(num_t solParcial,
+	std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> ordenDeUso,
+	std::array<char, CIFRAS_INICIALES> operacionesEnOrden,
+	std::array<num_t, CIFRAS_INICIALES> numCandidatos,
+	num_t nivel)
+	: _solParcial(solParcial),
+	_ordenDeUso(ordenDeUso),
+	_operacionesEnOrden(operacionesEnOrden),
+	_numCandidatos(numCandidatos),
+	_nivel(nivel) {
+}
 
-//mejor que const?
-constexpr short CIFRAS_INICIALES = 6; //cifras iniciales/disponibles/operandos
-constexpr short CIFRAS_MAXIMAS_ENCADENADAS = 12; //maximo numero de cifras que van a ser utilizadas en una solucion (caso peor: caso secuencial :11)
+BFS::BFS(const int& nObjetivo, vector<int> numerosCandidatos) :mejorSolucion(0), ordenDeUso{}, operacionesEnOrden{}, numObjetivo(nObjetivo) {
+
+	//pasamos el vector dinamico a vector estatico de 6 elementos para optimizar ya que sabemos que no varia el tamaño
+	std::copy(numerosCandidatos.begin(), numerosCandidatos.end(), numCandidatos.begin());
+
+	sol.solMejor = 0;
 
 
-struct Solucion {
-	std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> _ordenDeUso;
-	std::array<char, CIFRAS_INICIALES> _operacionesEnOrden;
-	num_t solMejor;
-	num_t _nivel; //para reconstruir la solucion
-};
+	resolver();
+}
 
-struct Operacion {
-	char simbolo;  // el símbolo de la operación
-	std::function<num_t(num_t, num_t)> op;  // la operación misma
-	std::function<bool(num_t, num_t)> valida;  // ¿cuándo la operación es válida?
-};
+void BFS::resolver() {
 
-struct Problema {
-	// Constructor que inicializa todos los miembros
-	Problema(num_t solParcial,
-		std::array<bool, CIFRAS_INICIALES> marcador,
-		std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> ordenDeUso,
-		std::array<char, CIFRAS_INICIALES> operacionesEnOrden,
-		std::array<num_t, CIFRAS_INICIALES> numCandidatos,
-		num_t nivel)
-		: _solParcial(solParcial),
-		_marcador(marcador),
-		_ordenDeUso(ordenDeUso),
-		_operacionesEnOrden(operacionesEnOrden),
-		_numCandidatos(numCandidatos),
-		_nivel(nivel)
-	{}
+	Problema problema(0, ordenDeUso, operacionesEnOrden, numCandidatos, 0);
 
-	//la unica forma que encuentro de saber en que nivel estamos es poniendolo en el vertice
-	num_t _nivel;
-	num_t _solParcial;
-	std::array<bool, CIFRAS_INICIALES> _marcador;
-	std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> _ordenDeUso;
-	std::array<char, CIFRAS_INICIALES> _operacionesEnOrden;
-	std::array<num_t, CIFRAS_INICIALES> _numCandidatos;
-};
-
-//resolvemos con bfs
-
-void BFS(Solucion& sol, const int& numObjetivo, vector<int> numerosCandidatos) {
-
-	//en esta cola guardamos los nodos que vamos apilando y desapilando para recorrer nivel a nivel
-	queue<Problema> cola;
-
-	//inicialezamos el nivel y la mejor solucion obtenida
-	num_t  mejorSolucion = 0;
-
-	//vectores estaticos para mejorar el espacio. ¿En parte por la redimension automática?
-// Inicialización de arrays
-	std::array<bool, CIFRAS_INICIALES> marcador = { false, false, false, false, false, false }; // Inicializa con todos los valores en false
-
-	std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> ordenDeUso = { 0 }; // Inicializa todos los elementos con el valor 0
-
-	std::array<char, CIFRAS_INICIALES> operacionesEnOrden = {  }; // Inicializa con espacios en blanco
-
-	// Array fijo de operaciones que podemos aplicar
-	const array<Operacion, 4> OPERACIONES = {
-		Operacion{'+', [](num_t a, num_t b) { return a + b; }, [](num_t a, num_t b) { return true; }},
-		{'-', [](num_t a, num_t b) { return a - b; }, [](num_t a, num_t b) { return a > b; }},
-		{'*',[](num_t a, num_t b) { return a * b; }, [](num_t a, num_t b) { return true; } },
-		{'/',[](num_t a, num_t b) { return a / b; }, [](num_t a, num_t b) { return a > 0 && b > 0 && a % b == 0; } }
-	};
-
-	//SOLUCION PROVISIONAL para pasar de array dinamico a estatico mejorando el coste en memoria
-	std::array<num_t, CIFRAS_INICIALES> numCandidatos;
-	if (numerosCandidatos.size() == CIFRAS_INICIALES)
-		std::copy(numerosCandidatos.begin(), numerosCandidatos.end(), numCandidatos.begin());
-
-	//problema que representa el nodo/vértice origen del bfs
-	Problema problema(0, marcador, ordenDeUso, operacionesEnOrden, numCandidatos, 0);
 	cola.push(problema);
-
-	num_t idContador = 0;
 
 	while (!cola.empty()) {
 
-		//creo una instancia de problema donde guardare los niveles que exploro en el bfs desapilando la cola 
+		//creo una instancia de problema donde guardare los niveles que exploro en el bfs desapilando la cola
 		//y profundizando nivel a nivel
 		Problema vertice = cola.front();
 		cola.pop();
@@ -120,7 +41,7 @@ void BFS(Solucion& sol, const int& numObjetivo, vector<int> numerosCandidatos) {
 		//recorremos los candidatos
 		//los candidatos los vamos a ir REORGANIZANDO; cuando utilicemos dos operandos de cifras disponibles vamos a liberar dos posiciones
 		// y a correr a la izquierda todos los operandos restantes, de los dos ultimos huecos uno o utilizaremos para colocar la cifra resultado de estos y el otro lo dejaremos libre
-		//asi siempre empezaremos a recorrer cada nivel en 0 hasta numcandidatos.size()(-2+1)*nivel (porque utilizamos dos cifras para operar y obtenemos una de resultado) -> 0 hasta numcandidatos.size()-nivel 
+		//asi siempre empezaremos a recorrer cada nivel en 0 hasta numcandidatos.size()(-2+1)*nivel (porque utilizamos dos cifras para operar y obtenemos una de resultado) -> 0 hasta numcandidatos.size()-nivel
 		for (num_t i = 0; i < CIFRAS_INICIALES - vertice._nivel; i++) {
 
 			//si no hemos utilizado el candidato iesimo en el vertice o en antecesores directos
@@ -189,42 +110,15 @@ void BFS(Solucion& sol, const int& numObjetivo, vector<int> numerosCandidatos) {
 								cola.push(verticeHijo);
 						}
 					}
-
 				}
 			}
 		}
 	}
 }
 
-//De aqui para abajo se resuelve con dfs
-
-
-//En varios hay soluciones mas cortas, podriamos dejar de comprobar en cuanto consiga una solucion o adoptar una nueva estructura si contiene menos operaciones
-//En cada operacion (suma resta division multiplicacion saco y meto los mismo numeros al vector y actualizo los marcadores)
-//no hace falta hacerlo todo el rato de hecho es ineficiente pero es una primera version muy bruta en la que no quiero refactorizar nada
-
-
-num_t calcular(char operacion, num_t solucionParcial, num_t operando) {
-	switch (operacion) {
-	case '+':
-		return solucionParcial + operando; // Sumar el operando al resultado
-	case '-':
-		return solucionParcial - operando; // Restar el operando al resultado
-	case '*':
-		return solucionParcial * operando; // Multiplicar el operando con el resultado
-	case '/':
-		return solucionParcial / operando; // Dividir si el operando no es cero
-
-		//NUNCA VA A PASAR PERO PARA QUE NO CHILLE
-	default:
-
-		return -1;
-	}
-}
-void escribirSolucionBFS(const Solucion& sol, const vector<int>& numerosCandidatos, const int& numObjetivo) {
-
+void BFS::mostrarBFS() {
 	cout << "Numeros candidatos:( ";
-	for (int i = 0; i < numerosCandidatos.size(); i++)cout << numerosCandidatos[i] << " ";
+	for (int i = 0; i < CIFRAS_INICIALES; i++)cout << numCandidatos[i] << " ";
 	cout << ")" << "\n";
 
 	cout << "Numero Objetivo:" << numObjetivo << " Solucion:" << sol.solMejor;
@@ -232,76 +126,8 @@ void escribirSolucionBFS(const Solucion& sol, const vector<int>& numerosCandidat
 	cout << "\n";
 
 	//para llevar la cuenta
-	num_t solu;
 	for (int i = 0, j = 0; i <= sol._nivel * 2; i += 2, j++) {
 		cout << sol._ordenDeUso[i] << sol._operacionesEnOrden[j] << sol._ordenDeUso[i + 1] << "=" << calcular(sol._operacionesEnOrden[j], sol._ordenDeUso[i], sol._ordenDeUso[i + 1]) << '\n';
 	}
 	cout << "\n";
-}
-
-void resuelveCaso() {
-
-	//numero a alcanzar entre 101 y 999
-   // int numObjetivo = 872; // 7+7=14 14*8=112 112+50=162 162*6=972 972-100= 872
-	int numObjetivo;
-
-	vector<int> numerosCandidatos(6);
-
-	cin >> numObjetivo;
-
-	for (int i = 0; i < 6; i++)
-		cin >> numerosCandidatos[i];
-
-
-	vector<bool> marcador(6);
-	vector<string> operacionesEnOrden;
-	vector<int> ordenDeUso(0);
-	Solucion sol;
-	sol.solMejor = 0;
-	int mejorSol = 0;
-
-	// DFS
-	//recursivoBruto(0, 0, 0, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
-
-	//BFS Solucion& sol, const int& numObjetivo, vector<int>& numerosCandidatos
-	BFS(sol, numObjetivo, numerosCandidatos);
-
-	escribirSolucionBFS(sol, numerosCandidatos, numObjetivo);
-}
-
-
-
-//@ </answer>
-//  Lo que se escriba dejado de esta línea ya no forma parte de la solución.
-
-int main() {
-	// ajustes para que cin extraiga directamente de un fichero
-
-
-#ifndef DOMJUDGE
-	std::ifstream in("casos.txt");
-	auto cinbuf = std::cin.rdbuf(in.rdbuf());
-#endif
-
-	int numCasos;
-	std::cin >> numCasos;
-
-	//tiempo antes de ejecutar el algoritmo
-	auto start = std::chrono::high_resolution_clock::now();
-
-	for (int i = 0; i < numCasos; ++i)
-		resuelveCaso();
-
-	//guardamos el tiempo despues de ejecutar el algoritmo
-	auto end = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
-	cout << "Tiempo en la resolucion de los " << numCasos << " casos de prueba  " << duration.count() << " milisegundos.\n";
-
-	// para dejar todo como estaba al principio
-#ifndef DOMJUDGE
-	std::cin.rdbuf(cinbuf);
-	system("PAUSE");
-#endif
-	return 0;
 }

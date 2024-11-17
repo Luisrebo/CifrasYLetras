@@ -18,6 +18,12 @@
     <ClCompile Include="Source.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="BFS.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="DFS.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Texto2.txt">
