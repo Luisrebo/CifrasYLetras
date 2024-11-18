@@ -133,7 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Texto.txt" />
-    <Text Include="Texto2.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BFS.h" />

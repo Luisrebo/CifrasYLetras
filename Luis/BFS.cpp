@@ -21,7 +21,6 @@ BFS::BFS(const int& nObjetivo, vector<int> numerosCandidatos) :mejorSolucion(0),
 
 	sol.solMejor = 0;
 
-
 	resolver();
 }
 
@@ -47,69 +46,79 @@ void BFS::resolver() {
 			//si no hemos utilizado el candidato iesimo en el vertice o en antecesores directos
 
 				//recorremos candidatos para operar con el i
-			for (num_t j = 0; j < CIFRAS_INICIALES - vertice._nivel; j++) {
+			for (num_t j = i + 1; j < CIFRAS_INICIALES - vertice._nivel; j++) {
 
-				if (i != j) {//mrjor poner continue? si i==j
+				//Realizamos todas las operaciones posibles (+,-,*,/)
+				for (Operacion operacion : OPERACIONES) {
 
-					//Realizamos todas las operaciones posibles (+,-,*,/)
-					for (Operacion operacion : OPERACIONES) {
+					num_t posOperando1;
+					num_t posOperando2;
 
-						//Si se puede operar (suma,resta positiva,multiplicacion ,divisibles)
-						if (operacion.valida(vertice._numCandidatos[i], vertice._numCandidatos[j])) {
-
-							//Vertice hijo a partir del padre
-							Problema verticeHijo = vertice;
-							verticeHijo._nivel += 1;
-
-							//realizamos la operacion entre los dos numeros
-							num_t solParcial = operacion.op(vertice._numCandidatos[i], vertice._numCandidatos[j]);
-
-							//en pos operando1 me guardo el valor mas a la izquierda del array de los dos elementos que acabo de combinar y el otro en posOperando2
-							num_t posOperando1 = min(i, j);
-							num_t posOperando2 = (posOperando1 == i) ? j : i;
-
-							//REORDENO LAS CIFRAS (OPERANDOS)
-							//con este indice recorremos los operandos disponibles para dejar los huecos al final
-							int indice;
-							//corro todos los numeros desde el primer hueco hasta el segundo
-							for (indice = posOperando1; indice < posOperando2 - 1; indice++)
-								verticeHijo._numCandidatos[indice] = verticeHijo._numCandidatos[indice + 1];
-
-							//CIFRAS_INICIALES-nivel -2 ->(-2 por los huecos que dejan los operandos utilizados)
-							for (indice = posOperando2 - 1; indice < CIFRAS_INICIALES - (vertice._nivel + 2); indice++)
-								verticeHijo._numCandidatos[indice] = verticeHijo._numCandidatos[indice + 2];
-
-							//ahora añado la cifra resultante en el primer hueco libre
-							verticeHijo._numCandidatos[indice] = solParcial;
-							verticeHijo._operacionesEnOrden[vertice._nivel] = operacion.simbolo;
-
-							//guardo las cifras que utilice, para reconstruir la solucion:
-							//en este vector de max 11 posiciones la primera cifra que guardo la meto en la pos (nvl*2) y la segunda en (nvl*2 +1)
-							//en el nivel 0 guardo los operando en las pos 0 y 1 en el nvl 1 en las pos 2 y 3 en el nvl 2 en las pos 4 y 5
-							//NO GUARDO EL RESULTADO DE AMBS?!
-							verticeHijo._ordenDeUso[vertice._nivel * 2] = vertice._numCandidatos[i];
-							verticeHijo._ordenDeUso[(vertice._nivel * 2) + 1] = vertice._numCandidatos[j];
-
-							//ACTUALIZO LA SOLUCION
-							if (abs(numObjetivo - solParcial) < abs(numObjetivo - mejorSolucion) && solParcial > 0) { //Priorizamos soluciones que no excedan la cifra?
-
-								mejorSolucion = solParcial;
-								sol._ordenDeUso = verticeHijo._ordenDeUso;
-								sol._operacionesEnOrden = verticeHijo._operacionesEnOrden;
-								sol.solMejor = mejorSolucion;
-								sol._nivel = vertice._nivel; //para reconstruir la solucion
-
-								//si encontramos la solucion acabamos
-								if (numObjetivo == mejorSolucion)
-									return;
-							}
-
-							//apilo el vertice en la cola para seguir explorandolo cuando acabe de explorar el nivel actual
-							//el nivel extra no lo apilo para ahorrar en tiempo ya que seria absurdo
-							if (vertice._nivel < 5)
-								cola.push(verticeHijo);
-						}
+					//si no se pueden operar i con j ni j con i
+					if (!operacion.valida(vertice._numCandidatos[i], vertice._numCandidatos[j]) && !operacion.valida(vertice._numCandidatos[j], vertice._numCandidatos[i]))
+						continue;
+					//Si se puede operar (suma,resta positiva,multiplicacion ,divisibles)
+					//si no se puede hacer la operacion i -> j probamos a hacer la op j -> i
+					//si no se puede hacer ninguna continuamos
+					else if (operacion.valida(vertice._numCandidatos[i], vertice._numCandidatos[j])) {
+						//i op j (ejem: i-j)
+						posOperando1 = i;
+						posOperando2 = j;
 					}
+
+					else if (operacion.valida(vertice._numCandidatos[j], vertice._numCandidatos[i])) {
+						//j op i (ejem: j-i)
+						posOperando1 = j;
+						posOperando2 = i;
+					}
+
+					//Vertice hijo a partir del padre
+					Problema verticeHijo = vertice;
+					verticeHijo._nivel += 1;
+
+					//realizamos la operacion entre los dos numeros
+					num_t solParcial = operacion.op(vertice._numCandidatos[posOperando1], vertice._numCandidatos[posOperando2]);
+
+					//REORDENO LAS CIFRAS (OPERANDOS)
+					//Las dos cifras que acabo de usar no las vol a volver a necesitar asique voy a guardar el numero resultado de operarlas
+					//en la posicion de una de ellas y el ultimo numero candidato en la posicion de la otra
+					//esto me permite "rellenar" los dos huecos que dejaban las cifras que acabo de usar en este vertice y me ahorra iteraciones en los bucles
+					//Ahora basta con que j empiece en i+1 al probar i op j y j op i en el mismo vertice
+
+					//i<j es un invariante en la ejecucion del algoritmo por ello añadimos el resultado en la primera pos libre (i) 
+					// y el ultimo operando de los candidatos _numCandidatos.size() - 1-vertice._nivel el segundo hueco libre (j)
+					//se podrian añadir indistintamente ya que se recorrer todos los candidatos desde i=0 pero este convenio da claridad
+					//la parte mas importante es tener en cuenta que el numero de candidatos solo es _numCandidatos.size()=_numCandidatos.size() - 1-vertice._nivel en el nivel 0
+					// luego el ultimo candidato del nivel habra que encontrarlo en la pos  _numCandidatos.size() - 1-vertice._nivel 
+					verticeHijo._numCandidatos[i] = solParcial;
+					verticeHijo._numCandidatos[j] = verticeHijo._numCandidatos[vertice._numCandidatos.size() - 1 - vertice._nivel];
+					verticeHijo._operacionesEnOrden[vertice._nivel] = operacion.simbolo;
+
+					//guardo las cifras que utilice, para reconstruir la solucion:
+					//en este vector de max 11 posiciones la primera cifra que guardo la meto en la pos (nvl*2) y la segunda en (nvl*2 +1)
+					//en el nivel 0 guardo los operando en las pos 0 y 1 en el nvl 1 en las pos 2 y 3 en el nvl 2 en las pos 4 y 5
+					//NO GUARDO EL RESULTADO DE AMBS?!
+					verticeHijo._ordenDeUso[vertice._nivel * 2] = vertice._numCandidatos[posOperando1];
+					verticeHijo._ordenDeUso[(vertice._nivel * 2) + 1] = vertice._numCandidatos[posOperando2];
+
+					//ACTUALIZO LA SOLUCION
+					if (abs(numObjetivo - solParcial) < abs(numObjetivo - mejorSolucion) && solParcial > 0) { //Priorizamos soluciones que no excedan la cifra?
+
+						mejorSolucion = solParcial;
+						sol._ordenDeUso = verticeHijo._ordenDeUso;
+						sol._operacionesEnOrden = verticeHijo._operacionesEnOrden;
+						sol.solMejor = mejorSolucion;
+						sol._nivel = vertice._nivel; //para reconstruir la solucion
+
+						//si encontramos la solucion acabamos
+						if (numObjetivo == mejorSolucion)
+							return;
+					}
+
+					//apilo el vertice en la cola para seguir explorandolo cuando acabe de explorar el nivel actual
+					//el nivel extra no lo apilo para ahorrar en tiempo ya que seria absurdo
+					if (vertice._nivel < 5)
+						cola.push(verticeHijo);
 				}
 			}
 		}

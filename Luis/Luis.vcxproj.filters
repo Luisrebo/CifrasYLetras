@@ -26,9 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Texto2.txt">
-      <Filter>Archivos de recursos</Filter>
-    </Text>
     <Text Include="Texto.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
