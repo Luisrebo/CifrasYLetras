@@ -1,25 +1,31 @@
 #include "DFS.h"
-
+#include "Search.h"
 #include <iostream>
 
 
 
-DFS::DFS(int nObjetivo, const vector<int>  nCandidatos) : mejorSol(0), marcador(6, false), ordenDeUso(0), operacionesEnOrden(), numerosCandidatos(nCandidatos), numObjetivo(nObjetivo) {
+DFS::DFS(int nObjetivo,  vector<int>  &nCandidatos) :Search(nObjetivo, numerosCandidatos), mejorSol(0), marcador(6, false), ordenDeUso(0), operacionesEnOrden(), numerosCandidatos(nCandidatos), numObjetivo(nObjetivo) {
 
-	sol.solMejor = 0;
-	resolver(0, 0, 0, mejorSol, marcador, nObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
+	//sol.solMejor = 0;
+	//resolver(0, 0, 0, mejorSol, marcador, nObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
 
 }
 
-//funcion recursiva
-void DFS::resolver(int k, int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int& numObjetivo, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden, SolucionDFS& sol) {
+void DFS::busqueda() {
+	sol.solMejor = 0;
+	resolver(0, 0, 0, marcador, numerosCandidatos, ordenDeUso, operacionesEnOrden);
+	mostrarDFS();
+}
 
+//funcion recursiva 
+//void DFS::resolver(int k, int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int numObjetivo, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden, SolucionDFS& sol) {
+void DFS::resolver(int k, int nivel, int solParcial /* ,int& mejorSol*/, vector<bool>& marcador /*, const int numObjetivo*/, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden /*, SolucionDFS& sol*/) {
 	if (mejorSol == numObjetivo) {
 		return;
 	}
 
 	//Hacemos todas las combinaciones de dos cifras (2 a dos) aplicandole a cada combinacion todas las operaciones posibles
-	for (int i = k; i < numerosCandidatos.size() && numerosCandidatos.size() < 12; i++)
+	for (int i = k; i < numerosCandidatos.size() && numerosCandidatos.size() < CIFRAS_MAXIMAS_ENCADENADAS; i++)
 		//si i esta desmarcado y se puede operar con el
 		if (!marcador[i]) {
 			marcador[i] = true;
@@ -69,7 +75,7 @@ void DFS::resolver(int k, int nivel, int solParcial, int& mejorSol, vector<bool>
 							}//nos guardamos aqui los array para reconstruir?
 
 							//llamada recursiva
-							resolver(i, nivel + 1, solParcial, mejorSol, marcador, numObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
+							resolver(i, nivel + 1, solParcial, marcador, numerosCandidatos, ordenDeUso, operacionesEnOrden);
 
 							//revertimos los marcadores a lavuelta de la recursiva porque no se siguen aplicando en este nivel, en orden segun los ultimos que hicimos
 							//Así como las estructuras que nos ayudan a reconstruir la solucion

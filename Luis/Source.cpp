@@ -12,61 +12,27 @@
 #include "FuncionesComunes.h"
 #include "BFS.h"
 #include "DFS.h"
+#include "Factory.h"
 using namespace std;
 
-num_t calcular(char operacion, num_t solucionParcial, num_t operando) {
-	switch (operacion) {
-	case '+':
-		return solucionParcial + operando;
-	case '-':
-		return solucionParcial - operando;
-	case '*':
-		return solucionParcial * operando;
-	case '/':
-		if (operando != 0) {
-			return solucionParcial / operando;
-		}
-		else {
-			return 0; // Evitar división por cero
-		}
-	default:
-		return solucionParcial;
-	}
-}
-bool equalsIgnoreCase(const std::string& str1, const std::string& str2) {
-	if (str1.length() != str2.length()) {
-		return false;
-	}
 
-	return std::equal(str1.begin(), str1.end(), str2.begin(), [](char a, char b) {
-		return std::tolower(a) == std::tolower(b);
-		});
-}
+
 void resuelveCaso(string mode) {
+
+	//numero al que queremos llegar o aproximarnos lo maximo posible
 	int numObjetivo;
 
-
-	vector<int> numerosCandidatos(6);
+	//cifras con las que hemos de operar
+	vector<int> numerosCandidatos(CIFRAS_INICIALES);
 
 	cin >> numObjetivo;
 
-
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < CIFRAS_INICIALES; ++i)
 		cin >> numerosCandidatos[i];
 
-	if (equalsIgnoreCase(mode, DFS_MODE)) {
-		DFS dfs(numObjetivo, numerosCandidatos);
-		dfs.mostrarDFS();
+	auto search = Factory::create(mode,numObjetivo,numerosCandidatos);
 
-	}
-
-	if (equalsIgnoreCase(mode, BFS_MODE)) {
-		BFS bfs(numObjetivo, numerosCandidatos);
-		bfs.mostrarBFS();
-
-	}
-
-
+	search->busqueda();
 
 }
 
@@ -75,14 +41,31 @@ void resuelveCaso(string mode) {
 //@ </answer>
 //  Lo que se escriba dejado de esta línea ya no forma parte de la solución.
 
-int main() {
+int main(int argc, char* argv[]) {
 	// ajustes para que cin extraiga directamente de un fichero
 
+	// Verificp si se paso un archivo como argumento
+	if (argc < 2) {
+		cerr << "Uso: " << argv[0] << " <archivo_de_entrada.txt>" << endl;
+		return 1;
+	}
 
+	string nombreArchivo = argv[1];
+
+	// Abrimos el archivo
+		ifstream archivoEntrada(nombreArchivo);
+	if (!archivoEntrada) {
+		cerr << "Error: No se pudo abrir el archivo " << nombreArchivo << endl;
+		return 1;
+	}
+
+	// Redirigir la entrada estándar desde el archivo
+	auto cinbuf = cin.rdbuf(archivoEntrada.rdbuf());
+	/*
 #ifndef DOMJUDGE
 	std::ifstream in("Texto.txt");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
-#endif
+#endif*/
 
 	int numCasos;
 	string mode;
@@ -103,9 +86,10 @@ int main() {
 	cout << "Tiempo en la resolucion de los " << numCasos << " casos de prueba  " << duration.count() << " milisegundos.\n";
 
 	// para dejar todo como estaba al principio
+	 /*
 #ifndef DOMJUDGE
 	std::cin.rdbuf(cinbuf);
 	system("PAUSE");
-#endif
+#endif*/
 	return 0;
 }

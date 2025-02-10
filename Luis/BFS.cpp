@@ -1,52 +1,74 @@
 #include "BFS.h"
-
+#include "Search.h"
 
 //Vertice del arbol (solo en bfs)
 Problema::Problema(num_t solParcial,
 	std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> ordenDeUso,
 	std::array<char, CIFRAS_INICIALES> operacionesEnOrden,
-	std::array<num_t, CIFRAS_INICIALES> numCandidatos,
-	num_t nivel)
+	vector<int> &numerosCandidatos)
 	: _solParcial(solParcial),
 	_ordenDeUso(ordenDeUso),
-	_operacionesEnOrden(operacionesEnOrden),
-	_numCandidatos(numCandidatos),
-	_nivel(nivel) {
-}
-
-BFS::BFS(const int& nObjetivo, vector<int> numerosCandidatos) :mejorSolucion(0), ordenDeUso{}, operacionesEnOrden{}, numObjetivo(nObjetivo) {
+	_operacionesEnOrden(operacionesEnOrden){
 
 	//pasamos el vector dinamico a vector estatico de 6 elementos para optimizar ya que sabemos que no varia el tamaño
-	std::copy(numerosCandidatos.begin(), numerosCandidatos.end(), numCandidatos.begin());
-
-	sol.solMejor = 0;
-
-	resolver();
+	std::copy(numerosCandidatos.begin(), numerosCandidatos.end(), _numCandidatos.begin());
 }
 
+SolucionBFS::SolucionBFS(Problema problema,
+	num_t solMejor, num_t nivel) :_problema(problema), _solMejor(solMejor), _nivel(nivel) {}
+
+BFS::BFS(const int nObjetivo, vector<int>& numerosCandidatos)
+	: Search(nObjetivo, numerosCandidatos),
+	mejorSolucion(0),
+	numObjetivo(nObjetivo),
+	verticeOrigen(0,
+		std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS>{},
+		std::array<char, CIFRAS_INICIALES>{},
+		numerosCandidatos),
+	sol(verticeOrigen, 0, 0) {
+
+	//resolver(); 
+}
+
+void BFS::busqueda() {
+	// Por ejemplo, simplemente llamamos a nuestra lógica
+	resolver();
+	mostrarBFS();
+}
 void BFS::resolver() {
 
-	Problema problema(0, ordenDeUso, operacionesEnOrden, numCandidatos, 0);
-
-	cola.push(problema);
+	num_t verticesDelNivelAnteriorPorExplorar,verticesNivelSiguiente,nivelActual;
+	verticesNivelSiguiente = 0;
+	nivelActual = 0;
+	
+	verticesDelNivelAnteriorPorExplorar = 1;
+	cola.push(verticeOrigen);
 
 	while (!cola.empty()) {
+
+		if (verticesDelNivelAnteriorPorExplorar == 0) {
+			nivelActual += 1;
+			verticesDelNivelAnteriorPorExplorar = verticesNivelSiguiente;
+			verticesNivelSiguiente = 0;
+		}
+			
 
 		//creo una instancia de problema donde guardare los niveles que exploro en el bfs desapilando la cola
 		//y profundizando nivel a nivel
 		Problema vertice = cola.front();
 		cola.pop();
+		verticesDelNivelAnteriorPorExplorar--;
 
 		//recorremos los candidatos
 		//los candidatos los vamos a ir REORGANIZANDO; cuando utilicemos dos operandos de cifras disponibles vamos a liberar dos posiciones
 		// y a correr a la izquierda todos los operandos restantes, de los dos ultimos huecos uno o utilizaremos para colocar la cifra resultado de estos y el otro lo dejaremos libre
 		//asi siempre empezaremos a recorrer cada nivel en 0 hasta numcandidatos.size()(-2+1)*nivel (porque utilizamos dos cifras para operar y obtenemos una de resultado) -> 0 hasta numcandidatos.size()-nivel
-		for (num_t i = 0; i < CIFRAS_INICIALES - vertice._nivel; i++) {
+		for (num_t i = 0; i < CIFRAS_INICIALES - nivelActual; i++) {
 
 			//si no hemos utilizado el candidato iesimo en el vertice o en antecesores directos
 
 				//recorremos candidatos para operar con el i
-			for (num_t j = i + 1; j < CIFRAS_INICIALES - vertice._nivel; j++) {
+			for (num_t j = i + 1; j < CIFRAS_INICIALES - nivelActual; j++) {
 
 				//Realizamos todas las operaciones posibles (+,-,*,/)
 				for (Operacion operacion : OPERACIONES) {
@@ -74,7 +96,7 @@ void BFS::resolver() {
 
 					//Vertice hijo a partir del padre
 					Problema verticeHijo = vertice;
-					verticeHijo._nivel += 1;
+					
 
 					//realizamos la operacion entre los dos numeros
 					num_t solParcial = operacion.op(vertice._numCandidatos[posOperando1], vertice._numCandidatos[posOperando2]);
@@ -91,24 +113,24 @@ void BFS::resolver() {
 					//la parte mas importante es tener en cuenta que el numero de candidatos solo es _numCandidatos.size()=_numCandidatos.size() - 1-vertice._nivel en el nivel 0
 					// luego el ultimo candidato del nivel habra que encontrarlo en la pos  _numCandidatos.size() - 1-vertice._nivel 
 					verticeHijo._numCandidatos[i] = solParcial;
-					verticeHijo._numCandidatos[j] = verticeHijo._numCandidatos[vertice._numCandidatos.size() - 1 - vertice._nivel];
-					verticeHijo._operacionesEnOrden[vertice._nivel] = operacion.simbolo;
+					verticeHijo._numCandidatos[j] = verticeHijo._numCandidatos[vertice._numCandidatos.size() - 1 - nivelActual];
+					verticeHijo._operacionesEnOrden[nivelActual] = operacion.simbolo;
 
 					//guardo las cifras que utilice, para reconstruir la solucion:
 					//en este vector de max 11 posiciones la primera cifra que guardo la meto en la pos (nvl*2) y la segunda en (nvl*2 +1)
 					//en el nivel 0 guardo los operando en las pos 0 y 1 en el nvl 1 en las pos 2 y 3 en el nvl 2 en las pos 4 y 5
 					//NO GUARDO EL RESULTADO DE AMBS?!
-					verticeHijo._ordenDeUso[vertice._nivel * 2] = vertice._numCandidatos[posOperando1];
-					verticeHijo._ordenDeUso[(vertice._nivel * 2) + 1] = vertice._numCandidatos[posOperando2];
+					verticeHijo._ordenDeUso[nivelActual * 2] = vertice._numCandidatos[posOperando1];
+					verticeHijo._ordenDeUso[(nivelActual * 2) + 1] = vertice._numCandidatos[posOperando2];
 
 					//ACTUALIZO LA SOLUCION
 					if (abs(numObjetivo - solParcial) < abs(numObjetivo - mejorSolucion) && solParcial > 0) { //Priorizamos soluciones que no excedan la cifra?
 
 						mejorSolucion = solParcial;
-						sol._ordenDeUso = verticeHijo._ordenDeUso;
-						sol._operacionesEnOrden = verticeHijo._operacionesEnOrden;
-						sol.solMejor = mejorSolucion;
-						sol._nivel = vertice._nivel; //para reconstruir la solucion
+						sol._problema._ordenDeUso = verticeHijo._ordenDeUso;
+						sol._problema._operacionesEnOrden = verticeHijo._operacionesEnOrden;
+						sol._solMejor = mejorSolucion;
+						sol._nivel = nivelActual; //para reconstruir la solucion
 
 						//si encontramos la solucion acabamos
 						if (numObjetivo == mejorSolucion)
@@ -117,26 +139,29 @@ void BFS::resolver() {
 
 					//apilo el vertice en la cola para seguir explorandolo cuando acabe de explorar el nivel actual
 					//el nivel extra no lo apilo para ahorrar en tiempo ya que seria absurdo
-					if (vertice._nivel < 5)
+					if (nivelActual < CIFRAS_INICIALES - 1) {
 						cola.push(verticeHijo);
+						verticesNivelSiguiente ++;
+					}
 				}
 			}
 		}
 	}
+
 }
 
 void BFS::mostrarBFS() {
 	cout << "Numeros candidatos:( ";
-	for (int i = 0; i < CIFRAS_INICIALES; i++)cout << numCandidatos[i] << " ";
+	for (int i = 0; i < CIFRAS_INICIALES; i++)cout << verticeOrigen._numCandidatos[i] << " ";
 	cout << ")" << "\n";
 
-	cout << "Numero Objetivo:" << numObjetivo << " Solucion:" << sol.solMejor;
-	if (sol.solMejor != numObjetivo)cout << "\n" << "NO HAY SOLUCION EXACTA";
+	cout << "Numero Objetivo:" << numObjetivo << " Solucion:" << sol._solMejor;
+	if (sol._solMejor != numObjetivo)cout << "\n" << "NO HAY SOLUCION EXACTA";
 	cout << "\n";
 
 	//para llevar la cuenta
 	for (int i = 0, j = 0; i <= sol._nivel * 2; i += 2, j++) {
-		cout << sol._ordenDeUso[i] << sol._operacionesEnOrden[j] << sol._ordenDeUso[i + 1] << "=" << calcular(sol._operacionesEnOrden[j], sol._ordenDeUso[i], sol._ordenDeUso[i + 1]) << '\n';
+		cout << sol._problema._ordenDeUso[i] << sol._problema._operacionesEnOrden[j] << sol._problema._ordenDeUso[i + 1] << "=" << calcular(sol._problema._operacionesEnOrden[j], sol._problema._ordenDeUso[i], sol._problema._ordenDeUso[i + 1]) << '\n';
 	}
 	cout << "\n";
 }
