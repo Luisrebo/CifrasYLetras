@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 		cerr << "Error: No se pudo abrir el archivo " << nombreArchivo << endl;
 		return 1;
 	}
-
+	
 	// Redirigir la entrada estándar desde el archivo
 	auto cinbuf = cin.rdbuf(archivoEntrada.rdbuf());
 	/*
@@ -75,6 +75,8 @@ int main(int argc, char* argv[]) {
 
 	//tiempo antes de ejecutar el algoritmo
 	auto start = std::chrono::high_resolution_clock::now();
+
+	cout << "Solucion para el archivo: " << nombreArchivo << " en modo " << mode << '\n';
 
 	for (int i = 0; i < numCasos; ++i)
 		resuelveCaso(mode);
