@@ -40,7 +40,7 @@ private:
 	};*/
 
 	//void resolver(int k, int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int numObjetivo, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden, SolucionDFS& sol);
-	void resolver(int k, int nivel, int solParcial /* ,int& mejorSol*/, vector<bool>& marcador /*, const int numObjetivo*/, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden /*, SolucionDFS& sol*/);
+	void resolver(int k, int nivel, int solParcial /* ,int& mejorSol*/ /*, vector<bool>& marcador*/ /*, const int numObjetivo*/, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden /*, SolucionDFS& sol*/);
 
 	bool contained(vector<int> ordenDeUso, int cifra, int solMejor);
 

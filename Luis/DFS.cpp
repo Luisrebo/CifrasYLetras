@@ -13,13 +13,13 @@ DFS::DFS(int nObjetivo,  vector<int>  &nCandidatos) :Search(nObjetivo, numerosCa
 
 void DFS::busqueda() {
 	sol.solMejor = 0;
-	resolver(0, 0, 0, marcador, numerosCandidatos, ordenDeUso, operacionesEnOrden);
+	resolver(0, 0, 0/*, marcador*/, numerosCandidatos, ordenDeUso, operacionesEnOrden);
 	mostrarDFS();
 }
 
 //funcion recursiva 
 //void DFS::resolver(int k, int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int numObjetivo, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden, SolucionDFS& sol) {
-void DFS::resolver(int k, int nivel, int solParcial /* ,int& mejorSol*/, vector<bool>& marcador /*, const int numObjetivo*/, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden /*, SolucionDFS& sol*/) {
+void DFS::resolver(int k, int nivel, int solParcial /* ,int& mejorSol*//*, vector<bool>& marcador*/ /*, const int numObjetivo*/, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden /*, SolucionDFS& sol*/) {
 	if (mejorSol == numObjetivo) {
 		return;
 	}
@@ -75,7 +75,7 @@ void DFS::resolver(int k, int nivel, int solParcial /* ,int& mejorSol*/, vector<
 							}//nos guardamos aqui los array para reconstruir?
 
 							//llamada recursiva
-							resolver(i, nivel + 1, solParcial, marcador, numerosCandidatos, ordenDeUso, operacionesEnOrden);
+							resolver(i, nivel + 1, solParcial/*, marcador*/, numerosCandidatos, ordenDeUso, operacionesEnOrden);
 
 							//revertimos los marcadores a lavuelta de la recursiva porque no se siguen aplicando en este nivel, en orden segun los ultimos que hicimos
 							//Así como las estructuras que nos ayudan a reconstruir la solucion
