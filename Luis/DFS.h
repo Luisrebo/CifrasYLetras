@@ -32,13 +32,6 @@ private:
 	vector<int> numerosCandidatos;
 	int numObjetivo;
 
-	/*const array<Operacion, 4> OPERACIONES = {
-	   Operacion{'+', [](num_t a, num_t b) { return a + b; }, [](num_t a, num_t b) { return true; }},
-	   {'-', [](num_t a, num_t b) { return a - b; }, [](num_t a, num_t b) { return a > b; }},
-	   {'*',[](num_t a, num_t b) { return a * b; }, [](num_t a, num_t b) { return true; } },
-	   {'/',[](num_t a, num_t b) { return a / b; }, [](num_t a, num_t b) { return a > 0 && b > 0 && a % b == 0; } }
-	};*/
-
 	//void resolver(int k, int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int numObjetivo, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden, SolucionDFS& sol);
 	void resolver(int k, int nivel, int solParcial /* ,int& mejorSol*/ /*, vector<bool>& marcador*/ /*, const int numObjetivo*/, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden /*, SolucionDFS& sol*/);
 

@@ -6,20 +6,17 @@
 
 DFS::DFS(int nObjetivo,  vector<int>  &nCandidatos) :Search(nObjetivo, numerosCandidatos), mejorSol(0), marcador(6, false), ordenDeUso(0), operacionesEnOrden(), numerosCandidatos(nCandidatos), numObjetivo(nObjetivo) {
 
-	//sol.solMejor = 0;
-	//resolver(0, 0, 0, mejorSol, marcador, nObjetivo, numerosCandidatos, ordenDeUso, operacionesEnOrden, sol);
-
 }
 
 void DFS::busqueda() {
 	sol.solMejor = 0;
-	resolver(0, 0, 0/*, marcador*/, numerosCandidatos, ordenDeUso, operacionesEnOrden);
+	resolver(0, 0, 0, numerosCandidatos, ordenDeUso, operacionesEnOrden);
 	mostrarDFS();
 }
 
 //funcion recursiva 
 //void DFS::resolver(int k, int nivel, int solParcial, int& mejorSol, vector<bool>& marcador, const int numObjetivo, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden, SolucionDFS& sol) {
-void DFS::resolver(int k, int nivel, int solParcial /* ,int& mejorSol*//*, vector<bool>& marcador*/ /*, const int numObjetivo*/, vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden /*, SolucionDFS& sol*/) {
+void DFS::resolver(int k, int nivel, int solParcial , vector<int>& numerosCandidatos, vector<int>& ordenDeUso, vector<char>& operacionesEnOrden ) {
 	if (mejorSol == numObjetivo) {
 		return;
 	}
