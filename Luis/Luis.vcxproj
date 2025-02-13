@@ -143,6 +143,7 @@
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FuncionesComunes.h" />
     <ClInclude Include="Search.h" />
+    <ClInclude Include="Trie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
