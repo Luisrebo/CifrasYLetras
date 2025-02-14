@@ -42,11 +42,8 @@ public:
 		libera(raiz);
 	};
 
-	bool insert(string const& palabra) {
-		for(char letra:palabra)
-			if (raiz->hijos.find(letra)) {
-
-			}
+	/*bool*/ void insert(string const& palabra) {
+		
 		return inserta(palabra, raiz);
 	}
 protected:
@@ -60,28 +57,45 @@ protected:
 		}
 	}
 
-	bool inserta(string const& e, Link& a) {
+	//la raiz empieza en altura 0 y todos los hijos cuelgan de ella
+	//en cada nivel con altura i estaremos representando el caracter e[i-1] y buscando o insertando un hijo con el caracter el e[i]
+	/*bool*/void inserta(string const& e, Link& a) {
 		bool crece;
+
 		if (a == nullptr) { // se inserta el nuevo elemento e
-			a = new TreeNode(e[0],1); //la raiz es null entonces la altura es 1
+			a = new TreeNode(' ', 0); //la raiz es null entonces la altura es 0 y metemos el caracter vacio
 			++nelems;
 			crece = true;
+
+			inserta(e, a);//seguimos insertando el resto de la palabra
 		}
 
+		//par clave valor del map con first(char id del prefijo) second(Treenode)
+		//Guardamos el par del mapa que coincida en este nivel con el char de la posicion/nivel de la palabra que queremos insertar o, sino existe a->hijos.end() 
+		auto ParPrefijoNodo = a->hijos.find(e[a->altura]);
+
+		if (a->altura>e.size()) return ; //si hemos añadido la ultima letra (o si ya existia un camino de esos prefijos desde la raiz) en altura 1 accedemos a e[0] y en altura size a e[size-1]
+
+		
+
 		//si la letra no existe en este nivel
-		else if (a->hijos.find(e[a->altura]) != a->hijos.end()) {//si la clave no existe el map no devuelve null devuelve hijos.end()
+		else if (ParPrefijoNodo != a->hijos.end()) {//si la clave no existe el map no devuelve null devuelve hijos.end()
 
-			Link nuevoHijo = new  TreeNode(e[a->altura - 1], a->altura+1);
+			Link nuevoHijo = new  TreeNode(e[a->altura], a->altura+1);//cramos nuevo nodo que colgara del anterior, con el elemento=caracter e[altura] porque la raiz epieza con alt 0 y +1 de altura repecto al padre
 
-			a->hijos.insert(std::make_pair(e[a->altura - 1], nuevoHijo));//usamos make pair porque no queremos sobreescribir en ningun caso
+			a->hijos.insert(std::make_pair(e[a->altura ], nuevoHijo));//usamos make pair porque no queremos sobreescribir en ningun momento del programa
+			
 			++nelems;
 			crece = true;
 
 			//tras insertar la primera letra que no teniamos seguiremos insertando las demas
-			inserta(e, nuevoHijo);
+			inserta(e, nuevoHijo); 
 		}
 
-		else{}
+		// si existia el prefio en el nivel seguimos con los demas prefijos de la palabra
+		else
+			inserta(e, ParPrefijoNodo->second); //seguimos insertando a partir del nodo hijo
+		
 	}
 };
 
