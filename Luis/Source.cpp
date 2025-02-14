@@ -13,6 +13,10 @@
 #include "BFS.h"
 #include "DFS.h"
 #include "Factory.h"
+
+/*Segunda parte letras*/
+#include "Trie.h"
+
 using namespace std;
 
 
@@ -33,6 +37,19 @@ void resuelveCaso(string mode) {
 	auto search = Factory::create(mode,numObjetivo,numerosCandidatos);
 
 	search->busqueda();
+
+}
+/*Segunda Parte Letras*/
+void resuelveCasoLetras() {
+	int numPalabras;
+	cin >> numPalabras;
+
+	Trie arbolPrefijos;
+	string palabra;//IMPORTANTE HACER IGNORE CASE AQUI O EN LA CLASE TRIE?
+	for (int i = 0; i < numPalabras; ++i) {
+		cin >> palabra;
+		arbolPrefijos.insert(palabra);
+	}
 
 }
 
@@ -80,6 +97,9 @@ int main(int argc, char* argv[]) {
 
 	for (int i = 0; i < numCasos; ++i)
 		resuelveCaso(mode);
+
+	/*Segunda parte letras*/
+	resuelveCasoLetras();
 
 	//guardamos el tiempo despues de ejecutar el algoritmo
 	auto end = std::chrono::high_resolution_clock::now();

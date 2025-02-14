@@ -36,13 +36,14 @@ protected:
 public:
 
 	// constructor (conjunto vacío)
-	Trie() : raiz(nullptr), nelems(0), {}
+	Trie() : raiz(nullptr), nelems(0) {}
 
 	~Trie() {
 		libera(raiz);
 	};
 
-	/*bool*/ void insert(string const& palabra) {
+	/*bool*/
+	void insert(string const& palabra) {
 		
 		return inserta(palabra, raiz);
 	}
@@ -69,33 +70,35 @@ protected:
 
 			inserta(e, a);//seguimos insertando el resto de la palabra
 		}
+		else {
 
-		//par clave valor del map con first(char id del prefijo) second(Treenode)
-		//Guardamos el par del mapa que coincida en este nivel con el char de la posicion/nivel de la palabra que queremos insertar o, sino existe a->hijos.end() 
-		auto ParPrefijoNodo = a->hijos.find(e[a->altura]);
+			//par clave valor del map con first(char id del prefijo) second(Treenode)
+			//Guardamos el par del mapa que coincida en este nivel con el char de la posicion/nivel de la palabra que queremos insertar o, sino existe a->hijos.end() 
+			auto ParPrefijoNodo = a->hijos.find(e[a->altura]);
 
-		if (a->altura>e.size()) return ; //si hemos añadido la ultima letra (o si ya existia un camino de esos prefijos desde la raiz) en altura 1 accedemos a e[0] y en altura size a e[size-1]
+			if (a->altura > e.size()) return; //si hemos añadido la ultima letra (o si ya existia un camino de esos prefijos desde la raiz) en altura 1 accedemos a e[0] y en altura size a e[size-1]
 
-		
 
-		//si la letra no existe en este nivel
-		else if (ParPrefijoNodo != a->hijos.end()) {//si la clave no existe el map no devuelve null devuelve hijos.end()
 
-			Link nuevoHijo = new  TreeNode(e[a->altura], a->altura+1);//cramos nuevo nodo que colgara del anterior, con el elemento=caracter e[altura] porque la raiz epieza con alt 0 y +1 de altura repecto al padre
+			//si la letra no existe en este nivel
+			else if (ParPrefijoNodo == a->hijos.end()) {//si la clave no existe el map no devuelve null devuelve hijos.end()
 
-			a->hijos.insert(std::make_pair(e[a->altura ], nuevoHijo));//usamos make pair porque no queremos sobreescribir en ningun momento del programa
-			
-			++nelems;
-			crece = true;
+				Link nuevoHijo = new  TreeNode(e[a->altura], a->altura + 1);//cramos nuevo nodo que colgara del anterior, con el elemento=caracter e[altura] porque la raiz epieza con alt 0 y +1 de altura repecto al padre
 
-			//tras insertar la primera letra que no teniamos seguiremos insertando las demas
-			inserta(e, nuevoHijo); 
+				a->hijos.insert(std::make_pair(e[a->altura], nuevoHijo));//usamos make pair porque no queremos sobreescribir en ningun momento del programa
+
+				++nelems;
+				crece = true;
+
+				//tras insertar la primera letra que no teniamos seguiremos insertando las demas
+				inserta(e, nuevoHijo);
+			}
+
+			// si existia el prefio en el nivel seguimos con los demas prefijos de la palabra
+			else
+				inserta(e, ParPrefijoNodo->second); //seguimos insertando a partir del nodo hijo
+
 		}
-
-		// si existia el prefio en el nivel seguimos con los demas prefijos de la palabra
-		else
-			inserta(e, ParPrefijoNodo->second); //seguimos insertando a partir del nodo hijo
-		
 	}
 };
 
