@@ -43,7 +43,7 @@ void resuelveCaso(string mode, istream& archivo ) {
 void loadDiccionario(Trie& trie, istream& archivo) {
 	string palabra;
 	
-	while (archivo>>palabra)
+	while (archivo>>palabra) //Si la palabra tiene mas de 10 letras la descarto?
 		trie.insert(palabra);
 }
 void resuelveCasoLetras(Trie& trie, istream& archivo) {
