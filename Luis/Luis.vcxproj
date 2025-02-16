@@ -144,6 +144,7 @@
     <ClInclude Include="FuncionesComunes.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="Trie.h" />
+    <ClInclude Include="TrieQuery.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

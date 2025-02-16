@@ -1,13 +1,10 @@
 #ifndef TRIE_H_
 #define TRIE_H_
 
-//#include <algorithm>
-//#include <functional>
-//#include <stack>
-//#include <stdexcept>
-//#include <utility>
 #include <map>
 #include <string>
+
+#include "TrieQuery.h"
 using namespace std;
 
 class Trie {
@@ -18,17 +15,14 @@ protected:
 	struct TreeNode {
 		char elem;
 		map<char, Link> hijos;// Mejor char que String, mapa de maximo de 27 caracteres (letras del abecedario)
-		int altura;
-		bool terminal;
-		
+		int altura;//altura del nodo respeccto a la raiz
+		bool terminal;//flag para ver si es palabra de nuestro abcedario
+		int profundidad;//lo usaremos para podar
 
-		TreeNode(char const& e, int alt) : elem(e), altura(alt), terminal(false), hijos() {}
+		TreeNode(char const& e, int alt,int deep) : elem(e), altura(alt), terminal(false), hijos(), profundidad(deep){}
 	};
 	// puntero a la raíz de la estructura jerárquica de nodos
 	Link raiz;
-
-	//un atributo profundidad para que sepamos por donde empezar a buscar algo euleriano que se comunique a la vuelta de la recursiva?
-
 	// número de elementos (cardinal del conjunto)
 	int nelems;
 
@@ -52,7 +46,51 @@ public:
 		if(!existe(palabra, nodoObjetivo) )
 		inserta(palabra, nodoObjetivo);
 	}
+
+	//resolver un caso, dada una cadena de letras
+	string solve(string const& letras){
+		TrieQuery problema(letras);
+		Solucion solParcial;
+
+		//exploramos el trie buscando palabras que contengan las letras de la cadena recibida
+		explorar(raiz,problema, solParcial);
+	}
 protected:
+	//exploramos recursivamente los nodos descendentes de node y en cada nodo tratamos las posibles soluciones que generen sus hijos
+	void explorar(Link& node, TrieQuery &problema, Solucion &solParcial) {//struct Solucion definida en TrieQuery
+
+		//recorremos los diferentes hijos del nodo actual
+		for ( auto ParnodoHijo : node->hijos) {
+			
+			//consultamos si el hijo que estamos recorriendo tiene un caracter valido y quedan letras de ese caracter sin usar
+			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(ParnodoHijo.first);
+
+			//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
+			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second>0/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/) {
+
+				//Marcadores
+				//actualizamos solucion parcial y comprobamos si es solucion total
+				solParcial.palabraSolucion[node->altura] = ParnodoHijo.second->elem;
+				solParcial.longitud = node->altura + 1;
+				ParLetraCantidadDisponibles->second -= 1; //restamos uno a la cantidad de letras disponible con este  caracter 
+
+				//si el nodo hijo forma una palabra de nuestro abecedeario (ya sabemos que su letra esta disponible)
+				//y si es de mayor longitud que la mejor palabra que habiamos encontrado
+				if (ParnodoHijo.second->terminal == true && ParnodoHijo.second->altura > problema.mejorSolucion.longitud)
+					problema.mejorSolucion = solParcial;//hacemos una copia de los datos para actualizar la mejor sol
+
+				explorar(ParnodoHijo.second, problema, solParcial);
+
+				//desmarcamos
+				//solParcial.palabraSolucion[node->altura] = '0/';//aporta algo?
+				solParcial.longitud = node->altura;
+				ParLetraCantidadDisponibles->second += 1; //sumamos uno a la cantidad de letras disponible con este  caracter 
+
+
+			}
+		}
+		return;
+	}
 	static void libera(Link a) {
 		if (a != nullptr) {
 
@@ -74,7 +112,7 @@ protected:
 	// nodo que representa el ultimo caracter de la cadema si esa cadena ya estaba representada anteriormente en el trie
 	TreeNode* search(string const& palabraBuscada, Link& nodo) { //Ruben me dijo que con tipos pequeños como int no usara& con string si? lo hace alberto en el tad
 		if (nodo == nullptr) 
-			return nullptr;
+			return nullptr;//devuelvo raiz?
 		
 		else {
 			if (palabraBuscada.length() < nodo->altura)//si la altura es mayor que la longitud de la palabra es porque hemos encontrado la cadena que buscabamos ya que sino habriamos acabado antes
@@ -95,10 +133,11 @@ protected:
 	}
 
 	//nodo ya es el nodo que representa el ultimo caracter de la cadena que existe en el trie (devuelto por busqueda)
-	void inserta(string const& palabra, Link& nodo) {
+	//devolvemos true si crecemos en profundidad para actualizar la profundidad de los antecesores
+	int inserta(string const& palabra, Link& nodo) {
 		//si la raiz es null
 		if (nodo == nullptr) { //deberia trabajar con node en todo el cuerpo? como lo
-			raiz = new TreeNode(' ', 0); //la raiz es null entonces la altura es 0 y metemos el caracter vacio
+			raiz = new TreeNode(' ', 0,0); //la raiz es null entonces la altura y profundidad es 0 y metemos el caracter vacio
 			++nelems;
 			
 			inserta(palabra, raiz);//seguimos insertando el resto de la palabra
@@ -107,18 +146,24 @@ protected:
 		//nodo es el ultimo nodo que coincidia con una cadena pudiendo ser tamb el nodo que completa una cadena o un nodo que acabamos de insertar
 		else {
 
+			//bool crece;
+
 			//verificamos si ya hemos cabado de insertar la cadena
 			// o si la cadena ya estaba insertada pendiente de actualizar el flag "terminal"
+			//devolvemos la profundidad que sera 0 si acabamos de insertar un nuevo elemento o palabra.size si la palabra era
+			//un subconjunto de una palabra ya existente en el trie
 			if (nodo->altura == palabra.size()) {
 				nodo->terminal = true;
-				return;
+				return nodo->profundidad;
 			}
 			else {
 				//Creamos un nuevo hijo a partir del padre que represente el primer caracter de la cadena que falte
-				Link nuevoHijo=new TreeNode(palabra[nodo->altura],nodo->altura+1);
+				Link nuevoHijo=new TreeNode(palabra[nodo->altura],nodo->altura+1,0);
 				nodo->hijos.insert(std::make_pair(palabra[nodo->altura], nuevoHijo));//palabra[nodo->altura]=nuevoHijo->elem;
-					
-				inserta(palabra, nuevoHijo);
+				
+				//seguimos insertando nodos y a la vuelta de la recursiva vamos actualizando las profundidades
+				 nodo->profundidad=inserta(palabra, nuevoHijo)+1;
+				return nodo->profundidad; //esto no es un poco raro? devolvemos true porque crece el arbol
 			}
 		}
 	}

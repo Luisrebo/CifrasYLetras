@@ -22,6 +22,9 @@ constexpr short CIFRAS_MAXIMAS_ENCADENADAS = 2* CIFRAS_INICIALES; //maximo numer
 const std::string BFS_MODE = "BFS";
 const std::string DFS_MODE = "DFS";
 
+/*PRUEBA DE LETRAS*/
+constexpr short NUMERO_DE_LETRAS = 10;
+
 struct Operacion {
 	char simbolo;  // el símbolo de la operación
 	std::function<num_t(num_t, num_t)> op;  // la operación misma
