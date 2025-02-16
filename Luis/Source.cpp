@@ -46,11 +46,11 @@ void resuelveCasoLetras() {
 
 	Trie arbolPrefijos;
 	string palabra;//IMPORTANTE HACER IGNORE CASE AQUI O EN LA CLASE TRIE?
-	for (int i = 0; i < numPalabras; ++i) {
+	for (int i = 0; i < numPalabras; ++i) {//podriamos ignorar las palabras de mas de 10 letras 
 		cin >> palabra;
 		arbolPrefijos.insert(palabra);
 	}
-
+	
 }
 
 

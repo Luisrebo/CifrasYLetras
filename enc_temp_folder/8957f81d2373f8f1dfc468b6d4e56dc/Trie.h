@@ -97,7 +97,7 @@ protected:
 	//nodo ya es el nodo que representa el ultimo caracter de la cadena que existe en el trie (devuelto por busqueda)
 	void inserta(string const& palabra, Link& nodo) {
 		//si la raiz es null
-		if (nodo == nullptr) { //deberia trabajar con node en todo el cuerpo? como lo
+		if (nodo == nullptr) { 
 			raiz = new TreeNode(' ', 0); //la raiz es null entonces la altura es 0 y metemos el caracter vacio
 			++nelems;
 			
