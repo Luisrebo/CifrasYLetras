@@ -59,16 +59,19 @@ public:
 protected:
 	void imprimirSolucion(TrieQuery const& problema) {
 		if (problema.mejorSolucion.longitud > 0)
-			cout << "SOLUCION PARA LAS LETRAS: ";
+			cout << "SOLUCION PARA LAS LETRAS ( ";
 		else
 			cout << "NO HAY SOLUCION PARA LAS LETRAS: ";
 
 		for (char c : problema.letrasDisponibles)
-		cout << c << "  ";
+		cout << c << " ";
 
+		cout <<')'<< '\n';
+
+		cout << "Longitud:" << problema.mejorSolucion.longitud<<"  ->  ";
 		for (int i = 0; i < problema.mejorSolucion.longitud; ++i)
 			cout << problema.mejorSolucion.palabraSolucion[i];
-		cout << '\n';
+		cout << '\n' << '\n';
 	}
 	//exploramos recursivamente los nodos descendentes de node y en cada nodo tratamos las posibles soluciones que generen sus hijos
 	void explorar(Link& node, TrieQuery &problema, Solucion &solParcial) {//struct Solucion definida en TrieQuery
