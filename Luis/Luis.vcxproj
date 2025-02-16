@@ -135,6 +135,9 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="diccionario.txt" />
+    <Text Include="inCifras.txt" />
+    <Text Include="inPalabras.txt" />
     <Text Include="Texto.txt" />
     <Text Include="Texto2.txt" />
   </ItemGroup>
