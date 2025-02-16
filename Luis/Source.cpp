@@ -34,7 +34,7 @@ void resuelveCaso(string mode) {
 	for (int i = 0; i < CIFRAS_INICIALES; ++i)
 		cin >> numerosCandidatos[i];
 
-	auto search = Factory::create(mode,numObjetivo,numerosCandidatos);
+	auto search = Factory::create(mode, numObjetivo, numerosCandidatos);
 
 	search->busqueda();
 
@@ -50,7 +50,20 @@ void resuelveCasoLetras() {
 		cin >> palabra;
 		arbolPrefijos.insert(palabra);
 	}
+
+	//caso para resolver;
 	
+	string letrasCasoi;
+	int numProblemas;
+	cin >> numProblemas;
+
+	for (int i = 0; i < numProblemas; ++i) {
+		cin >> letrasCasoi;
+
+		arbolPrefijos.solve(letrasCasoi);
+	}
+		
+
 }
 
 
@@ -70,12 +83,12 @@ int main(int argc, char* argv[]) {
 	string nombreArchivo = argv[1];
 
 	// Abrimos el archivo
-		ifstream archivoEntrada(nombreArchivo);
+	ifstream archivoEntrada(nombreArchivo);
 	if (!archivoEntrada) {
 		cerr << "Error: No se pudo abrir el archivo " << nombreArchivo << endl;
 		return 1;
 	}
-	
+
 	// Redirigir la entrada estándar desde el archivo
 	auto cinbuf = cin.rdbuf(archivoEntrada.rdbuf());
 	/*

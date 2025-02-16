@@ -48,14 +48,28 @@ public:
 	}
 
 	//resolver un caso, dada una cadena de letras
-	string solve(string const& letras){
+	void solve(string const& letras){
 		TrieQuery problema(letras);
 		Solucion solParcial;
 
 		//exploramos el trie buscando palabras que contengan las letras de la cadena recibida
 		explorar(raiz,problema, solParcial);
+		imprimirSolucion(problema);
 	}
 protected:
+	void imprimirSolucion(TrieQuery const& problema) {
+		if (problema.mejorSolucion.longitud > 0)
+			cout << "SOLUCION PARA LAS LETRAS: ";
+		else
+			cout << "NO HAY SOLUCION PARA LAS LETRAS: ";
+
+		for (char c : problema.letrasDisponibles)
+		cout << c << "  ";
+
+		for (int i = 0; i < problema.mejorSolucion.longitud; ++i)
+			cout << problema.mejorSolucion.palabraSolucion[i];
+		cout << '\n';
+	}
 	//exploramos recursivamente los nodos descendentes de node y en cada nodo tratamos las posibles soluciones que generen sus hijos
 	void explorar(Link& node, TrieQuery &problema, Solucion &solParcial) {//struct Solucion definida en TrieQuery
 
@@ -66,7 +80,7 @@ protected:
 			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(ParnodoHijo.first);
 
 			//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
-			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second>0/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/) {
+			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second>0 /* && problema.mejorSolucion.longitud< ParnodoHijo.second->altura + ParnodoHijo.second->profundidad - 1*/) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
 
 				//Marcadores
 				//actualizamos solucion parcial y comprobamos si es solucion total
