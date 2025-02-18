@@ -48,6 +48,22 @@ class TrieQuery {
 		}
 
 	}
+	void imprimirSolucion(TrieQuery const& problema) {
+		if (problema.mejorSolucion.longitud > 0)
+			cout << "SOLUCION PARA LAS LETRAS ( ";
+		else
+			cout << "NO HAY SOLUCION PARA LAS LETRAS: ";
+
+		for (char c : problema.letrasDisponibles)
+			cout << c << " ";
+
+		cout << ')' << '\n';
+
+		cout << "Longitud:" << problema.mejorSolucion.longitud << "  ->  ";
+		for (int i = 0; i < problema.mejorSolucion.longitud; ++i)
+			cout << problema.mejorSolucion.palabraSolucion[i];
+		cout << '\n' << '\n';
+	}
 protected:
 };
 #endif
