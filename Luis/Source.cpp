@@ -47,6 +47,7 @@ void loadDiccionario(Trie& trie, istream& archivo) {
 		trie.insert(palabra);
 }
 void resuelveCasoLetras(Trie& trie, istream& archivo) {
+	cout << "Resolviendo con poda" << '\n';
 	string letrasCasoi;
 	int numProblemas;
 	archivo >> numProblemas;
