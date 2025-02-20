@@ -32,7 +32,7 @@ protected:
 			bool operator()(Link const l1, Link const l2) const {
 				if (l1->profundidad == l2->profundidad)
 					return l1 < l2; // por que es necesario el deempate?
-				return l1->profundidad > l2->profundidad;
+				return l1->profundidad> l2->profundidad;
 			}
 		};
 	
