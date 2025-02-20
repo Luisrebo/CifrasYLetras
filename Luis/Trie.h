@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <queue>
+#include <set>
 
 #include "TrieQuery.h"
 using namespace std;
@@ -19,14 +20,23 @@ protected:
 		char elem;
 		map<char, Link> hijos;// Mejor char que String, mapa de maximo de 27 caracteres (letras del abecedario)
 
-		struct deepComparator {
+		/*struct deepComparator {
 			// Compara por profundidad primero los mas profundos(mas prometedor)
 			bool operator()(const Link& l1, Link& l2) const {
 				return l1->profundidad < l2->profundidad;
 			}
 		};
 
-		priority_queue<Link, vector<Link>, deepComparator> hijosPorProfundidad;
+		priority_queue<Link, vector<Link>, deepComparator> hijosPorProfundidad;*/
+		struct deepComparator {
+			bool operator()(Link const l1, Link const l2) const {
+				if (l1->profundidad == l2->profundidad)
+					return l1 < l2; // por que es necesario el deempate?
+				return l1->profundidad > l2->profundidad;
+			}
+		};
+	
+		set<Link, deepComparator> hijosPorProfundidadSet;
 
 		int altura;//altura del nodo respeccto a la raiz
 		bool terminal;//flag para ver si es palabra de nuestro abcedario
@@ -165,8 +175,8 @@ protected:
 			//Creamos un nuevo hijo a partir del padre que represente el primer caracter de la cadena que falte
 			Link nuevoHijo = new TreeNode(palabra[nodo->altura], nodo->altura + 1, 0);
 			nodo->hijos.insert(std::make_pair(palabra[nodo->altura], nuevoHijo));//palabra[nodo->altura]=nuevoHijo->elem;
-			//añadimos tamb el nuevo hijo a la cola de prioridad para cuando exploremos soluciones tengamos en cuenta los nodos mas prometedores anttes
-			nodo->hijosPorProfundidad.push(nuevoHijo);
+			//añadimos tamb el nuevo hijo al set de prioridad para cuando exploremos soluciones tengamos en cuenta los nodos mas prometedores anttes
+			nodo->hijosPorProfundidadSet.insert(nuevoHijo);
 
 			//seguimos insertando nodos y a la vuelta de la recursiva vamos actualizando las profundidades
 			nodo->profundidad = max(inserta(palabra, nuevoHijo) + 1, nodo->profundidad);// si en el nodo actual yo ya tenia un hijo mas profundo que el que acabo de expandir
@@ -211,33 +221,28 @@ protected:
 	}
 	/*Explorar con cola de prioridad en los nodos para explorar por profundidad y tratar de encontrar soluciones mas rapido*/
 	void explorarRapido(Link& node, TrieQuery& problema, Solucion& solParcial) {
-		//exploramos recursivamente los nodos descendentes de node y en cada nodo tratamos las posibles soluciones que generen sus hijos
 
-		//hacemos esto para no dejar inutilizable el arbol en la primera busqueda:
-		auto colaPrioridad = node->hijosPorProfundidad;
-		while (!colaPrioridad.empty()) {
-
-			auto nodoHijo = colaPrioridad.top();
-			colaPrioridad.pop();
+		//recorremos los diferentes hijos del nodo actual
+		for (auto ParnodoHijo : node->hijosPorProfundidadSet) {
 
 			//consultamos si el hijo que estamos recorriendo tiene un caracter valido y quedan letras de ese caracter sin usar
-			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(nodoHijo->elem);
+			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(ParnodoHijo->elem);
 
 			//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
-			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 /* && problema.mejorSolucion.longitud< ParnodoHijo.second->altura + ParnodoHijo.second->profundidad - 1*/) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
+			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 && problema.mejorSolucion.longitud < (ParnodoHijo->altura + ParnodoHijo->profundidad)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
 
 				//Marcadores
 				//actualizamos solucion parcial y comprobamos si es solucion total
-				solParcial.palabraSolucion[node->altura] = nodoHijo->elem;
+				solParcial.palabraSolucion[node->altura] = ParnodoHijo->elem;
 				solParcial.longitud = node->altura + 1;
 				ParLetraCantidadDisponibles->second -= 1; //restamos uno a la cantidad de letras disponible con este  caracter 
 
 				//si el nodo hijo forma una palabra de nuestro abecedeario (ya sabemos que su letra esta disponible)
 				//y si es de mayor longitud que la mejor palabra que habiamos encontrado
-				if (nodoHijo->terminal == true && nodoHijo->altura > problema.mejorSolucion.longitud)
+				if (ParnodoHijo->terminal == true && ParnodoHijo->altura > problema.mejorSolucion.longitud)
 					problema.mejorSolucion = solParcial;//hacemos una copia de los datos para actualizar la mejor sol
 
-				explorar(nodoHijo, problema, solParcial);
+				explorarRapido(ParnodoHijo, problema, solParcial);
 
 				//desmarcamos
 				//solParcial.palabraSolucion[node->altura] = '0/';//aporta algo?
@@ -248,7 +253,7 @@ protected:
 			}
 		}
 		return;
-
+	
 	}
 
 public:
