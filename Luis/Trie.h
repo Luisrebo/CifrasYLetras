@@ -20,7 +20,7 @@ protected:
 		char elem;
 		map<char, Link> hijos;// Mejor char que String, mapa de maximo de 27 caracteres (letras del abecedario)
 
-		/*struct deepComparator {
+		/* struct deepComparator {
 			// Compara por profundidad primero los mas profundos(mas prometedor)
 			bool operator()(const Link& l1, Link& l2) const {
 				return l1->profundidad < l2->profundidad;
