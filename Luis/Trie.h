@@ -30,19 +30,19 @@ protected:
 		priority_queue<Link, vector<Link>, deepComparator> hijosPorProfundidad;*/
 		struct deepComparator {
 			bool operator()(Link const l1, Link const l2) const {
-				if (l1->profundidad == l2->profundidad)
+				if (l1->altura == l2->altura)
 					return l1 < l2; // por que es necesario el deempate?
-				return l1->profundidad> l2->profundidad;
+				return l1->altura> l2->altura;
 			}
 		};
 	
 		set<Link, deepComparator> hijosPorProfundidadSet;
 
-		int altura;//altura del nodo respeccto a la raiz
+		int nivel;//distancia en nodos del nodo actual respeccto a la raiz
 		bool terminal;//flag para ver si es palabra de nuestro abcedario
-		int profundidad;//lo usaremos para podar
+		int altura;//dist maxima hasta su hoja mas alejada,lo usaremos para podar
 
-		TreeNode(char const& e, int alt, int deep) : elem(e), altura(alt), terminal(false), hijos(), profundidad(deep) {}
+		TreeNode(char const& e, int alt, int deep) : elem(e), nivel(alt), terminal(false), hijos(), altura(deep) {}
 	};
 	// puntero a la raíz de la estructura jerárquica de nodos
 	Link raiz;
@@ -107,7 +107,7 @@ public:
 		//de aquel ultimo nodo comun que enviamos
 		// 
 		//int profundidadNodoHijoAnterior = nodoObjetivo->profundidad;
-		int profundidadNodoHijoAnterior = nodosAAumentarProfundidad[nodosAAumentarProfundidad.size() - 1]->profundidad;
+		int profundidadNodoHijoAnterior = nodosAAumentarProfundidad[nodosAAumentarProfundidad.size() - 1]->altura;
 		//en cuanto un nodo no actualice su profundidad ninguno de sus progenitores debera hacerlo
 		bool dejarDeActualizarProfundidad = false;
 		int i = nodosAAumentarProfundidad.size() - 2;//nos saltamos el ultimo que fue actualizado en inserta(nodoObjetivo) ultimo nodo comun en el trie
@@ -118,15 +118,15 @@ public:
 			//si el nodo ya tiene mas profundidad que el hijo actualizado +1 (hijo+el mismo) no habra que seguir
 			//actualizando antecesores porque ya lo estaran ya que esta profundidad la tenia por otra ramificacion
 			//distinta a la creada por la palabra que acabamos de insertar
-			if (NodoAntecesorAActualizarProfundidad->profundidad >= profundidadNodoHijoAnterior + 1)
+			if (NodoAntecesorAActualizarProfundidad->altura >= profundidadNodoHijoAnterior + 1)
 				dejarDeActualizarProfundidad = true;
 
 			//si es la nueva palabra la que ha generado la mayor profundidad act el nudo progenitor
 			else
-				NodoAntecesorAActualizarProfundidad->profundidad = profundidadNodoHijoAnterior + 1;
+				NodoAntecesorAActualizarProfundidad->altura = profundidadNodoHijoAnterior + 1;
 
 			i--;
-			profundidadNodoHijoAnterior = NodoAntecesorAActualizarProfundidad->profundidad;
+			profundidadNodoHijoAnterior = NodoAntecesorAActualizarProfundidad->altura;
 		}
 	}
 protected:
@@ -140,13 +140,13 @@ protected:
 			return raiz;
 		}
 		else {
-			if (palabraBuscada.length() < nodo->altura)//si la altura es mayor que la longitud de la palabra es porque hemos encontrado la cadena que buscabamos ya que sino habriamos acabado antes
+			if (palabraBuscada.length() < nodo->nivel)//si la altura es mayor que la longitud de la palabra es porque hemos encontrado la cadena que buscabamos ya que sino habriamos acabado antes
 				return nodo;
 
 			//clave valor del map de hijos con el caracter de la palabra en la posicion altura o a->hijos.end() si no existe
 			//Para un nodo con altura nodo->altura el nodo que representa el caracter que buscamos sera: palabrabuscada[a->altura] 
 			// ya que la raiz tiene altura 0 y no representa ningun caracter, para los hijos de la raiz buscaremos el caracter palabraBuscada[0]
-			auto ClaveValorNodoHijo = nodo->hijos.find(palabraBuscada[nodo->altura]);
+			auto ClaveValorNodoHijo = nodo->hijos.find(palabraBuscada[nodo->nivel]);
 
 			//si el nodo no tiene ningun hijo con el caracter que buscamos
 			if (ClaveValorNodoHijo == nodo->hijos.end())
@@ -167,20 +167,20 @@ protected:
 		// o si la cadena ya estaba insertada pendiente de actualizar el flag "terminal"
 		//devolvemos la profundidad que sera 0 si acabamos de insertar un nuevo elemento o palabra.size si la palabra era
 		//un subconjunto de una palabra ya existente en el trie
-		if (nodo->altura == palabra.size()) {
+		if (nodo->nivel == palabra.size()) {
 			nodo->terminal = true;
-			return nodo->profundidad;
+			return nodo->altura;
 		}
 		else {
 			//Creamos un nuevo hijo a partir del padre que represente el primer caracter de la cadena que falte
-			Link nuevoHijo = new TreeNode(palabra[nodo->altura], nodo->altura + 1, 0);
-			nodo->hijos.insert(std::make_pair(palabra[nodo->altura], nuevoHijo));//palabra[nodo->altura]=nuevoHijo->elem;
+			Link nuevoHijo = new TreeNode(palabra[nodo->nivel], nodo->nivel + 1, 0);
+			nodo->hijos.insert(std::make_pair(palabra[nodo->nivel], nuevoHijo));//palabra[nodo->altura]=nuevoHijo->elem;
 			//añadimos tamb el nuevo hijo al set de prioridad para cuando exploremos soluciones tengamos en cuenta los nodos mas prometedores anttes
 			nodo->hijosPorProfundidadSet.insert(nuevoHijo);
 
 			//seguimos insertando nodos y a la vuelta de la recursiva vamos actualizando las profundidades
-			nodo->profundidad = max(inserta(palabra, nuevoHijo) + 1, nodo->profundidad);// si en el nodo actual yo ya tenia un hijo mas profundo que el que acabo de expandir
-			return nodo->profundidad; //esto no es un poco raro? devolvemos true porque crece el arbol
+			nodo->altura = max(inserta(palabra, nuevoHijo) + 1, nodo->altura);// si en el nodo actual yo ya tenia un hijo mas profundo que el que acabo de expandir
+			return nodo->altura; //esto no es un poco raro? devolvemos true porque crece el arbol
 		}
 	}
 	
@@ -194,24 +194,24 @@ protected:
 			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(ParnodoHijo.first);
 
 			//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
-			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 && problema.mejorSolucion.longitud < (ParnodoHijo.second->altura + ParnodoHijo.second->profundidad)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
+			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 && problema.mejorSolucion.longitud < (ParnodoHijo.second->nivel + ParnodoHijo.second->altura)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
 
 				//Marcadores
 				//actualizamos solucion parcial y comprobamos si es solucion total
-				solParcial.palabraSolucion[node->altura] = ParnodoHijo.second->elem;
-				solParcial.longitud = node->altura + 1;
+				solParcial.palabraSolucion[node->nivel] = ParnodoHijo.second->elem;
+				solParcial.longitud = node->nivel + 1;
 				ParLetraCantidadDisponibles->second -= 1; //restamos uno a la cantidad de letras disponible con este  caracter 
 
 				//si el nodo hijo forma una palabra de nuestro abecedeario (ya sabemos que su letra esta disponible)
 				//y si es de mayor longitud que la mejor palabra que habiamos encontrado
-				if (ParnodoHijo.second->terminal == true && ParnodoHijo.second->altura > problema.mejorSolucion.longitud)
+				if (ParnodoHijo.second->terminal == true && ParnodoHijo.second->nivel > problema.mejorSolucion.longitud)
 					problema.mejorSolucion = solParcial;//hacemos una copia de los datos para actualizar la mejor sol
 
 				explorar(ParnodoHijo.second, problema, solParcial);
 
 				//desmarcamos
 				//solParcial.palabraSolucion[node->altura] = '0/';//aporta algo?
-				solParcial.longitud = node->altura;
+				solParcial.longitud = node->nivel;
 				ParLetraCantidadDisponibles->second += 1; //sumamos uno a la cantidad de letras disponible con este  caracter 
 
 
@@ -229,24 +229,24 @@ protected:
 			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(ParnodoHijo->elem);
 
 			//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
-			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 && problema.mejorSolucion.longitud < (ParnodoHijo->altura + ParnodoHijo->profundidad)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
+			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 && problema.mejorSolucion.longitud < (ParnodoHijo->nivel + ParnodoHijo->altura)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
 
 				//Marcadores
 				//actualizamos solucion parcial y comprobamos si es solucion total
-				solParcial.palabraSolucion[node->altura] = ParnodoHijo->elem;
-				solParcial.longitud = node->altura + 1;
+				solParcial.palabraSolucion[node->nivel] = ParnodoHijo->elem;
+				solParcial.longitud = node->nivel + 1;
 				ParLetraCantidadDisponibles->second -= 1; //restamos uno a la cantidad de letras disponible con este  caracter 
 
 				//si el nodo hijo forma una palabra de nuestro abecedeario (ya sabemos que su letra esta disponible)
 				//y si es de mayor longitud que la mejor palabra que habiamos encontrado
-				if (ParnodoHijo->terminal == true && ParnodoHijo->altura > problema.mejorSolucion.longitud)
+				if (ParnodoHijo->terminal == true && ParnodoHijo->nivel > problema.mejorSolucion.longitud)
 					problema.mejorSolucion = solParcial;//hacemos una copia de los datos para actualizar la mejor sol
 
 				explorarRapido(ParnodoHijo, problema, solParcial);
 
 				//desmarcamos
 				//solParcial.palabraSolucion[node->altura] = '0/';//aporta algo?
-				solParcial.longitud = node->altura;
+				solParcial.longitud = node->nivel;
 				ParLetraCantidadDisponibles->second += 1; //sumamos uno a la cantidad de letras disponible con este  caracter 
 
 
@@ -270,7 +270,7 @@ public:
 	//Verificamos si una palabra esta representada en el nodo
 	//Importamte cotejar terminal puede estar representado su cadena al ser sub cadena de una ya insertada(solo-sol)
 	bool existe(string const& palabra, Link const& nodo) {
-		return nodo != nullptr && nodo->altura == palabra.size() && nodo->terminal == true;
+		return nodo != nullptr && nodo->nivel == palabra.size() && nodo->terminal == true;
 	}
 
 
