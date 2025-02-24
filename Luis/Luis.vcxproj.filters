@@ -48,6 +48,9 @@
     <Text Include="inPalabras.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
+    <Text Include="diccionario_todas_sin_tildes.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DFS.h">

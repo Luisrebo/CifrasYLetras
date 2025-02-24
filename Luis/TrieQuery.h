@@ -25,26 +25,21 @@ class TrieQuery {
 	//mejor solucion encontrada para el problema
 	Solucion mejorSolucion;
 	//mapa con las letras de las que disponibles y la cantidad de ellas que podemos usar (por si tengo varias letras iguales: ¿multiplicidad?)
-	map<char, short int> mapaLetrasDisponibles;
-	//Trie sobre el cual buscaremos se lo mandamso como parametro? creo que no tiene sentido que lo use al incluir alguna clase?
-	//Trie trie;
-	//es redundante
+	//map<char, short int> mapaLetrasDisponibles;
+	//array con las letras de las que disponibles y la cantidad de ellas que podemos usar (por si tengo varias letras iguales:
+	array< int, 29> letrasDisponibleslist; 
 	string letrasDisponibles;
 
 
-	TrieQuery(string const&cadena):letrasDisponibles(cadena){
+	TrieQuery(string const& cadena) :letrasDisponibles(cadena), letrasDisponibleslist{} {
 
 		//Preparamos el mapa con las letras de las cuales disponemos
 		for (char c : letrasDisponibles) {
 
-			auto pairLetraCantidad = mapaLetrasDisponibles.find(c);
+			//aumntamos en +1 la cantidad de letras de ese tipo que podemos utilizar
+			//estando la a en la pos 0 ('a'-'a'=0), la b en la 1 etc
+			letrasDisponibleslist[c - 'a'] += 1;
 
-			//si no existe la letra la insertamos con cantidad 1
-			if (pairLetraCantidad == mapaLetrasDisponibles.end())
-				mapaLetrasDisponibles.insert(std::make_pair(c, 1));
-
-			//si ya existia la letra aumentamos la cantidad de veces que podemos usarlaal construir una palabra
-			else pairLetraCantidad->second += 1;
 		}
 
 	}

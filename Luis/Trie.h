@@ -18,7 +18,7 @@ protected:
 	using Link = TreeNode*;
 	struct TreeNode {
 		char elem;
-		map<char, Link> hijos;// Mejor char que String, mapa de maximo de 27 caracteres (letras del abecedario)
+		array<Link, 29> hijos;//cambiamos el mapa por un array de 25 elementos (uno por letra)
 		int nivel;//distancia en nodos del nodo actual respeccto a la raiz
 		bool terminal;//flag para ver si es palabra de nuestro abecedario
 		int altura;//dist maxima hasta su hoja mas alejada,lo usaremos para podar
@@ -43,18 +43,18 @@ protected:
 		};
 		set<Link, ReachableWordComparator> hijosPorPalabrasAlcanzablesSet;
 
-		TreeNode(char const& e, int lv) : elem(e), nivel(lv), terminal(false), hijos(), altura(0), numPalabrasAlcanzables(0){}
+		TreeNode(char const& e, int lv) : elem(e), nivel(lv), terminal(false), hijos{}, altura(0), numPalabrasAlcanzables(0) {}
 	};
 	// puntero a la raíz de la estructura jerárquica de nodos
 	Link raiz;
 	// número de elementos (cardinal del conjunto)
 	int nelems;
-
+	int depurar;
 
 public:
 
 	// constructor (conjunto vacío)
-	Trie() : raiz(nullptr), nelems(0) {}
+	Trie() : raiz(nullptr), nelems(0),depurar(0) {}
 
 	~Trie() {
 		libera(raiz);
@@ -66,10 +66,11 @@ public:
 		Solucion solParcial;
 
 		//exploramos el trie buscando palabras que contengan las letras de la cadena recibida
-		//explorar(raiz, problema, solParcial);
+		explorar(raiz, problema, solParcial);
 		//explorarRapido(raiz, problema, solParcial);
-		explorarRapidoPorPalabras(raiz, problema, solParcial);
+		//explorarRapidoPorPalabras(raiz, problema, solParcial);
 		problema.imprimirSolucion(problema);
+		
 	}
 	
 	void insert(string const& palabra) {
@@ -99,7 +100,8 @@ public:
 
 	}
 	
-protected://Actualizamos con +1 las palabras alcanzables desde los nodos por los cuales transitamos al insertar una nueva palabra
+protected:
+	//Actualizamos con +1 las palabras alcanzables desde los nodos por los cuales transitamos al insertar una nueva palabra
 	void actualizarPalabrasAlcanzables(vector<Link>& nodosVisitadosAlInsertar) {
 		for (auto link : nodosVisitadosAlInsertar)
 			link->numPalabrasAlcanzables += 1;
@@ -149,21 +151,23 @@ protected://Actualizamos con +1 las palabras alcanzables desde los nodos por los
 			return raiz;
 		}
 		else {
-			if (palabraBuscada.length() < nodo->nivel)//si la altura es mayor que la longitud de la palabra es porque hemos encontrado la cadena que buscabamos ya que sino habriamos acabado antes
+			if (palabraBuscada.size() == nodo->nivel)//si la altura es mayor que la longitud de la palabra es porque hemos encontrado la cadena que buscabamos ya que sino habriamos acabado antes
 				return nodo;
 
-			//clave valor del map de hijos con el caracter de la palabra en la posicion altura o a->hijos.end() si no existe
-			//Para un nodo con altura nodo->altura el nodo que representa el caracter que buscamos sera: palabrabuscada[a->altura] 
-			// ya que la raiz tiene altura 0 y no representa ningun caracter, para los hijos de la raiz buscaremos el caracter palabraBuscada[0]
-			auto ClaveValorNodoHijo = nodo->hijos.find(palabraBuscada[nodo->nivel]);
+			//cout << palabraBuscada << endl;
+			//vamos a ver si el nodo actual tiene un hijo que represente la siguiente letra de la palabra, para ellos vamos a ver si tiene un
+			//Link no nulo en la posicion de su array de hijos que corresponda segun el codigo ascii del caracter de la letra que buscamos 
+			//representando a la a en la pos 0 y a la z en la 25 (la ñ en la pos 26 que corresponde con ('{' - 'a')
+			Link NodoHijo = nodo->hijos[MappingCharToPosition(palabraBuscada[nodo->nivel])];
+			
 
-			//si el nodo no tiene ningun hijo con el caracter que buscamos
-			if (ClaveValorNodoHijo == nodo->hijos.end())
+			//si el nodo no tiene ningun hijo con el caracter que buscamos, su posicion del array esta vacia
+			if (NodoHijo ==nullptr)
 				return nodo;//devolvemos el nodo a partir del cual difieren las palabras del trie con la insertada osea el ultimo nodo comun
 
 			else {
 				nodosAAumentarProfundidad.push_back(nodo);
-				return search(palabraBuscada, ClaveValorNodoHijo->second, nodosAAumentarProfundidad);//seguimos explorando por el hijo que coincida con el caracter }
+				return search(palabraBuscada, NodoHijo, nodosAAumentarProfundidad);//seguimos explorando por el hijo que coincida con el caracter 
 
 			}
 		}
@@ -183,11 +187,13 @@ protected://Actualizamos con +1 las palabras alcanzables desde los nodos por los
 		else {
 			//Creamos un nuevo hijo a partir del padre que represente el primer caracter de la cadena que falte
 			Link nuevoHijo = new TreeNode(palabra[nodo->nivel], nodo->nivel + 1);
-			nodo->hijos.insert(std::make_pair(palabra[nodo->nivel], nuevoHijo));//palabra[nodo->altura]=nuevoHijo->elem;
+			//añadimos al array de hijos, en la posicion que corresponda segun su ascii al nuevo hijo
+			nodo->hijos[MappingCharToPosition(palabra[nodo->nivel])]= nuevoHijo;
+			//palabra[nodo->altura]=nuevoHijo->elem;
 			//añadimos tamb el nuevo hijo al set de prioridad para cuando exploremos soluciones tengamos en cuenta los nodos mas prometedores anttes
-			nodo->hijosPorAlturaSet.insert(nuevoHijo);
+			//nodo->hijosPorAlturaSet.insert(nuevoHijo);
 			//añadimos al set que prioriza los nodos por su numero de palabras
-			nodo->hijosPorPalabrasAlcanzablesSet.insert(nuevoHijo);
+			//nodo->hijosPorPalabrasAlcanzablesSet.insert(nuevoHijo);
 
 			//seguimos insertando nodos y a la vuelta de la recursiva vamos actualizando las profundidades
 			nodo->altura = max(inserta(palabra, nuevoHijo) + 1, nodo->altura);// si en el nodo actual yo ya tenia un hijo mas profundo que el que acabo de expandir
@@ -201,116 +207,54 @@ protected://Actualizamos con +1 las palabras alcanzables desde los nodos por los
 	void explorar(Link& node, TrieQuery& problema, Solucion& solParcial) {//struct Solucion definida en TrieQuery
 
 		//recorremos los diferentes hijos del nodo actual
-		for (auto ParnodoHijo : node->hijos) {
+		for ( Link nodoHijo : node->hijos) {
 
-			//consultamos si el hijo que estamos recorriendo tiene un caracter valido y quedan letras de ese caracter sin usar
-			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(ParnodoHijo.first);
+			if (nodoHijo != nullptr) {
+				//consultamos si el hijo que estamos recorriendo tiene un caracter valido y quedan letras de ese caracter sin usar
+				//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
+				if (problema.letrasDisponibleslist[MappingCharToPosition(nodoHijo->elem)] > 0 && problema.mejorSolucion.longitud < (nodoHijo->nivel + nodoHijo->altura)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
 
-			//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
-			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 && problema.mejorSolucion.longitud < (ParnodoHijo.second->nivel + ParnodoHijo.second->altura)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
+					//Marcadores
+					//actualizamos solucion parcial y comprobamos si es solucion total
+					solParcial.palabraSolucion[node->nivel] = nodoHijo->elem;
+					solParcial.longitud = node->nivel + 1;
+					problema.letrasDisponibleslist[MappingCharToPosition(nodoHijo->elem)] -= 1; //restamos uno a la cantidad de letras disponible con este  caracter 
 
-				//Marcadores
-				//actualizamos solucion parcial y comprobamos si es solucion total
-				solParcial.palabraSolucion[node->nivel] = ParnodoHijo.second->elem;
-				solParcial.longitud = node->nivel + 1;
-				ParLetraCantidadDisponibles->second -= 1; //restamos uno a la cantidad de letras disponible con este  caracter 
+					//si el nodo hijo forma una palabra de nuestro abecedeario (ya sabemos que su letra esta disponible)
+					//y si es de mayor longitud que la mejor palabra que habiamos encontrado
+					if (nodoHijo->terminal == true && nodoHijo->nivel > problema.mejorSolucion.longitud)
+						problema.mejorSolucion = solParcial;//hacemos una copia de los datos para actualizar la mejor sol
 
-				//si el nodo hijo forma una palabra de nuestro abecedeario (ya sabemos que su letra esta disponible)
-				//y si es de mayor longitud que la mejor palabra que habiamos encontrado
-				if (ParnodoHijo.second->terminal == true && ParnodoHijo.second->nivel > problema.mejorSolucion.longitud)
-					problema.mejorSolucion = solParcial;//hacemos una copia de los datos para actualizar la mejor sol
+					explorar(nodoHijo, problema, solParcial);
 
-				explorar(ParnodoHijo.second, problema, solParcial);
-
-				//desmarcamos
-				//solParcial.palabraSolucion[node->altura] = '0/';//aporta algo?
-				solParcial.longitud = node->nivel;
-				ParLetraCantidadDisponibles->second += 1; //sumamos uno a la cantidad de letras disponible con este  caracter 
+					//desmarcamos
+					//solParcial.palabraSolucion[node->altura] = '0/';//aporta algo?
+					solParcial.longitud = node->nivel;
+					problema.letrasDisponibleslist[MappingCharToPosition(nodoHijo->elem)] += 1; //sumamos uno a la cantidad de letras disponible con este  caracter 
 
 
+				}
 			}
 		}
 		return;
 	}
-	/*Explorar primero los nodos  por altura y tratar de encontrar soluciones mas rapido*/
-	void explorarRapido(Link& node, TrieQuery& problema, Solucion& solParcial) {
-
-		//recorremos los diferentes hijos del nodo actual
-		for (auto ParnodoHijo : node->hijosPorAlturaSet) {
-
-			//consultamos si el hijo que estamos recorriendo tiene un caracter valido y quedan letras de ese caracter sin usar
-			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(ParnodoHijo->elem);
-
-			//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
-			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 && problema.mejorSolucion.longitud < (ParnodoHijo->nivel + ParnodoHijo->altura)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
-
-				//Marcadores
-				//actualizamos solucion parcial y comprobamos si es solucion total
-				solParcial.palabraSolucion[node->nivel] = ParnodoHijo->elem;
-				solParcial.longitud = node->nivel + 1;
-				ParLetraCantidadDisponibles->second -= 1; //restamos uno a la cantidad de letras disponible con este  caracter 
-
-				//si el nodo hijo forma una palabra de nuestro abecedeario (ya sabemos que su letra esta disponible)
-				//y si es de mayor longitud que la mejor palabra que habiamos encontrado
-				if (ParnodoHijo->terminal == true && ParnodoHijo->nivel > problema.mejorSolucion.longitud)
-					problema.mejorSolucion = solParcial;//hacemos una copia de los datos para actualizar la mejor sol
-
-				explorarRapido(ParnodoHijo, problema, solParcial);
-
-				//desmarcamos
-				//solParcial.palabraSolucion[node->altura] = '0/';//aporta algo?
-				solParcial.longitud = node->nivel;
-				ParLetraCantidadDisponibles->second += 1; //sumamos uno a la cantidad de letras disponible con este  caracter 
-
-
-			}
-		}
-		return;
 	
-	}
-	/*Explorar primero los nodos  por altura y tratar de encontrar soluciones mas rapido*/
-	void explorarRapidoPorPalabras(Link& node, TrieQuery& problema, Solucion& solParcial) {
-
-		//recorremos los diferentes hijos del nodo actual
-		for (auto ParnodoHijo : node->hijosPorPalabrasAlcanzablesSet) {
-
-			//consultamos si el hijo que estamos recorriendo tiene un caracter valido y quedan letras de ese caracter sin usar
-			auto ParLetraCantidadDisponibles = problema.mapaLetrasDisponibles.find(ParnodoHijo->elem);
-
-			//si la letra del nodo hijo que estamos explorando la tenemos en las letras de la prueba y no hemos usado todas las que tenimos y puede haber una sol mejor
-			if (ParLetraCantidadDisponibles != problema.mapaLetrasDisponibles.end() && ParLetraCantidadDisponibles->second > 0 && problema.mejorSolucion.longitud < (ParnodoHijo->nivel + ParnodoHijo->altura)) {/*Posible poda:&& problema.solMejor->longitud<node.niel+node.profundidad*/
-
-				//Marcadores
-				//actualizamos solucion parcial y comprobamos si es solucion total
-				solParcial.palabraSolucion[node->nivel] = ParnodoHijo->elem;
-				solParcial.longitud = node->nivel + 1;
-				ParLetraCantidadDisponibles->second -= 1; //restamos uno a la cantidad de letras disponible con este  caracter 
-
-				//si el nodo hijo forma una palabra de nuestro abecedeario (ya sabemos que su letra esta disponible)
-				//y si es de mayor longitud que la mejor palabra que habiamos encontrado
-				if (ParnodoHijo->terminal == true && ParnodoHijo->nivel > problema.mejorSolucion.longitud)
-					problema.mejorSolucion = solParcial;//hacemos una copia de los datos para actualizar la mejor sol
-
-				explorarRapidoPorPalabras(ParnodoHijo, problema, solParcial);
-
-				//desmarcamos
-				//solParcial.palabraSolucion[node->altura] = '0/';//aporta algo?
-				solParcial.longitud = node->nivel;
-				ParLetraCantidadDisponibles->second += 1; //sumamos uno a la cantidad de letras disponible con este  caracter 
-
-
-			}
-		}
-		return;
-
+	//en codigo ASCII las letras van de 97(a) - 122(z) 
+	//en el diccionario vamos a usar el caracter 123({) para representar a la ñ
+	//de esta manera vamos a remplazar el map por un arrray de 25 posiciones indexado por el codig ascii de la letra -'a'
+	//asignando la pos 0 a la letra a: 'a'-'a'=0 'b'-'a'=1... 
+	int MappingCharToPosition(char c){
+		if (c == '-')return 27;
+		
+		return c - 'a';
 	}
 
 public:
 	static void libera(Link a) {
 		if (a != nullptr) {
 
-			for (const auto& par : a->hijos)
-				libera(par.second);
+			for (const Link& nodo : a->hijos)
+				libera(nodo);
 
 			delete a;
 		}
