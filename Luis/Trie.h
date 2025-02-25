@@ -71,14 +71,12 @@ public:
 		//explorarRapidoPorPalabras(raiz, problema, solParcial);
 		
 		explorarPorNumeroPalabras(raiz, problema, solParcial);
-		problema.imprimirSolucion(problema);
+		problema.imprimirSolucion();
 
 	}
 
 	void insert(string const& palabra) {
-		depurar += 1;
-		if (depurar > 403422 && depurar < 403428)cout << palabra << endl;
-
+		
 		vector<Link> nodosExistentesVisitadosAlInsertar;
 		//nodo objetivo es el ultimo nodo comun entre la palabra y el trie o la raiz
 		//ejem Trie tiene acabariamos y yo inserto acabados search devuelve a
@@ -197,7 +195,7 @@ protected:
 			//añadimos tamb el nuevo hijo al set de prioridad para cuando exploremos soluciones tengamos en cuenta los nodos mas prometedores anttes
 			//nodo->hijosPorAlturaSet.insert(nuevoHijo);
 			//añadimos al set que prioriza los nodos por su numero de palabras
-			//nodo->hijosPorPalabrasAlcanzablesSet.insert(nuevoHijo);
+			nodo->hijosPorPalabrasAlcanzablesSet.insert(nuevoHijo);
 
 			//seguimos insertando nodos y a la vuelta de la recursiva vamos actualizando las profundidades
 			nodo->altura = max(inserta(palabra, nuevoHijo) + 1, nodo->altura);// si en el nodo actual yo ya tenia un hijo mas profundo que el que acabo de expandir
@@ -208,7 +206,7 @@ protected:
 	}
 	//exploramos los hijos dando prioridad por el numero de palabras
 	void explorarPorNumeroPalabras(Link& nodo, TrieQuery& problema, Solucion& solParcial) {
-
+		
 		//recorremos los hijos dando prioridad a los que mas palabras puedan formarse a partir de el 
 		for (Link nodoHijo : nodo->hijosPorPalabrasAlcanzablesSet) {
 
@@ -220,6 +218,7 @@ protected:
 				//marcadores
 				solParcial.palabraSolucion[nodo->nivel] = nodoHijo->elem;
 				solParcial.longitud += 1;
+				problema.letrasDisponibleslist[MappingCharToPosition(nodoHijo->elem)] -= 1;
 
 				//si tenemos una solucion mas larga y es una palabra de nuestro vocabulario
 				if (solParcial.longitud > problema.mejorSolucion.longitud && nodoHijo->terminal)
@@ -230,6 +229,7 @@ protected:
 				//desmarcamos
 				solParcial.palabraSolucion[nodo->nivel] = '0/'; 
 				solParcial.longitud -= 1;
+				problema.letrasDisponibleslist[MappingCharToPosition(nodoHijo->elem)] += 1;
 
 			}
 

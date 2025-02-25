@@ -100,14 +100,17 @@ int main(int argc, char* argv[]) {
 
 	cout << "Solucion para el archivo: " << nombreArchivo << " en modo " << mode << '\n';
 
-	for (int i = 0; i < numCasos; ++i)
-		resuelveCaso(mode, archivoEntrada);
+	//for (int i = 0; i < numCasos; ++i)
+		//resuelveCaso(mode, archivoEntrada);
 
 	/*Segunda parte letras*/
 	Trie trie;
 
 	//cargamos los datos del diccionario
 	string nombreArchivoDiccionario = argv[2];
+
+	cout << "Leyendo el diccionario del archivo " << nombreArchivoDiccionario << endl;
+
 	// Abrimos el archivo
 	ifstream archivoEntradaDiccionario(nombreArchivoDiccionario);
 	if (!archivoEntradaDiccionario) {
