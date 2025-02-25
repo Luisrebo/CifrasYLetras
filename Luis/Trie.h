@@ -23,16 +23,16 @@ protected:
 		bool terminal;//flag para ver si es palabra de nuestro abecedario
 		int altura;//dist maxima hasta su hoja mas alejada,lo usaremos para podar
 		int numPalabrasAlcanzables; //numero de nodos descendencia con terminal=true, palabras alcanzables, para hacer otra poda
-		
+
 		struct highComparator {
 			bool operator()(Link const l1, Link const l2) const {
 				if (l1->altura == l2->altura)
 					return l1 < l2; // por que es necesario el deempate?
-				return l1->altura> l2->altura;
+				return l1->altura > l2->altura;
 			}
 		};
 		set<Link, highComparator> hijosPorAlturaSet;
-		
+
 		//ordenamos en el set los nodos dandole mas prioridad a aquellos que tienen mas numero de palabras
 		struct ReachableWordComparator {
 			bool operator()(Link const l1, Link const l2) const {
@@ -54,7 +54,7 @@ protected:
 public:
 
 	// constructor (conjunto vacío)
-	Trie() : raiz(nullptr), nelems(0),depurar(0) {}
+	Trie() : raiz(nullptr), nelems(0), depurar(0) {}
 
 	~Trie() {
 		libera(raiz);
@@ -66,14 +66,18 @@ public:
 		Solucion solParcial;
 
 		//exploramos el trie buscando palabras que contengan las letras de la cadena recibida
-		explorar(raiz, problema, solParcial);
+		//explorar(raiz, problema, solParcial);
 		//explorarRapido(raiz, problema, solParcial);
 		//explorarRapidoPorPalabras(raiz, problema, solParcial);
-		problema.imprimirSolucion(problema);
 		
+		explorarPorNumeroPalabras(raiz, problema, solParcial);
+		problema.imprimirSolucion(problema);
+
 	}
-	
+
 	void insert(string const& palabra) {
+		depurar += 1;
+		if (depurar > 403422 && depurar < 403428)cout << palabra << endl;
 
 		vector<Link> nodosExistentesVisitadosAlInsertar;
 		//nodo objetivo es el ultimo nodo comun entre la palabra y el trie o la raiz
@@ -99,7 +103,7 @@ public:
 		}
 
 	}
-	
+
 protected:
 	//Actualizamos con +1 las palabras alcanzables desde los nodos por los cuales transitamos al insertar una nueva palabra
 	void actualizarPalabrasAlcanzables(vector<Link>& nodosVisitadosAlInsertar) {
@@ -159,10 +163,10 @@ protected:
 			//Link no nulo en la posicion de su array de hijos que corresponda segun el codigo ascii del caracter de la letra que buscamos 
 			//representando a la a en la pos 0 y a la z en la 25 (la ñ en la pos 26 que corresponde con ('{' - 'a')
 			Link NodoHijo = nodo->hijos[MappingCharToPosition(palabraBuscada[nodo->nivel])];
-			
+
 
 			//si el nodo no tiene ningun hijo con el caracter que buscamos, su posicion del array esta vacia
-			if (NodoHijo ==nullptr)
+			if (NodoHijo == nullptr)
 				return nodo;//devolvemos el nodo a partir del cual difieren las palabras del trie con la insertada osea el ultimo nodo comun
 
 			else {
@@ -188,7 +192,7 @@ protected:
 			//Creamos un nuevo hijo a partir del padre que represente el primer caracter de la cadena que falte
 			Link nuevoHijo = new TreeNode(palabra[nodo->nivel], nodo->nivel + 1);
 			//añadimos al array de hijos, en la posicion que corresponda segun su ascii al nuevo hijo
-			nodo->hijos[MappingCharToPosition(palabra[nodo->nivel])]= nuevoHijo;
+			nodo->hijos[MappingCharToPosition(palabra[nodo->nivel])] = nuevoHijo;
 			//palabra[nodo->altura]=nuevoHijo->elem;
 			//añadimos tamb el nuevo hijo al set de prioridad para cuando exploremos soluciones tengamos en cuenta los nodos mas prometedores anttes
 			//nodo->hijosPorAlturaSet.insert(nuevoHijo);
@@ -202,12 +206,41 @@ protected:
 			return nodo->altura; //esto no es un poco raro? devolvemos true porque crece el arbol
 		}
 	}
-	
+	//exploramos los hijos dando prioridad por el numero de palabras
+	void explorarPorNumeroPalabras(Link& nodo, TrieQuery& problema, Solucion& solParcial) {
+
+		//recorremos los hijos dando prioridad a los que mas palabras puedan formarse a partir de el 
+		for (Link nodoHijo : nodo->hijosPorPalabrasAlcanzablesSet) {
+
+			//si en el input tenemos la letra que representa el nodo y no la hemos agotado en nieveles superiores 
+			//tamb hacemos una poda en la que si la longitud de la solucion parcial que llevamos + la longitud maxima alcanzable para la palabra mas larga que podriamos
+			//llegar a obtener es aun asi peor que la mejor sol que ya tenemos saltamos este nodo y exploramos el siguiente
+			if (problema.letrasDisponibleslist[MappingCharToPosition(nodoHijo->elem)] > 0 && nodoHijo->altura+solParcial.longitud>problema.mejorSolucion.longitud) {
+
+				//marcadores
+				solParcial.palabraSolucion[nodo->nivel] = nodoHijo->elem;
+				solParcial.longitud += 1;
+
+				//si tenemos una solucion mas larga y es una palabra de nuestro vocabulario
+				if (solParcial.longitud > problema.mejorSolucion.longitud && nodoHijo->terminal)
+					problema.mejorSolucion = solParcial;
+
+				explorarPorNumeroPalabras(nodoHijo,problema,solParcial);
+
+				//desmarcamos
+				solParcial.palabraSolucion[nodo->nivel] = '0/'; 
+				solParcial.longitud -= 1;
+
+			}
+
+		}
+	}
+
 	//exploramos recursivamente los nodos descendentes de node y en cada nodo tratamos las posibles soluciones que generen sus hijos
 	void explorar(Link& node, TrieQuery& problema, Solucion& solParcial) {//struct Solucion definida en TrieQuery
 
 		//recorremos los diferentes hijos del nodo actual
-		for ( Link nodoHijo : node->hijos) {
+		for (Link nodoHijo : node->hijos) {
 
 			if (nodoHijo != nullptr) {
 				//consultamos si el hijo que estamos recorriendo tiene un caracter valido y quedan letras de ese caracter sin usar
@@ -238,14 +271,14 @@ protected:
 		}
 		return;
 	}
-	
+
 	//en codigo ASCII las letras van de 97(a) - 122(z) 
 	//en el diccionario vamos a usar el caracter 123({) para representar a la ñ
 	//de esta manera vamos a remplazar el map por un arrray de 25 posiciones indexado por el codig ascii de la letra -'a'
 	//asignando la pos 0 a la letra a: 'a'-'a'=0 'b'-'a'=1... 
-	int MappingCharToPosition(char c){
+	int MappingCharToPosition(char c) {
 		if (c == '-')return 27;
-		
+
 		return c - 'a';
 	}
 
