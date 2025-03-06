@@ -1,33 +1,16 @@
 #include "BFS.h"
 #include "Search.h"
 
-//Vertice del arbol (solo en bfs)
-Problema::Problema(num_t solParcial,
-	std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> ordenDeUso,
-	std::array<char, CIFRAS_INICIALES> operacionesEnOrden,
-	vector<int> &numerosCandidatos)
-	: _solParcial(solParcial),
-	_ordenDeUso(ordenDeUso),
-	_operacionesEnOrden(operacionesEnOrden){
 
-	//pasamos el vector dinamico a vector estatico de 6 elementos para optimizar ya que sabemos que no varia el tamaño
-	std::copy(numerosCandidatos.begin(), numerosCandidatos.end(), _numCandidatos.begin());
-}
 
-SolucionBFS::SolucionBFS(Problema problema,
-	num_t solMejor, num_t nivel) :_problema(problema), _solMejor(solMejor), _nivel(nivel) {}
-
-BFS::BFS(const int nObjetivo, vector<int>& numerosCandidatos)
+BFS::BFS(const num_t nObjetivo, const std::array<num_t, CIFRAS_INICIALES>& numerosCandidatos)
 	: Search(nObjetivo, numerosCandidatos),
 	mejorSolucion(0),
-	numObjetivo(nObjetivo),
 	verticeOrigen(0,
 		std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS>{},
 		std::array<char, CIFRAS_INICIALES>{},
 		numerosCandidatos),
 	sol(verticeOrigen, 0, 0) {
-
-	//resolver(); 
 }
 
 void BFS::busqueda() {

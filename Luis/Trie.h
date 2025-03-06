@@ -63,7 +63,7 @@ public:
 	//resolver un caso, dada una cadena de letras
 	void solve(string const& letras) {
 		TrieQuery problema(letras);
-		Solucion solParcial;
+		SolucionLetras solParcial;
 
 		//exploramos el trie buscando palabras que contengan las letras de la cadena recibida
 		//explorar(raiz, problema, solParcial);
@@ -205,7 +205,7 @@ protected:
 		}
 	}
 	//exploramos los hijos dando prioridad por el numero de palabras
-	void explorarPorNumeroPalabras(Link& nodo, TrieQuery& problema, Solucion& solParcial) {
+	void explorarPorNumeroPalabras(Link& nodo, TrieQuery& problema, SolucionLetras& solParcial) {
 		
 		//recorremos los hijos dando prioridad a los que mas palabras puedan formarse a partir de el 
 		for (Link nodoHijo : nodo->hijosPorPalabrasAlcanzablesSet) {
@@ -229,6 +229,7 @@ protected:
 				//desmarcamos
 				solParcial.palabraSolucion[nodo->nivel] = '0/'; 
 				solParcial.longitud -= 1;
+				
 				problema.letrasDisponibleslist[MappingCharToPosition(nodoHijo->elem)] += 1;
 
 			}
@@ -237,7 +238,7 @@ protected:
 	}
 
 	//exploramos recursivamente los nodos descendentes de node y en cada nodo tratamos las posibles soluciones que generen sus hijos
-	void explorar(Link& node, TrieQuery& problema, Solucion& solParcial) {//struct Solucion definida en TrieQuery
+	void explorar(Link& node, TrieQuery& problema, SolucionLetras& solParcial) {//struct Solucion definida en TrieQuery
 
 		//recorremos los diferentes hijos del nodo actual
 		for (Link nodoHijo : node->hijos) {

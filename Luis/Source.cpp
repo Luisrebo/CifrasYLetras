@@ -18,17 +18,15 @@
 #include "Trie.h"
 
 using namespace std;
-
-
-
+//
 void resuelveCaso(string mode, istream& archivo ) {
 
 	//numero al que queremos llegar o aproximarnos lo maximo posible
 	int numObjetivo;
 
 	//cifras con las que hemos de operar
-	vector<int> numerosCandidatos(CIFRAS_INICIALES);
-
+	array<num_t, CIFRAS_INICIALES> numerosCandidatos;
+	
 	archivo >> numObjetivo;
 
 	for (int i = 0; i < CIFRAS_INICIALES; ++i)
@@ -100,8 +98,8 @@ int main(int argc, char* argv[]) {
 
 	cout << "Solucion para el archivo: " << nombreArchivo << " en modo " << mode << '\n';
 
-	//for (int i = 0; i < numCasos; ++i)
-		//resuelveCaso(mode, archivoEntrada);
+	for (int i = 0; i < numCasos; ++i)
+		resuelveCaso(mode, archivoEntrada);
 
 	/*Segunda parte letras*/
 	Trie trie;

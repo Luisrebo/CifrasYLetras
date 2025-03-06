@@ -14,7 +14,7 @@
 using namespace std;
 //2bytes en vez de 4 de int
 // -32,768 a 32,767.
-using num_t = short;
+using num_t = int;
 
 //mejor que const?
 constexpr short CIFRAS_INICIALES = 6; //cifras iniciales/disponibles/operandos

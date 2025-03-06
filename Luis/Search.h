@@ -5,10 +5,28 @@
 #include <vector>
 using namespace std;
 
+struct Problema {
+	Problema(num_t solParcial,
+		std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> ordenDeUso,
+		std::array<char, CIFRAS_INICIALES> operacionesEnOrden,
+		const std::array<num_t, CIFRAS_INICIALES>& numerosCandidatos);
+
+	num_t _solParcial;
+	std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS> _ordenDeUso;
+	std::array<char, CIFRAS_INICIALES> _operacionesEnOrden;
+	std::array<num_t, CIFRAS_INICIALES> _numCandidatos;
+};
+ struct Solucion {
+	Solucion(Problema problema, num_t solMejor, num_t nivel);
+	Problema _problema;
+	num_t _solMejor;
+	num_t _nivel; //para reconstruir la solucion
+};
+
 class Search {
 
 public:
-	Search(int nObjetivo, vector<int>& nCandidatos);
+	Search(num_t nObjetivo, const std::array<num_t, CIFRAS_INICIALES>& nCandidatos);
 
 	virtual ~Search();//(~ destructor) virtual es para herencia 
 
@@ -18,13 +36,14 @@ public:
 
 protected:
 	// Atributos para dfs y bfs
-	int numObjetivo;
-	std::vector<int> numerosCandidatos;
+	num_t numObjetivo;
+	std::array<num_t, CIFRAS_INICIALES> numerosCandidatos;
+
 	const array<Operacion, 4> OPERACIONES = {
    Operacion{'+', [](num_t a, num_t b) { return a + b; }, [](num_t a, num_t b) { return true; }},
    {'-', [](num_t a, num_t b) { return a - b; }, [](num_t a, num_t b) { return a > b; }},
    {'*',[](num_t a, num_t b) { return a * b; }, [](num_t a, num_t b) { return true; } },
-   {'/',[](num_t a, num_t b) { return a / b; }, [](num_t a, num_t b) { return a > 0 && b > 0 && a % b == 0; } }
+   {'/',[](num_t a, num_t b) { return a / b; }, [](num_t a, num_t b) { return a > 0 && b > 0 && a>=b&& a % b == 0; } }
 	};
 };
 

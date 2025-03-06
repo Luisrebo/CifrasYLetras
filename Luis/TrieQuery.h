@@ -12,18 +12,18 @@ using namespace std;
 //para cada caso de prueba creare un objeto de esta clase para buscar la mejor palabra posible en el trie
 
 //una solucion no es mas que un array de 10 posiciones (cantidad de letras disponibles en la prueba) y una longitud 0<=longitud<=10
-struct Solucion {
+struct SolucionLetras {
 	std::array<char, NUMERO_DE_LETRAS> palabraSolucion;
 	short int longitud;
 
-	Solucion(): palabraSolucion{}, longitud(0) {}
+	SolucionLetras(): palabraSolucion{}, longitud(0) {}
 };
 class TrieQuery {
 
 	public:
 
 	//mejor solucion encontrada para el problema
-	Solucion mejorSolucion;
+		SolucionLetras mejorSolucion;
 	//mapa con las letras de las que disponibles y la cantidad de ellas que podemos usar (por si tengo varias letras iguales: ¿multiplicidad?)
 	//map<char, short int> mapaLetrasDisponibles;
 	//array con las letras de las que disponibles y la cantidad de ellas que podemos usar (por si tengo varias letras iguales:
