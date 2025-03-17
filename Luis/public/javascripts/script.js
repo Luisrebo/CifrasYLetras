@@ -93,12 +93,13 @@ Module.onRuntimeInitialized = function () {
         for (let i = 1; i <= 10; ++i) {
             let valorInput = document.getElementById("inPutLetra" + i).value;
 
-            /* Devuelve true si es una letra válida */
-            if (/^[a-z]$/.test(valorInput)) 
-                letras += valorInput.toLowerCase();
-             else if (/^[ñ]$/.test(valorInput)) 
+            if (/^[Ñ]$/.test(valorInput)) 
                 //la ñ la trato como } por ser el siguiente ascii de z
                 letras +='{';
+            /* Devuelve true si es una letra válida */
+            else if (/^[a-zñ]$/i.test(valorInput))
+                letras += valorInput.toLowerCase();
+              
              else 
                 // Si no es válida, podemos salir o manejar el error
                 return;
@@ -123,9 +124,8 @@ Module.onRuntimeInitialized = function () {
         event.preventDefault();
 
         const totalInputs = 10;
-        const vowels = ["a", "e", "i", "o", "u"];
-        const consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "ñ", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"];
-
+        const vowels = ["A", "E", "I", "O", "U"];
+const consonants = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "Ñ", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"];
         // Generamos un array con índices de 0 a totalInputs-1
         let indices = Array.from({ length: totalInputs }, (_, i) => i);
         // Mezclamos el array para obtener una selección aleatoria
@@ -155,50 +155,32 @@ Module.onRuntimeInitialized = function () {
 
     }
 
+    document.getElementById("btnClearResultadoLetras").addEventListener("click", borrarResultadoLetras);
+    function borrarResultadoLetras() {
+        event.preventDefault();
+        document.getElementById("resultadoLetras").textContent ='';
+        document.getElementById("container-Solucion-Letras").style.display = "none";
+    }
+      /* LETRAS */
+    // Solo quiero que se pueda añadir una letra en los inputs
+    document.getElementById("ContenedorLetras").addEventListener("input", function (event) {
+        // Verifica si el evento proviene de un input con la clase "input-letra"
+        console.log("Evento input detectado en:", event.target.id); // Esto debe imprimirse al escribir en un input
+        if (event.target.classList.contains("input-letra")) {
+            console.log("Dentro del input de letras");
+            let valor = event.target.value;
 
+            // Mantiene solo la primera letra minúscula y permite la ñ
+            event.target.value = valor.toLowerCase().slice(0, 1).replace(/[^a-zñ]/g, "");
+        }
+    });
+
+    document.getElementById("btnClearLetras").addEventListener("click", borrarLetras);
+    function borrarLetras() {
+        event.preventDefault();
+        for (let i = 1; i <= 10; ++i) {
+            document.getElementById("inPutLetra" + i).value = '';
+        }
+    }
 
 };
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Cargando test-letras.js");
-
-    const inputs = document.querySelectorAll(".input-letra");
-
-    inputs.forEach(function (input) {
-        // KEYDOWN: Bloquear teclas no permitidas
-        input.addEventListener("keydown", function (event) {
-            const allowedKeys = ["Backspace", "ArrowLeft", "ArrowRight", "Delete", "Tab"];
-            if (allowedKeys.includes(event.key)) return;
-
-            // Si ya hay un carácter, no dejar escribir más
-            if (this.value.length >= 1) {
-                event.preventDefault();
-                return;
-            }
-
-            // Solo letras a-z o ñ (ignorando mayúsculas con /i)
-            if (!/^[a-zñ]$/i.test(event.key)) {
-                event.preventDefault();
-            }
-        });
-
-        // INPUT: Forzar minúsculas y eliminar caracteres no permitidos
-        input.addEventListener("input", function (event) {
-            let valor = event.target.value;
-            event.target.value = valor
-                .toLowerCase()
-                .slice(0, 1)
-                .replace(/[^a-zñ]/g, "");
-        });
-
-        // PASTE: Evitar pegar texto no permitido
-        input.addEventListener("paste", function (event) {
-            event.preventDefault();
-            let pasted = (event.clipboardData || window.clipboardData).getData("text");
-            pasted = pasted
-                .toLowerCase()
-                .slice(0, 1)
-                .replace(/[^a-zñ]/g, "");
-            document.execCommand("insertText", false, pasted);
-        });
-    });
-});
