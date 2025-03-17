@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <!--     <link rel="stylesheet" href="public/javascripts/bootstrap.min.css">
+ -->
+    <title>Document</title>
+</head>
+
+<body>
+<!-- CIFRAS -->
+    <div class="container card main-panel-cifras text-center mt-5">
+        <form id="formulario-Cifras">
+            <div class="card-body input-panel mt-5">
+                <h1 class="text-center mb-5">Escribe las 6 cifras con las que operar</h1>
+                <div class="container mt-5">
+                    <div class="row text-center">
+                        <!-- Cifra 1 -->
+                        <div class="col-md-2">
+                            <label for="inPutCifra1">Cifra 1</label>
+                            <input type="number" id="inPutCifra1" class="form-control" />
+                        </div>
+
+                        <!-- Cifra 2 -->
+                        <div class="col-md-2">
+                            <label for="inPutCifra2">Cifra 2</label>
+                            <input type="number" id="inPutCifra2" class="form-control" />
+                        </div>
+
+                        <!-- Cifra 3 -->
+                        <div class="col-md-2">
+                            <label for="inPutCifra3">Cifra 3</label>
+                            <input type="number" id="inPutCifra3" class="form-control" />
+                        </div>
+
+                        <!-- Cifra 4 -->
+                        <div class="col-md-2">
+                            <label for="inPutCifra4">Cifra 4</label>
+                            <input type="number" id="inPutCifra4" class="form-control" />
+                        </div>
+
+                        <!-- Cifra 5 -->
+                        <div class="col-md-2">
+                            <label for="inPutCifra5">Cifra 5</label>
+                            <input type="number" id="inPutCifra5" class="form-control" />
+                        </div>
+
+                        <!-- Cifra 6 -->
+                        <div class="col-md-2">
+                            <label for="inPutCifra6">Cifra 6</label>
+                            <input type="number" id="inPutCifra6" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container panelNumObjetivo text-center mt-5 ">
+                    <h1 class="text-center mb-5">Escribe el numero objetivo a conseguir</h1>
+                    <div class="row text-center">
+                        <div class="col-md-2 offset-md-5">
+                            <label for="inPutNumeroObjetivo"> Numero Objetivo</label>
+                            <input type="number" id="inPutNumeroObjetivo" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" card-footer panelBoton mt-5">
+                <button class=" btn btn-primary" type="submit">Resolver</button>
+                <button class=" btn btn-secondary" type="button" id="btnAleatorios">Genera Aleatorios</button>
+                <button class="btn btn-danger" type="button" id="btnClear">Borrar</button>
+                <!--<button class="btn btn-danger" type="button" id="btnClearResultado">Borrar Resultado</button>-->
+            </div>
+        </form>
+
+    </div>
+
+    <!-- SOLUCION CIFRAS -->
+    <div class=" container card text-center mt-5" id="container-Solucion-Cifras">
+        <h2 id="resultado"></h2>
+        <div class="card-footer">
+            <button class="btn btn-danger" type="button" id="btnClearResultado">Borrar Resultado</button>
+        </div>
+    </div>
+
+    <!-- LETRAS -->
+    <div class="container container card main-panel-letras text-center mt-5">
+        <form id="formulario-Letras">
+            <div class="card-body input-panel mt-5">
+                <h1 class="text-center mb-5">Escribe las 10 letras con las que formar una palabra</h1>
+                <div id="ContenedorLetras" class="row text-center">
+                    <div class="col-md-2">
+                      <label for="inPutLetra1">Letra 1</label>
+                      <input type="text" id="inPutLetra1" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra2">Letra 2</label>
+                      <input type="text" id="inPutLetra2" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra3">Letra 3</label>
+                      <input type="text" id="inPutLetra3" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra4">Letra 4</label>
+                      <input type="text" id="inPutLetra4" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra5">Letra 5</label>
+                      <input type="text" id="inPutLetra5" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra6">Letra 6</label>
+                      <input type="text" id="inPutLetra6" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra7">Letra 7</label>
+                      <input type="text" id="inPutLetra7" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra8">Letra 8</label>
+                      <input type="text" id="inPutLetra8" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra9">Letra 9</label>
+                      <input type="text" id="inPutLetra9" class="form-control input-letra" maxlength="1" />
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inPutLetra10">Letra 10</label>
+                      <input type="text" id="inPutLetra10" class="form-control input-letra" maxlength="1" />
+                    </div>
+                  </div>
+                
+                  <div class=" card-footer panelBoton mt-5">
+                    <button class=" btn btn-primary" type="submit">Resolver</button>
+                    <button class=" btn btn-secondary" type="button" id="btnLetrasAleatorias">Genera Letras Aleatorias</button>
+                    <button class="btn btn-danger" type="button" id="btnClearLetras">Borrar</button>
+                    <!--<button class="btn btn-danger" type="button" id="btnClearResultado">Borrar Resultado</button>-->
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+    <!-- SOLUCION LETRAS -->
+    <div class=" container card text-center mt-5" id="container-Solucion-Letras">
+        <h2 id="resultadoLetras"></h2>
+        <div class="card-footer">
+            <button class="btn btn-danger" type="button" id="btnClearResultadoLetras">Borrar Resultado</button>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<!-- script de glue code -->
+<script src="index.js"></script>
+<!-- mis scripts -->
+<script src="public/javascripts/jquery.min.js"></script>
+<script src="public/javascripts/bootstrap.min.js"></script>
+<script src="public/javascripts/script.js"></script>

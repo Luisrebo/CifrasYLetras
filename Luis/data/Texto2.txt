@@ -1,0 +1,32 @@
+11 DFS
+25 50 50 4 999 50 50
+103 50 50 1 9 9 1
+157 8 25 9 7 2 100
+283 9 5 4 7 50 6
+902 25 7 10 1 9 1
+974 3 25 9 75 9 10
+157 8 25 9 7 2 100
+341 6 50 3 10 5 4
+902 25 7 10 1 9 1
+341 6 50 3 10 5 4
+872 8 7 6 50 100 7
+16
+ra
+ana
+ran
+nar
+ara
+rana
+raro
+raros
+amapola
+ama
+nadie
+oxxo
+jjjj
+jjjjjjj
+carrefour
+carreras
+2
+anar
+ruoferrac

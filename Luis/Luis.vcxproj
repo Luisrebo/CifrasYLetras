@@ -18,6 +18,28 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\diccionario_todas_sin_tildes.txt" />
+    <Text Include="data\inCifras.txt" />
+    <Text Include="data\inPalabras.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\BFS.h" />
+    <ClInclude Include="include\DFS.h" />
+    <ClInclude Include="include\Factory.h" />
+    <ClInclude Include="include\FuncionesComunes.h" />
+    <ClInclude Include="include\Search.h" />
+    <ClInclude Include="include\Trie.h" />
+    <ClInclude Include="include\TrieQuery.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\BFS.cpp" />
+    <ClCompile Include="src\DFS.cpp" />
+    <ClCompile Include="src\Factory.cpp" />
+    <ClCompile Include="src\FuncionesComunes.cpp" />
+    <ClCompile Include="src\Search.cpp" />
+    <ClCompile Include="src\Source.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -104,6 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +141,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,30 +150,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="BFS.cpp" />
-    <ClCompile Include="DFS.cpp" />
-    <ClCompile Include="Factory.cpp" />
-    <ClCompile Include="FuncionesComunes.cpp" />
-    <ClCompile Include="Search.cpp" />
-    <ClCompile Include="Source.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="diccionario_todas_sin_tildes.txt" />
-    <Text Include="inCifras.txt" />
-    <Text Include="inPalabras.txt" />
-    <Text Include="Texto.txt" />
-    <Text Include="Texto2.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BFS.h" />
-    <ClInclude Include="DFS.h" />
-    <ClInclude Include="Factory.h" />
-    <ClInclude Include="FuncionesComunes.h" />
-    <ClInclude Include="Search.h" />
-    <ClInclude Include="Trie.h" />
-    <ClInclude Include="TrieQuery.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
