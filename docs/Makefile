@@ -12,8 +12,8 @@ CFLAGS = -O2 \
          -s ALLOW_MEMORY_GROWTH=1 \
          -finput-charset=UTF-8
 
-# Obtención de todos los archivos fuente en los directorios 'src' y 'src2', excluyendo 'Source.cpp'
-SOURCES = $(filter-out src/Source.cpp, $(wildcard src/*.cpp) $(wildcard src2/*.cpp))
+# Archivos fuente: incluye .cpp y .cc, excluyendo Source.cpp si es necesario
+SOURCES = $(filter-out src/Source.cpp, $(wildcard src/*.cpp) $(wildcard src/*.cc))
 
 # Nombre del archivo de salida
 TARGET = index.js
@@ -25,9 +25,8 @@ all: $(TARGET)
 $(TARGET): $(SOURCES)
 	$(EMCC) $(SOURCES) $(CFLAGS) -o $(TARGET)
 
-# Regla para limpiar archivos generados
+# Limpiar archivos generados
 clean:
 	rm -f $(TARGET) index.wasm index.data
 
-# Declaración de objetivos que no son archivos
 .PHONY: all clean
