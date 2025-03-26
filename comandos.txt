@@ -1,0 +1,9 @@
+//navegar hasta emsdk 
+source ./emsdk_env.sh
+
+//volver a mi proyecto
+make clean
+make esto invoca a emcc src/*.cpp src/*.cc -O2 -s WASM=1 -lembind -Iinclude --preload-file data -o index.js
+
+python -m http.server 8080 -> http://localhost:8080/index.html
+python -m http.server 3000 -> http://localhost:3000/index.html
