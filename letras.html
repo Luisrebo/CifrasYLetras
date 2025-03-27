@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/stylePruebas.css?v=1.0">
+
+
+    <title>Letras</title>
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-dark bg-primary navbar-expand-lg fixed-top p-3">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link fs-4" href="index.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cifras.html">Cifras</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="letras.html">Letras</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+    
+    <!-- LETRAS -->
+    <div class="panelInputs container card main-panel-letras text-center mt-5">
+        <h1 class="text-center mt-5">Escribe 10 letras </h1>
+        <form id="formulario-Letras">
+            <div id="ContenedorLetras" class="row justify-content-center">
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra1" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra2" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra3" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra4" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra5" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra6" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra7" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra8" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra9" class="form-control input-letra" maxlength="1" />
+                </div>
+                <div class="col-12 col-md-2 col-lg-1 mb-3 text-center">
+                    <input type="text" id="inPutLetra10" class="form-control input-letra" maxlength="1" />
+                </div>
+            </div>
+
+
+            <div class="card-footer panelBoton mt-3 d-flex justify-content-center">
+                <button class="btn btn-primary mx-2" type="submit">Resolver</button>
+                <button class="btn btn-secondary mx-2" type="button" id="btnLetrasAleatorias">Genera Letras
+                    Aleatorias</button>
+                <button class="btn btn-danger mx-2" type="button" id="btnClearLetras">Borrar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- SOLUCION LETRAS -->
+    <div class="panelSoluciones container card text-center mt-5" id="container-Solucion-Letras">
+        <h2 id="resultadoLetras"></h2>
+        <div class="card-footer">
+            <button class="btn btn-danger" type="button" id="btnClearResultadoLetras">Borrar Resultado</button>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<!-- script de glue code -->
+<script src="index.js"></script>
+<!-- mis scripts -->
+<script src="public/javascripts/jquery.min.js"></script>
+<script src="public/javascripts/bootstrap.min.js"></script>
+<script src="public/javascripts/letras.js"></script>
