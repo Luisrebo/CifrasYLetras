@@ -7,7 +7,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 #choosePruebaContainer{
   background: linear-gradient(135deg, rgba(9, 18, 53, 0.9), rgba(0, 0, 0, 0.8)); 
   color: white; /* Para buen contraste */
-  padding: 20px;
+  padding: 2rem;
   border-radius: 10px;
   text-align: center;
   border: 2px solid rgba(0, 140, 255, 0.8); /* Azul neón */
