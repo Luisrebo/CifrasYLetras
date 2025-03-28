@@ -84,5 +84,8 @@ Module.onRuntimeInitialized = function () {
         event.preventDefault();
         document.getElementById("resultado").textContent = '';
         document.getElementById("container-Solucion-Cifras").style.display = "none";
+
+        //vuelvo a llevar la vista al formulario de input
+        document.getElementById("formulario-Cifras").scrollIntoView({behavior:"smooth"});
     }
 };

@@ -78,6 +78,9 @@ const consonants = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "Ñ",
         event.preventDefault();
         document.getElementById("resultadoLetras").textContent ='';
         document.getElementById("container-Solucion-Letras").style.display = "none";
+
+        //vuelvo a llevar la vista al formulario de input
+        document.getElementById("formulario-Letras").scrollIntoView({behavior:"smooth"});
     }
       /* LETRAS */
     // Solo quiero que se pueda añadir una letra en los inputs
