@@ -28,6 +28,8 @@ Module.onRuntimeInitialized = function () {
             document.getElementById("container-Solucion-Letras").style.display = "block";
             document.getElementById("resultadoLetras").innerText = resultado;
 
+            document.getElementById("container-Solucion-Letras").scrollIntoView({behavior:"smooth"});
+
         } catch (e) {
             console.error("Error al llamar a resuelveLetras:", e);
         }

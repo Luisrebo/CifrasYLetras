@@ -40,6 +40,9 @@ Module.onRuntimeInitialized = function () {
             document.getElementById("container-Solucion-Cifras").style.display = "block";
             document.getElementById("resultado").innerText = resultado;
 
+            //movemos la vista hasta el div que estaba oculto
+            document.getElementById("container-Solucion-Cifras").scrollIntoView({behavior:"smooth"});
+
         } catch (e) {
             console.error("Error al llamar a resuelveCifras:", e);
         }
