@@ -1,6 +1,5 @@
 Module.onRuntimeInitialized = function () {
     console.log("Emscripten module loaded LUIS");
-    console.log("segundo");
 
     document.getElementById("formulario-Cifras").addEventListener("submit", function (event) {
         event.preventDefault(); // Evitar recargar la página
@@ -36,12 +35,32 @@ Module.onRuntimeInitialized = function () {
 
         // Llamamos a la función exportada (en este ejemplo, 'resuelveCasoCifras')
         try {
+            //funcio en c++
             let resultado = Module.resuelveCifras("BFS", vectorInput);
+
+            console.log(resultado);
+            //variable con el texto a agregar al div
+            let outputText = "";
+            for (let i = 0; i < resultado.operacionesEnOrden.size(); i++) {
+
+                let op1 = resultado.ordenDeUso.get(2 * i);
+                let op2 = resultado.ordenDeUso.get(2 * i + 1);
+                let simbolo = String.fromCharCode(resultado.operacionesEnOrden.get(i));
+
+                outputText += op1 + " " + simbolo+ " " + op2+" = " + calcular_result(op1,op2,simbolo) + "\n";
+            }
+
+            //hacemos el contenedor de la solucion visible
             document.getElementById("container-Solucion-Cifras").style.display = "block";
-            document.getElementById("resultado").innerText = resultado;
+
+            const divResultado = document.getElementById("resultado");
+            divResultado.style.whiteSpace = "pre-wrap";  // Esto  conviertan en saltos de línea los \n 
+            divResultado.textContent = outputText;
+
+            console.log("Texto de salida:", outputText);
 
             //movemos la vista hasta el div que estaba oculto
-            document.getElementById("container-Solucion-Cifras").scrollIntoView({behavior:"smooth"});
+            document.getElementById("container-Solucion-Cifras").scrollIntoView({ behavior: "smooth" });
 
         } catch (e) {
             console.error("Error al llamar a resuelveCifras:", e);
@@ -86,6 +105,23 @@ Module.onRuntimeInitialized = function () {
         document.getElementById("container-Solucion-Cifras").style.display = "none";
 
         //vuelvo a llevar la vista al formulario de input
-        document.getElementById("panelBotonesCifras").scrollIntoView({behavior:"smooth"});
+        document.getElementById("panelBotonesCifras").scrollIntoView({ behavior: "smooth" });
     }
 };
+
+function calcular_result(op1, op2, op) {
+    if (op === '+') {
+        return op1 + op2;
+    }
+    else if (op === '-') {
+        return op1 - op2;
+    }
+    else if (op === '*') {
+        return op1 * op2;
+    }
+    else if (op === '/') {
+        return op1 / op2;
+    }
+    else return null;
+
+}

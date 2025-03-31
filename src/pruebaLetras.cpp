@@ -8,7 +8,7 @@
 
 using namespace std;
 
-std::string resuelveCasoLetras(std::string letras) {
+SolucionLetras resuelveCasoLetras(std::string letras) {
 
 	// Obtén la única instancia del Trie mediante el singleton.
 	Trie& trie = Trie::getInstance();
@@ -20,15 +20,13 @@ std::string resuelveCasoLetras(std::string letras) {
 	static bool diccionarioCargado = false;
 	if (!diccionarioCargado) {
 		ifstream archivoEntradaDiccionario("/data/diccionario_todas_sin_tildes.txt");
-		if (!archivoEntradaDiccionario) {
-			return "Error: no se pudo abrir el diccionario";
-		}
+		//y si no se abre el dicc?
 		loadDiccionario(trie, archivoEntradaDiccionario);
 		diccionarioCargado = true;
 	}
 	SolucionLetras solucion = trie.solve(letras);
 
-	return formatearSolucionLetras(solucion, letras);
+	return solucion;
 }
 void loadDiccionario(Trie& trie, istream& archivo) {
 	string palabra;

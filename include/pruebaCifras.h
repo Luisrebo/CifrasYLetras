@@ -7,7 +7,7 @@
 #include "FuncionesComunes.h"
 
 // "using namespace std;" en el header no es lo ideal,
-std::string resuelveCasoCifras(std::string mode, const std::vector<int>& input);
+SearchResult resuelveCasoCifras(std::string mode, const std::vector<int>& input);
 
 std::string formatearSolucion(const SearchResult &result);
 

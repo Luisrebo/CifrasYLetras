@@ -9,26 +9,45 @@ Module.onRuntimeInitialized = function () {
         for (let i = 1; i <= 10; ++i) {
             let valorInput = document.getElementById("inPutLetra" + i).value;
 
-            if (/^[Ñ]$/.test(valorInput)) 
+            if (/^[Ñ]$/.test(valorInput))
                 //la ñ la trato como } por ser el siguiente ascii de z
-                letras +='{';
+                letras += '{';
             /* Devuelve true si es una letra válida */
             else if (/^[a-zñ]$/i.test(valorInput))
                 letras += valorInput.toLowerCase();
-              
-             else 
+
+            else
                 // Si no es válida, podemos salir o manejar el error
                 return;
-            
+
         }
 
         try {
             let resultado = Module.resuelveLetras(letras);
 
-            document.getElementById("container-Solucion-Letras").style.display = "block";
-            document.getElementById("resultadoLetras").innerText = resultado;
+            let outputText = "";
+            outputText += "Resultado para las letras:" + "\n" + "(";
+            for (let i = 0; i < 10; ++i) {
+                let letra;
 
-            document.getElementById("container-Solucion-Letras").scrollIntoView({behavior:"smooth"});
+                if (letras[i] === '{')
+                    letra = 'Ñ';
+                else
+                    letra = letras[i].toUpperCase();
+
+                outputText += letra + " ";
+            }
+
+            outputText += ")" + '\n' + "Con longitud " + resultado.longitud + ": \n" +formatearSolucion(resultado.getPalabra()).toUpperCase();
+
+
+            document.getElementById("container-Solucion-Letras").style.display = "block";
+            const divResultado = document.getElementById("resultadoLetras");
+            divResultado.style.whiteSpace = "pre-wrap";  // Esto  conviertan en saltos de línea los \n 
+            divResultado.textContent = outputText;
+
+
+            document.getElementById("container-Solucion-Letras").scrollIntoView({ behavior: "smooth" });
 
         } catch (e) {
             console.error("Error al llamar a resuelveLetras:", e);
@@ -43,7 +62,7 @@ Module.onRuntimeInitialized = function () {
 
         const totalInputs = 10;
         const vowels = ["A", "E", "I", "O", "U"];
-const consonants = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "Ñ", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"];
+        const consonants = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "Ñ", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"];
         // Generamos un array con índices de 0 a totalInputs-1
         let indices = Array.from({ length: totalInputs }, (_, i) => i);
         // Mezclamos el array para obtener una selección aleatoria
@@ -76,13 +95,13 @@ const consonants = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "Ñ",
     document.getElementById("btnClearResultadoLetras").addEventListener("click", borrarResultadoLetras);
     function borrarResultadoLetras() {
         event.preventDefault();
-        document.getElementById("resultadoLetras").textContent ='';
+        document.getElementById("resultadoLetras").textContent = '';
         document.getElementById("container-Solucion-Letras").style.display = "none";
 
         //vuelvo a llevar la vista al formulario de input
-        document.getElementById("formulario-Letras").scrollIntoView({behavior:"smooth"});
+        document.getElementById("formulario-Letras").scrollIntoView({ behavior: "smooth" });
     }
-      /* LETRAS */
+    /* LETRAS */
     // Solo quiero que se pueda añadir una letra en los inputs
     document.getElementById("ContenedorLetras").addEventListener("input", function (event) {
         // Verifica si el evento proviene de un input con la clase "input-letra"
@@ -104,4 +123,14 @@ const consonants = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "Ñ",
         }
     }
 
+    function formatearSolucion(palabra) {
+        let palabraFormateada="";
+        for (let letra of palabra) {
+            if (letra === '{')
+                letra = 'Ñ';
+
+            palabraFormateada += letra;
+        }
+        return palabraFormateada;
+    }
 };
