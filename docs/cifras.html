@@ -2,119 +2,117 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="./stylesheets/stylePruebas.css?v=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="./stylesheets/stylePruebas.css?v=1.0">
 
-    <title>Cifras</title>
+  <title>Cifras</title>
 </head>
 
 <body>
-    
 
-    <nav class="mb navbar navbar-dark bg-primary navbar-expand-lg fixed-top p-3">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item ">
-              <a class="nav-link fs-4" href="index.html">Home </a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="cifras.html">Cifras <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="letras.html">Letras</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+  <div id="prueba" class="d-flex flex-column justify-content-center align-items-center">
+    <nav class="navbar navbar-dark bg-primary navbar-expand-lg fixed-top p-3">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link fs-4" href="index.html">Home </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="cifras.html">Cifras <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="letras.html">Letras </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
 
     <!-- CIFRAS -->
-    <div class="panelInputs container card main-panel-cifras text-center ">
-        <form id="formulario-Cifras">
-            <div class="card-body input-panel ">
-                <h1 class="text-center text-responsive-size m-4 m-md-4 m-lg-5 m-sm-1">Escribe las 6 cifras con las que operar</h1>
-                <div class="container">
-                    <div class="row text-center">
-                        <!-- Cifra 1 -->
-                        <div class="col-md-2">
-                            <label for="inPutCifra1">Cifra 1</label>
-                            <input type="number" id="inPutCifra1" class="input-prueba form-control" />
-                        </div>
+    <div class="panelInputs container card main-panel-cifras text-center">
+      <h1 class="pt-1 text-center m-md-4 m-lg-5 m-sm-1 text-responsive-size">Escribe las 6 cifras con las que
+        operar</h1>
+      <form id="formulario-Cifras">
+          <div id="ContenedorCifras" class="row justify-content-center p-3">
 
-                        <!-- Cifra 2 -->
-                        <div class="col-md-2">
-                            <label for="inPutCifra2">Cifra 2</label>
-                            <input type="number" id="inPutCifra2" class="input-prueba form-control" />
-                        </div>
+              <!-- Cifra 1 -->
+              <div class="col-12 col-md-4 col-lg-2 mb-1 text-center">
+                <!-- <label for="inPutCifra1">Cifra 1</label> -->
+                <input type="number" id="inPutCifra1" class="input-prueba form-control" maxlength="1" />
+              </div>
 
-                        <!-- Cifra 3 -->
-                        <div class="col-md-2">
-                            <label for="inPutCifra3">Cifra 3</label>
-                            <input type="number" id="inPutCifra3" class="input-prueba form-control" />
-                        </div>
+              <!-- Cifra 2 -->
+              <div class="col-12 col-md-4 col-lg-2 mb-1 text-center">
+                <!-- <label for="inPutCifra2">Cifra 2</label> -->
+                <input type="number" id="inPutCifra2" class="input-prueba form-control" maxlength="1" />
+              </div>
 
-                        <!-- Cifra 4 -->
-                        <div class="col-md-2">
-                            <label for="inPutCifra4">Cifra 4</label>
-                            <input type="number" id="inPutCifra4" class="input-prueba form-control" />
-                        </div>
+              <!-- Cifra 3 -->
+              <div class="col-12 col-md-4 col-lg-2 mb-1 text-center">
+                <!-- <label for="inPutCifra3">Cifra 3</label> -->
+                <input type="number" id="inPutCifra3" class="input-prueba form-control" maxlength="1" />
+              </div>
 
-                        <!-- Cifra 5 -->
-                        <div class="col-md-2">
-                            <label for="inPutCifra5">Cifra 5</label>
-                            <input type="number" id="inPutCifra5" class="input-prueba form-control" />
-                        </div>
+              <!-- Cifra 4 -->
+              <div class="col-12 col-md-4 col-lg-2 mb-1 text-center">
+                <!-- <label for="inPutCifra4">Cifra 4</label> -->
+                <input type="number" id="inPutCifra4" class="input-prueba form-control" maxlength="1" />
+              </div>
 
-                        <!-- Cifra 6 -->
-                        <div class="col-md-2">
-                            <label for="inPutCifra6">Cifra 6</label>
-                            <input type="number" id="inPutCifra6" class="input-prueba form-control" />
-                        </div>
-                    </div>
-                </div>
+              <!-- Cifra 5 -->
+              <div class="col-12 col-md-4 col-lg-2 mb-1 text-center">
+                <!-- <label for="inPutCifra5">Cifra 5</label> -->
+                <input type="number" id="inPutCifra5" class="input-prueba form-control" maxlength="1" />
+              </div>
 
+              <!-- Cifra 6 -->
+              <div class="col-12 col-md-4 col-lg-2 mb-1 text-center">
+                <!-- <label for="inPutCifra6">Cifra 6</label> -->
+                <input type="number" id="inPutCifra6" class="input-prueba form-control" maxlength="1" />
+              </div>
 
-                <div class="container panelNumObjetivo text-center mt-5 ">
-                    <h1 class="text-center mb-5 text-responsive-size m-4 m-md-4 m-lg-5 m-sm-1">Escribe el numero objetivo a conseguir</h1>
-                    <div class="row text-center">
-                        <div class="col-md-2 offset-md-5">
-                            <label for="inPutNumeroObjetivo"> Numero Objetivo</label>
-                            <input type="number" id="inPutNumeroObjetivo" class="input-prueba form-control">
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class=" card-footer panelBoton mt-3 d-flex justify-content-center" id="panelBotonesCifras">
-                <button class=" btn btn-primary mx-2" type="submit">Resolver</button>
-                <button class=" btn btn-secondary mx-2" type="button" id="btnAleatorios">Genera Aleatorios</button>
-                <button class="btn btn-danger mx-2" type="button" id="btnClear">Borrar</button>
-                <!--<button class="btn btn-danger" type="button" id="btnClearResultado">Borrar Resultado</button>-->
+ 
+          <div class="container panelNumObjetivo text-center">
+            <div class="row text-center">
+              <div class="col-md-2 offset-md-5">
+                <label for="inPutNumeroObjetivo"> Número Objetivo</label>
+                <input type="number" id="inPutNumeroObjetivo" class="input-prueba form-control">
+              </div>
             </div>
-        </form>
+          </div>
+      
 
+        <div class="card-footer panelBoton mt-1 d-flex justify-content-center" id="panelBotonesCifras">
+          <button class="btn btn-primary mx-2" type="submit">Resolver</button>
+          <button class="btn btn-secondary mx-2" type="button" id="btnAleatorios">Genera Aleatorios</button>
+          <button class="btn btn-danger mx-2" type="button" id="btnClear">Borrar</button>
+        </div>
+      </form>
     </div>
 
     <!-- SOLUCION CIFRAS -->
     <div class="panelSoluciones container card text-center mt-5" id="container-Solucion-Cifras">
-        <h2 id="resultado"></h2>
-        <div class="card-footer">
-            <button class="btn btn-danger" type="button" id="btnClearResultado">Borrar Resultado</button>
-        </div>
+      <h2 id="resultado"></h2>
+      <div class="card-footer">
+        <button class="btn btn-danger" type="button" id="btnClearResultado">Borrar Resultado</button>
+      </div>
     </div>
 
 
-    <!-- SOLUCION LETRAS -->
-    <div class="panelSoluciones container card text-center mt-5" id="container-Solucion-Letras">
-        <h2 id="resultadoLetras"></h2>
-        <div class="card-footer">
-            <button class="btn btn-danger" type="button" id="btnClearResultadoLetras">Borrar Resultado</button>
-        </div>
-    </div>
+    <!-- prueba -->
+  </div>
+
+
+
 </body>
 
 </html>
