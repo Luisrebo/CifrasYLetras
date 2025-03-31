@@ -1,8 +1,33 @@
 body {
-  padding-top:7rem;
+  padding-top:4rem;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: #DFDBE5;
-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E");}
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+
+#prueba {
+  height: calc(100vh - 4rem); /* 100% del viewport menos la altura estimada del navbar */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrado vertical */
+  align-items: center;
+  padding: 1rem;
+  padding-top: 3rem;
+  background: #1a1a2e;
+  box-sizing: border-box;
+  overflow: hidden; /* Evita scroll, pero cuidado: si no se reduce el tamaño, se recortará */
+}
+
+/* Permite que los hijos directos se puedan reducir */
+#prueba > * {
+  flex-shrink: 1;
+}
+
+.panelNumObjetivo{
+  margin-top: 1rem;;
+}
 
 #container-Solucion-Cifras{
   display:none
@@ -13,22 +38,13 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 a {
   color: #00B7FF;
 }
-.input-prueba {
-  border: 2px solid #00f; /* Azul eléctrico */
-  border-radius: 5px;
-  background-color: rgb(255, 255, 255);
-  color: rgb(0, 0, 0);
-  outline: none; /* Elimina el borde predeterminado */
-  transition: 0.3s;
-}
-
 .input-letra:focus {
   box-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f; 
   border-color: #00f;}
   .panelInputs{
     background: linear-gradient(135deg, rgba(9, 18, 53, 0.9), rgba(0, 0, 0, 0.8)); 
     color: white; /* Para buen contraste */
-    padding: 20px;
+    
     border-radius: 10px;
     text-align: center;
     border: 2px solid rgba(0, 140, 255, 0.8); /* Azul neón */
@@ -62,20 +78,42 @@ a {
   font-size: 1.8rem; /* Puedes ajustar el tamaño */
   font-weight: 500; /* También puedes hacerla más gruesa si quieres */
 }
-/*Para que en moviles no sea tan grande la letra*/
 .text-responsive-size {
-  font-size: clamp(1.2rem, 5vw, 3rem);
+  /* Tamaño mínimo de 1rem, ideal basado en 4vw, máximo de 2rem */
+  font-size: clamp(1rem, 4vw, 2rem);
   line-height: 1.2;
 }
 
+.input-prueba {
+  /* Para los inputs: tamaño de fuente adaptable */
+  font-size: clamp(0.8rem, 2.5vw, 1.2rem);
+  /* Puedes ajustar padding y ancho en porcentajes o con clamp() también */
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+.input-letra{
+   /* Para los inputs: tamaño de fuente adaptable */
+  font-size: clamp(0.8rem, 2.5vw, 1.2rem);
+  /* Puedes ajustar padding y ancho en porcentajes o con clamp() también */
+  padding: 0.5rem;
+  width: 100%;
+}
 
 
-
-
-
-
-
-
+/* Ajustar márgenes responsivos para el panel de botones */
+@media (max-width: 576px) {
+  .panelBoton {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+@media (min-width: 577px) {
+  .panelBoton {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+}
 
 
 
