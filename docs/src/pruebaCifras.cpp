@@ -11,17 +11,10 @@
 
 using namespace std;
 
-std::string resuelveCasoCifras(std::string mode, const std::vector<int>& input) {
+SearchResult resuelveCasoCifras(std::string mode, const std::vector<int>& input) {
     // Declaramos searchResult usando el constructor predeterminado
     SearchResult searchResult;
     int numObjetivo = input.back();  // Último elemento es el objetivo
-    
-    // Verificamos que el vector tenga el tamaño esperado: CIFRAS_INICIALES + 1 (último elemento es el objetivo).
-    if (input.size() != CIFRAS_INICIALES + 1) {
-        return "Input incorrecto";
-    }
-
-    
     
     // Copiar las cifras (los primeros CIFRAS_INICIALES elementos) a un std::array
     std::array<int, CIFRAS_INICIALES> numerosCandidatos;
@@ -34,7 +27,7 @@ std::string resuelveCasoCifras(std::string mode, const std::vector<int>& input) 
     auto search = Factory::create(mode, numObjetivo, numerosCandidatos);
     searchResult = search->busqueda();
     
-    return formatearSolucion(searchResult);
+    return searchResult;
 }
 std::string formatearSolucion(const SearchResult&result) {
 	//mejor que char* porque me ahorro malloc y calculos de memoria, destructres etc

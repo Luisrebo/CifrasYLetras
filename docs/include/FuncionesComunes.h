@@ -50,6 +50,11 @@ struct SolucionLetras {
 	short int longitud;
 
 	SolucionLetras() : palabraSolucion{}, longitud(0) {}
+
+	// Método para convertir el array a string 
+	std::string getPalabra() const {
+		return std::string(palabraSolucion.data(), longitud);
+	}
 };
 
 
