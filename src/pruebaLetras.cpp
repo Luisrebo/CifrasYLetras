@@ -24,6 +24,8 @@ SolucionLetras resuelveCasoLetras(std::string letras) {
 		loadDiccionario(trie, archivoEntradaDiccionario);
 		diccionarioCargado = true;
 	}
+	trie.updateNodosPodaTrasCargarDiccionary();
+
 	SolucionLetras solucion = trie.solve(letras);
 
 	return solucion;

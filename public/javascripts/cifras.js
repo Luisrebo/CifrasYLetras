@@ -56,9 +56,7 @@ Module.onRuntimeInitialized = function () {
             const divResultado = document.getElementById("resultado");
             divResultado.style.whiteSpace = "pre-wrap";  // Esto  conviertan en saltos de línea los \n 
             divResultado.textContent = outputText;
-
-            console.log("Texto de salida:", outputText);
-
+            
             //movemos la vista hasta el div que estaba oculto
             document.getElementById("container-Solucion-Cifras").scrollIntoView({ behavior: "smooth" });
 
