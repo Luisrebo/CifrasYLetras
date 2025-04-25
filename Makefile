@@ -15,18 +15,25 @@ CFLAGS = -O2 \
 # Archivos fuente: incluye .cpp y .cc, excluyendo Source.cpp si es necesario
 SOURCES = $(filter-out src/Source.cpp, $(wildcard src/*.cpp) $(wildcard src/*.cc))
 
-# Nombre del archivo de salida
-TARGET = index.js
+# Salida en la carpeta docs/
+OUTDIR = docs
+TARGET = $(OUTDIR)/index.js
 
 # Regla principal
-all: $(TARGET)
+all: $(OUTDIR) $(TARGET)
 
-# Regla para compilar el proyecto
+# Asegura que exista docs/
+$(OUTDIR):
+	mkdir -p $(OUTDIR)
+
+# Regla para compilar el proyecto dentro de docs/
 $(TARGET): $(SOURCES)
 	$(EMCC) $(SOURCES) $(CFLAGS) -o $(TARGET)
 
-# Limpiar archivos generados
+# Limpiar archivos generados en docs/
 clean:
-	rm -f $(TARGET) index.wasm index.data
+	rm -f $(TARGET) \
+	       $(OUTDIR)/index.wasm \
+	       $(OUTDIR)/index.data
 
 .PHONY: all clean
