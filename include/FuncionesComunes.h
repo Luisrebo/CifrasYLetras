@@ -19,22 +19,32 @@ using num_t = int;
 //mejor que const?
 constexpr short CIFRAS_INICIALES = 6; //cifras iniciales/disponibles/operandos
 constexpr short CIFRAS_MAXIMAS_ENCADENADAS = 2 * CIFRAS_INICIALES; //maximo numero de cifras que van a ser utilizadas en una solucion (caso peor: caso secuencial :11)
-const std::string BFS_MODE = "BFS";
-const std::string DFS_MODE = "DFS";
+const string BFS_MODE = "BFS";
+const string DFS_MODE = "DFS";
+const num_t NUMERO_MAXIMO_LETRAS_EN_PALABRA = 10;
 
 /*PRUEBA DE LETRAS*/
 constexpr short NUMERO_DE_LETRAS = 10;
+constexpr short NUMERO_LETRAS_ABECEDARIO = 27;
+
+//Tipos de heurísticas parala factoria
+enum class TipoHeuristica {
+	AlFABETICO,
+	ALTURA,
+	PALABRASALCANZABLES,
+	PROBABILIDADES
+};
 
 struct Operacion {
 	char simbolo;  // el símbolo de la operación
-	std::function<num_t(num_t, num_t)> op;  // la operación misma
-	std::function<bool(num_t, num_t)> valida;  // ¿cuándo la operación es válida?
+	function<num_t(num_t, num_t)> op;  // la operación misma
+	function<bool(num_t, num_t)> valida;  // ¿cuándo la operación es válida?
 };
 
 //estructura comun para devolver el resultado de search y poder tratarlo en clases como Main
 struct SearchResult {
-	std::vector<char> _operacionesEnOrden;
-	std::vector<num_t> _ordendeUso;
+	vector<char> _operacionesEnOrden;
+	vector<num_t> _ordendeUso;
 	num_t _mejorSol;
 
 	// Constructor predeterminado

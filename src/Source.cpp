@@ -43,25 +43,10 @@ void resuelveCaso(string mode, istream& archivo ) {
 
 /*Segunda Parte Letras*/
 void loadDiccionario(Trie& trie, istream& archivo) {
-	string palabra;
-	
-	while (archivo >> palabra)  //Si la palabra tiene mas de 10 letras la descarto?
-		trie.insert(palabra);
-	
-
-	
+	trie.cargarDesdeArchivo(archivo);
 }
 void resuelveCasoLetras(Trie& trie, istream& archivo) {
-	cout << "Resolviendo con poda" << '\n';
-	string letrasCasoi;
-	int numProblemas;
-	archivo >> numProblemas;
-
-	for (int i = 0; i < numProblemas; ++i) {
-		archivo >> letrasCasoi;
-
-		trie.solve(letrasCasoi);
-	}
+	trie.resuelve(archivo);
 }
 
 
@@ -147,20 +132,3 @@ int main(int argc, char* argv[]) {
 	
 	return 0;
 }
-/* LA UTILIZO EN LA INTERFAZ CON EMSCRIPTEN
-string formatearSolucion(SearchResult result){
-	//mejor que char* porque me ahorro malloc y calculos de memoria, destructres etc
-	//va a tamaño justo. #include <sstream>
-	ostringstream oss;
-
-	//basta con un indice ya que siempre es el doble pero para mayor claridad
-	for (int indiceCifras = 0, indiceOperaciones = 0; indiceCifras < result._ordendeUso.size() &&
-		indiceOperaciones < result._operacionesEnOrden.size(); indiceCifras += 2, ++indiceOperaciones) {
-
-		oss << result._ordendeUso[indiceCifras] << result._operacionesEnOrden[indiceOperaciones] << result._ordendeUso[indiceCifras + 1]
-			<< "=" << calcular(result._operacionesEnOrden[indiceOperaciones], result._ordendeUso[indiceCifras], result._ordendeUso[indiceCifras + 1])
-			<< '\n';
-	}
-	return oss.str();
-
-}*/

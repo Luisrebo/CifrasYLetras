@@ -21,22 +21,16 @@ SolucionLetras resuelveCasoLetras(std::string letras) {
 	if (!diccionarioCargado) {
 		ifstream archivoEntradaDiccionario("/data/diccionario_todas_sin_tildes.txt");
 		//y si no se abre el dicc?
-		loadDiccionario(trie, archivoEntradaDiccionario);
+		trie.cargarDesdeArchivo(archivoEntradaDiccionario);
 		diccionarioCargado = true;
 	}
-	trie.updateNodosPodaTrasCargarDiccionary();
+	
 
 	SolucionLetras solucion = trie.solve(letras);
 
 	return solucion;
 }
-void loadDiccionario(Trie& trie, istream& archivo) {
-	string palabra;
 
-	while (archivo >> palabra)  //Si la palabra tiene mas de 10 letras la descarto?
-		if (palabra.size() <= 10)  // Opcional: descartar palabras largas
-			trie.insert(palabra);
-}
 std::string formatearSolucionLetras(SolucionLetras const& solucion, string letrasDisponibles) {
 	//mejor que char* porque me ahorro malloc y calculos de memoria, destructres etc
 	//va a tamaño justo. #include <sstream>
