@@ -41,7 +41,7 @@ public:
 		if (mejorSolucion.longitud > 0)
 			cout << "SOLUCION PARA LAS LETRAS ( ";
 		else
-			cout << "NO HAY SOLUCION PARA LAS LETRAS: ";
+			cout << "NO HAY SOLUCION PARA LAS LETRAS: ( ";
 
 		for (char c : letrasDisponibles)
 			cout << c << " ";

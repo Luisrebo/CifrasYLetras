@@ -7,6 +7,7 @@
 #include "PromedioGlobal.h"
 
 class TrieSolver {
+
 public:
 	static  SolucionLetras solve(Trie::Link raiz, const std::string& letras, PromedioGlobal&promedioGlobalLetras);
 

@@ -137,14 +137,11 @@ void DFS::resolvere(int nivel, array<num_t, CIFRAS_INICIALES>& numCandidatos, ar
 }
 
 bool DFS::contained(array<int, CIFRAS_INICIALES>& ordenDeUso, int cifra, int solMejor) {
-	/*for (int i = 0; i < ordenDeUso.size(); i++)
-		if (ordenDeUso[i] == cifra) return true;
-
-	//si la cifra no esta en orden de uso solo la mostraré si es la solucion
-	return cifra == solMejor;*/
+	
 	for (int i = 0; i < ordenDeUso.size(); i++)
 		if (ordenDeUso[i] == cifra) return true;
 		else return false;
+	return false;
 }
 
 void DFS::mostrarDFS() {

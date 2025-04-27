@@ -8,28 +8,26 @@
 
 using namespace std;
 
-SolucionLetras resuelveCasoLetras(std::string letras) {
-
-	// Obtén la única instancia del Trie mediante el singleton.
+SolucionLetras resuelveCasoLetras(const std::string letras) {
+	static bool diccionarioCargado = false;
 	Trie& trie = Trie::getInstance();
 
-
-
-	// variable estática local se inicializa solo la primera vez que se ejecuta la función yuna vez asignado su valo se mantiene para todas las llamadas posteriores
-	//Asi no cargamos mas de una vez el trie
-	static bool diccionarioCargado = false;
 	if (!diccionarioCargado) {
-		ifstream archivoEntradaDiccionario("/data/diccionario_todas_sin_tildes.txt");
-		//y si no se abre el dicc?
-		trie.cargarDesdeArchivo(archivoEntradaDiccionario);
+		std::ifstream f("data/diccionario_todas_sin_tildes.txt");
+		if (!f.is_open()) {
+			std::cerr << "ERROR: no pude abrir data/diccionario_todas_sin_tildes.txt\n";
+			// Aquí podrías lanzar una excepción, abortar o retornar un valor por defecto
+			return {};
+		}
+		trie.cargarDesdeArchivo(f);
 		diccionarioCargado = true;
+		//std::cout << "Diccionario cargado correctamente.\n";
 	}
-	
 
-	SolucionLetras solucion = trie.solve(letras);
-
-	return solucion;
+	trie.preparar();
+	return trie.solve(letras);
 }
+
 
 std::string formatearSolucionLetras(SolucionLetras const& solucion, string letrasDisponibles) {
 	//mejor que char* porque me ahorro malloc y calculos de memoria, destructres etc

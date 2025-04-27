@@ -1,4 +1,4 @@
-#include "HeuristicaPorPalabrasAlcanzables.h";
+#include "HeuristicaPorPalabrasAlcanzables.h"
 
 
 void HeuristicaPorPalabrasAlcanzables::prepararAtributosHeuristicaNodo(Trie::Link nodo) {

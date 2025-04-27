@@ -123,7 +123,7 @@ void Trie::resuelve(std::istream& archivo)  {
 
 		
 		//while (archivo >> letrasCasoi)
-			 solve(letrasCasoi);
+			 auto sol=solve(letrasCasoi);
 	}
 
 	imprimirGlobalStatsResolutions();
