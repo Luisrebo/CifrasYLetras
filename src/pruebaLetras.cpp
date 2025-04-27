@@ -9,22 +9,20 @@
 using namespace std;
 
 SolucionLetras resuelveCasoLetras(const std::string letras) {
-	static bool diccionarioCargado = false;
+	// Obtén la única instancia del Trie mediante el singleton.
 	Trie& trie = Trie::getInstance();
 
+	// variable estática local se inicializa solo la primera vez que se ejecuta la función yuna vez asignado su valo se mantiene para todas las llamadas posteriores
+	//Asi no cargamos mas de una vez el trie
+	static bool diccionarioCargado = false;
 	if (!diccionarioCargado) {
-		std::ifstream f("data/diccionario_todas_sin_tildes.txt");
-		if (!f.is_open()) {
-			std::cerr << "ERROR: no pude abrir data/diccionario_todas_sin_tildes.txt\n";
-			// Aquí podrías lanzar una excepción, abortar o retornar un valor por defecto
-			return {};
-		}
-		trie.cargarDesdeArchivo(f);
+		ifstream archivoEntradaDiccionario("data/diccionario_todas_sin_tildes.txt");
+		
+		trie.cargarDesdeArchivo(archivoEntradaDiccionario);
 		diccionarioCargado = true;
-		//std::cout << "Diccionario cargado correctamente.\n";
+		trie.preparar();
 	}
 
-	trie.preparar();
 	return trie.solve(letras);
 }
 

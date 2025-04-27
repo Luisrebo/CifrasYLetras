@@ -29,12 +29,11 @@ void resuelveCasoLetras(Trie& trie, istream& archivo) {
 	trie.resuelve(archivo);
 }
 
+
 //@ </answer>
 //  Lo que se escriba dejado de esta línea ya no forma parte de la solución.
 
 int main(int argc, char* argv[]) {
-	// ajustes para que cin extraiga directamente de un fichero
-
 	// Verificp si se paso un archivo como argumento
 	if (argc < 4) {
 		std::cerr << "Uso: " << argv[0] << " <archivo_casos.txt> <archivo_diccionario.txt> <archivo_casos_letras.txt>" << std::endl;
