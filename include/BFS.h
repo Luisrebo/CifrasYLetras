@@ -21,7 +21,7 @@ public:
 
 	void mostrarBFS();
 
-	SearchResult busqueda() override;
+	SearchResult busqueda(StatsSingleCaseCifras& stats) override;
 
 private:
 

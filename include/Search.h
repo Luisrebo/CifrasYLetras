@@ -40,14 +40,16 @@ public:
 	virtual ~Search();//(~ destructor) virtual es para herencia 
 
 	//metodos a sobre escribir en bfs y dfs
-	virtual SearchResult busqueda() = 0;//indicamos que son metodos que se deben a los hijos (pure virtual)
+	virtual SearchResult busqueda(StatsSingleCaseCifras &statsSingleCase) = 0;//indicamos que son metodos que se deben a los hijos (pure virtual)
 
+	void setStatsSingleCase(StatsSingleCaseCifras& stats);
 
 protected:
 	// Atributos para dfs y bfs
 	num_t numObjetivo;
-	std::array<num_t, CIFRAS_INICIALES> numerosCandidatos;
-
+	std::array<num_t, CIFRAS_INICIALES> numerosCandidatos; 
+	StatsSingleCaseCifras* statsPtr;
+	
 	const array<Operacion, 4> OPERACIONES = {
    Operacion{'+', [](num_t a, num_t b) { return a + b; }, [](num_t a, num_t b) { return true; }},
    {'-', [](num_t a, num_t b) { return a - b; }, [](num_t a, num_t b) { return a > b; }},

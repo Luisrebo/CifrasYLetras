@@ -11,34 +11,14 @@
 #include <functional>  // lo necesito para std::function
 
 #include "FuncionesComunes.h"
-#include "BFS.h"
-#include "DFS.h"
-#include "Factory.h"
-
-/*Segunda parte letras*/ //compilar ctl+shift+b
+#include "BusquedaCifras.h"
 #include "Trie.h"
-
+/*Segunda parte letras*/ //compilar ctl+shift+b
 using namespace std;
 //
-void resuelveCaso(string mode, istream& archivo ) {
-
-	//numero al que queremos llegar o aproximarnos lo maximo posible
-	int numObjetivo;
-
-	//cifras con las que hemos de operar
-	array<num_t, CIFRAS_INICIALES> numerosCandidatos;
-	
-	archivo >> numObjetivo;
-
-	for (int i = 0; i < CIFRAS_INICIALES; ++i)
-		archivo >> numerosCandidatos[i];
-
-	auto search = Factory::create(mode, numObjetivo, numerosCandidatos);
-
-	SearchResult result= search->busqueda();
-
-	
-
+void resuelveCasoCifras( istream& archivo ) {
+	BusquedaCifras busquedaCifras;
+	busquedaCifras.resuelve(archivo);
 }
 
 /*Segunda Parte Letras*/
@@ -72,27 +52,12 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	// Redirigir la entrada estándar desde el archivo
-	//auto cinbuf = cin.rdbuf(archivoEntrada.rdbuf());
-	
-
-	int numCasos;
-	string mode;
-
-	archivoEntrada >> numCasos;
-	archivoEntrada >> mode;
-
 	//tiempo antes de ejecutar el algoritmo
 	auto start = std::chrono::high_resolution_clock::now();
-
-	cout << "Solucion para el archivo: " << nombreArchivo << " en modo " << mode << '\n';
-
-	for (int i = 0; i < numCasos; ++i)
-		resuelveCaso(mode, archivoEntrada);
+	resuelveCasoCifras(archivoEntrada);
 
 	/*Segunda parte letras*/
 	Trie& trie = Trie::getInstance();
-
 
 	//cargamos los datos del diccionario
 	string nombreArchivoDiccionario = argv[2];
@@ -105,8 +70,6 @@ int main(int argc, char* argv[]) {
 		cerr << "Error: No se pudo abrir el archivo " << nombreArchivoDiccionario << endl;
 		return 1;
 	}
-	// Redirigir la entrada estándar desde el archivo
-	//auto cinbuf = cin.rdbuf(archivoEntradaDiccionario.rdbuf());
 
 	loadDiccionario(trie, archivoEntradaDiccionario);
 
@@ -127,7 +90,8 @@ int main(int argc, char* argv[]) {
 	auto end = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-	cout << "Tiempo en la resolucion de los " << numCasos << " casos de prueba  " << duration.count() << " milisegundos.\n";
+	cout << "tiempo resolucion total del programa: " << duration.count()<< '\n';
+	
 
 	
 	return 0;

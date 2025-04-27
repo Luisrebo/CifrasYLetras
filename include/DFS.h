@@ -15,7 +15,7 @@ public:
 
 	void mostrarDFS();
 
-	SearchResult busqueda() override;
+	SearchResult busqueda(StatsSingleCaseCifras &stats) override;
 
 private:
 

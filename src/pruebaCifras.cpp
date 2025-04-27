@@ -1,7 +1,5 @@
 #include "pruebaCifras.h"
-#include "Factory.h"    // Asume que Factory::create está declarado y definido correctamente
-#include "BFS.h"
-#include "DFS.h"
+#include "BusquedaCifras.h"
 #include "FuncionesComunes.h"
 #include <vector>
 #include <string>
@@ -24,11 +22,12 @@ SearchResult resuelveCasoCifras(std::string mode, const std::vector<int>& input)
     
     // Convertir el array de candidatos al tipo esperado por Factory::create.
     // Se asume que Factory::create está definido para recibir un std::array<int, CIFRAS_INICIALES>&
-    auto search = Factory::create(mode, numObjetivo, numerosCandidatos);
-    searchResult = search->busqueda();
     
-    return searchResult;
+    BusquedaCifras busquedaCifras;
+ 
+    return busquedaCifras.solve(numObjetivo, mode, numerosCandidatos);
 }
+
 std::string formatearSolucion(const SearchResult&result) {
 	//mejor que char* porque me ahorro malloc y calculos de memoria, destructres etc
 	//va a tamaño justo. #include <sstream>

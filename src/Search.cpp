@@ -19,6 +19,10 @@ rastreoSolucion::rastreoSolucion(num_t operacionesEnOrdenSize, num_t ordenDeUsoS
 	indiceComienzoOperacionesEnOrden(operacionesEnOrdenSize - 1), indiceComienzoOrdenDeUso(ordenDeUsoSize - 1) {}
 
 Search::Search(num_t nObjetivo, const std::array<num_t, CIFRAS_INICIALES>& nCandidatos)
-	: numObjetivo(nObjetivo), numerosCandidatos(nCandidatos) {}
+	: numObjetivo(nObjetivo), numerosCandidatos(nCandidatos), statsPtr(nullptr) {}
+
+void Search::setStatsSingleCase(StatsSingleCaseCifras& stats) {
+	statsPtr = &stats;
+}
 
 Search::~Search() {}

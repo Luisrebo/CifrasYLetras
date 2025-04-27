@@ -1,22 +1,29 @@
 #include "TrieSolver.h"
 
 using namespace std;
-SolucionLetras TrieSolver::solve(Trie::Link raiz, const string& letras) {
+SolucionLetras TrieSolver::solve(Trie::Link raiz, const string& letras, PromedioGlobal&promedioGlobalLetras) {
 
 	TrieQuery problema(letras);
 	SolucionLetras solParcial;
+	StatsSingleCaseLetras statsSingleCase;
 
-	explorarSolucion(raiz, problema, solParcial);
+	explorarSolucion(raiz, problema, solParcial, statsSingleCase);
+
+	//añadimos al promedio global las stats de la resolucion de este caso
+	promedioGlobalLetras.updateStatsToGlobal(statsSingleCase.statsComunes);
 
 	problema.imprimirSolucion();
 
 	return problema.mejorSolucion;
 }
 
-void TrieSolver::explorarSolucion(Trie::Link nodo, TrieQuery &problema, SolucionLetras &solParcial) {
+void TrieSolver::explorarSolucion(Trie::Link nodo, TrieQuery &problema, SolucionLetras &solParcial, StatsSingleCaseLetras &statsSingleCase) {
 
 	if (problema.mejorSolucion.longitud == NUMERO_MAXIMO_LETRAS_EN_PALABRA)
 		return;
+
+	//estamos visitando un nuevo nodo
+	statsSingleCase.statsComunes.numeroDeNodosVisitados += 1;
 
 	//recorremos los hijos dando prioridad segurn la heuristica por la cual los ordené
 	for (auto nodoHijo : nodo->listaHijosOrdenadosPorHeuristica) {
@@ -39,17 +46,24 @@ void TrieSolver::explorarSolucion(Trie::Link nodo, TrieQuery &problema, Solucion
 				if (nodoHijo->nivel > problema.mejorSolucion.longitud && nodoHijo->terminal) {
 					problema.mejorSolucion = solParcial;
 
+					//contemplamos en las stats la altura de la nueva solucion y que acabamos de realizar una actualizacion de ella 
+					statsSingleCase.statsComunes.nivelSolucion = problema.mejorSolucion.longitud;
+					statsSingleCase.statsComunes.numeroDeVecesActualizaSolucion += 1;
+					
+
 					if (problema.mejorSolucion.longitud == NUMERO_MAXIMO_LETRAS_EN_PALABRA)
 						return;
 				}
 
-				explorarSolucion(nodoHijo, problema, solParcial);
+				explorarSolucion(nodoHijo, problema, solParcial, statsSingleCase);
 				solParcial.longitud = nodo->nivel;
 				problema.letrasDisponibleslist[MappingCharToPosition(nodoHijo->elem)] += 1;
 
 			}
 		}
 	}
+	//antes de retornar actualizamos ya que este nodo esta completamente explorado al estarlo todos sus hijos
+	statsSingleCase.statsComunes.numeroDeNodosCompletamenteExplorados += 1;
 	return;
 }
 

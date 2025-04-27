@@ -35,6 +35,43 @@ enum class TipoHeuristica {
 	PROBABILIDADES
 };
 
+struct CommonStatsCifrasYLetrasSingleCase {
+	CommonStatsCifrasYLetrasSingleCase() :
+		numeroDeNodosVisitados(0),
+		numeroDeNodosCompletamenteExplorados(0),
+		numeroDeVecesActualizaSolucion(0),
+		nivelMaximoAlcanzado(0),
+		nivelSolucion(0),
+		numeroDeNodosGenerados(0)
+	{}
+
+	int numeroDeNodosGenerados;
+	int numeroDeNodosVisitados;
+	int numeroDeNodosCompletamenteExplorados;
+	int numeroDeVecesActualizaSolucion;
+
+	num_t nivelMaximoAlcanzado;
+	num_t nivelSolucion;
+};
+
+struct StatsSingleCaseLetras {
+	StatsSingleCaseLetras()
+		:palabraSolucion{}
+	{}
+
+	CommonStatsCifrasYLetrasSingleCase statsComunes;
+	std::array<char, NUMERO_DE_LETRAS> palabraSolucion;
+};
+
+struct StatsSingleCaseCifras {
+	StatsSingleCaseCifras()
+		:numeroOperacionesEfectuadas(0)
+	{}
+
+	CommonStatsCifrasYLetrasSingleCase statsComunes;
+	int numeroOperacionesEfectuadas;
+};
+
 struct Operacion {
 	char simbolo;  // el símbolo de la operación
 	function<num_t(num_t, num_t)> op;  // la operación misma

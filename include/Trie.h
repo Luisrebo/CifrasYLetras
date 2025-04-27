@@ -4,6 +4,8 @@
 #include <string>
 #include "TrieQuery.h"
 #include "FuncionesComunes.h"
+#include "PromedioGlobal.h"
+
 
 #include <istream>
 
@@ -33,6 +35,7 @@ protected:
 	// puntero a la raíz de la estructura jerárquica de nodos
 	Link raiz;
 	std::unique_ptr<IHeuristica> heuristica;
+	PromedioGlobal promediosResolucionesLetras;
 
 public:
 	//SINGLETON
@@ -49,10 +52,12 @@ public:
 	void resuelve(std::istream& in) ;
 
 	//Resuelve cada caso(línea) para tambien llamar de uno en uno en emscriptem
-	SolucionLetras solve(std::string letras) const;
+	SolucionLetras solve(std::string letras) ;
 
 	// Cambiamos la heurística que se usamos para ordenar los hijos de cada nodo 
 	void setHeuristica(TipoHeuristica tipo);
+
+	void imprimirGlobalStatsResolutions();
 
 
 private:

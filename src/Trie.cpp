@@ -125,10 +125,12 @@ void Trie::resuelve(std::istream& archivo)  {
 		//while (archivo >> letrasCasoi)
 			 solve(letrasCasoi);
 	}
+
+	imprimirGlobalStatsResolutions();
 }
 //para llamarla tambien desde emscriptem
-SolucionLetras Trie::solve(std::string letras) const {
-	return TrieSolver::solve(raiz, letras);
+SolucionLetras Trie::solve(std::string letras)  {
+	return TrieSolver::solve(raiz, letras, promediosResolucionesLetras);
 }
 
 
@@ -144,3 +146,5 @@ Trie::~Trie() {
 bool Trie::existe(string const& palabra, Link const& nodo) {
 	return nodo != nullptr && nodo->nivel == palabra.size() && nodo->terminal == true;
 }
+
+void Trie::imprimirGlobalStatsResolutions() { promediosResolucionesLetras.imprimirResumen(); }

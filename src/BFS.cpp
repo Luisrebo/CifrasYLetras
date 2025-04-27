@@ -13,10 +13,12 @@ BFS::BFS(const num_t nObjetivo, const std::array<num_t, CIFRAS_INICIALES>& numer
 	sol(verticeOrigen, 0, 0) {
 }
 
-SearchResult BFS::busqueda() {
-	// Por ejemplo, simplemente llamamos a nuestra lógica
+SearchResult BFS::busqueda(StatsSingleCaseCifras& stats) {
+	//set de stats
+	setStatsSingleCase(stats);
+
 	resolver();
-	mostrarBFS();
+	//mostrarBFS();
 	return SearchResult(sol._problema._operacionesEnOrden, sol._problema._ordenDeUso, sol._nivel, sol._solMejor);
 }
 void BFS::resolver() {
@@ -28,20 +30,22 @@ void BFS::resolver() {
 	verticesDelNivelAnteriorPorExplorar = 1;
 	cola.push(verticeOrigen);
 
-	while (!cola.empty()) {
+	while (!cola.empty() && numObjetivo != mejorSolucion) {
 
 		if (verticesDelNivelAnteriorPorExplorar == 0) {
 			nivelActual += 1;
 			verticesDelNivelAnteriorPorExplorar = verticesNivelSiguiente;
 			verticesNivelSiguiente = 0;
+			statsPtr->statsComunes.nivelMaximoAlcanzado = nivelActual;
 		}
-
 
 		//creo una instancia de problema donde guardare los niveles que exploro en el bfs desapilando la cola
 		//y profundizando nivel a nivel
 		Problema vertice = cola.front();
 		cola.pop();
 		verticesDelNivelAnteriorPorExplorar--;
+		//Actualizamos el numero de nodos explorados ya que estamos desapilando un nodo y explorandolo generando sus hijos
+		statsPtr->statsComunes.numeroDeNodosVisitados += 1;
 
 		//recorremos los candidatos
 		//los candidatos los vamos a ir REORGANIZANDO; cuando utilicemos dos operandos de cifras disponibles vamos a liberar dos posiciones
@@ -81,6 +85,8 @@ void BFS::resolver() {
 					//Vertice hijo a partir del padre
 					Problema verticeHijo = vertice;
 
+					//Actualizamos el numero de nodos generados ya que estamos creando un nodo nuevo que apilaremos al final
+					statsPtr->statsComunes.numeroDeNodosGenerados += 1;
 
 					//realizamos la operacion entre los dos numeros
 					num_t solParcial = operacion.op(vertice._numCandidatos[posOperando1], vertice._numCandidatos[posOperando2]);
@@ -115,6 +121,8 @@ void BFS::resolver() {
 						sol._problema._operacionesEnOrden = verticeHijo._operacionesEnOrden;
 						sol._solMejor = mejorSolucion;
 						sol._nivel = nivelActual; //para reconstruir la solucion
+						statsPtr->statsComunes.nivelSolucion = nivelActual;
+						statsPtr->statsComunes.numeroDeVecesActualizaSolucion += 1;
 
 						//si encontramos la solucion acabamos
 						if (numObjetivo == mejorSolucion)
@@ -128,8 +136,10 @@ void BFS::resolver() {
 						verticesNivelSiguiente++;
 					}
 				}
+
 			}
 		}
+		statsPtr->statsComunes.numeroDeNodosCompletamenteExplorados += 1;
 	}
 
 }

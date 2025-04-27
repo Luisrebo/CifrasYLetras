@@ -129,18 +129,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\**\*.cpp" />
+    <ClCompile Include="src\BFS.cpp" />
+    <ClCompile Include="src\BusquedaCifras.cpp" />
+    <ClCompile Include="src\DFS.cpp" />
+    <ClCompile Include="src\SearchFactory.cpp" />
+    <ClCompile Include="src\PromedioGlobal.cpp" />
+    <ClCompile Include="src\FuncionesComunes.cpp" />
+    <ClCompile Include="src\HeuristicaFactory.cpp" />
+    <ClCompile Include="src\HeuristicaPorAltura.cpp" />
+    <ClCompile Include="src\HeuristicaPorOrdenAlfabetico.cpp" />
+    <ClCompile Include="src\HeuristicaPorPalabrasAlcanzables.cpp" />
+    <ClCompile Include="src\IHeuristica.cpp" />
+    <ClCompile Include="src\pruebaCifras.cpp" />
+    <ClCompile Include="src\pruebaLetras.cpp" />
+    <ClCompile Include="src\Search.cpp" />
+    <ClCompile Include="src\Source.cpp" />
+    <ClCompile Include="src\Trie.cpp" />
+    <ClCompile Include="src\TrieSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BFS.h" />
+    <ClInclude Include="include\BusquedaCifras.h" />
     <ClInclude Include="include\DFS.h" />
-    <ClInclude Include="include\Factory.h" />
+    <ClInclude Include="include\SearchFactory.h" />
     <ClInclude Include="include\FuncionesComunes.h" />
     <ClInclude Include="include\HeuristicaFactory.h" />
     <ClInclude Include="include\HeuristicaPorAltura.h" />
     <ClInclude Include="include\HeuristicaPorOrdenAlfabetico.h" />
     <ClInclude Include="include\HeuristicaPorPalabrasAlcanzables.h" />
     <ClInclude Include="include\IHeuristica.h" />
+    <ClInclude Include="include\PromedioGlobal.h" />
     <ClInclude Include="include\pruebaCifras.h" />
     <ClInclude Include="include\pruebaLetras.h" />
     <ClInclude Include="include\Search.h" />

@@ -11,21 +11,33 @@ sol(problemaBase, 0, 0) {
 
 }
 
-SearchResult DFS::busqueda() {
+SearchResult DFS::busqueda(StatsSingleCaseCifras& stats) {
+
+	//set de stats
+	setStatsSingleCase(stats);
+
 	resolvere(0, problemaBase._numCandidatos, problemaBase._ordenDeUso, problemaBase._operacionesEnOrden);
-	mostrarDFS();
+	//mostrarDFS();
 
 	return SearchResult(sol._problema._operacionesEnOrden, sol._problema._ordenDeUso, sol._nivel, sol._solMejor);
-	//limpiarSol();
+	
 }
 
 void DFS::resolvere(int nivel, array<num_t, CIFRAS_INICIALES>& numCandidatos, array <num_t, CIFRAS_MAXIMAS_ENCADENADAS>& ordenDeUso, array <char, CIFRAS_INICIALES>& operacionesEnOrden) {
+	//si encontramos la solucion acabamos
+	if (numObjetivo == sol._solMejor)
+		return;
 
-	//si llegamos a la mejor solucion nos detenemos
+	//Actualizamos las estadísticas
+	statsPtr->statsComunes.numeroDeNodosVisitados+=1;
+	statsPtr->statsComunes.numeroDeNodosGenerados+=1;
+	
+	if (nivel > statsPtr->statsComunes.nivelMaximoAlcanzado)//no hace falta 
+		statsPtr->statsComunes.nivelMaximoAlcanzado = nivel;
 
-		//vamos a ir recorriendo los operandos para ir haciendo operaciones con las combinacones
-		//recorremos los elementos de izq a dcha y para cada elemento operamos con los demas j=i+1
-		//si no se pudiera hacer una operacion hacia un lado (i-j) probamos la operacion hacia el otro (j-1)
+	//vamos a ir recorriendo los operandos para ir haciendo operaciones con las combinacones
+	//recorremos los elementos de izq a dcha y para cada elemento operamos con los demas j=i+1
+	//si no se pudiera hacer una operacion hacia un lado (i-j) probamos la operacion hacia el otro (j-1)
 	for (int i = 0; i < CIFRAS_INICIALES - nivel - 1; ++i) {
 
 
@@ -63,22 +75,6 @@ void DFS::resolvere(int nivel, array<num_t, CIFRAS_INICIALES>& numCandidatos, ar
 				num_t antiguaCifraI = numCandidatos[i];
 				num_t antiguaCifraJ = numCandidatos[j];
 
-				/*Depuraion
-				for (int d = 0; d < CIFRAS_INICIALES; d++)
-					cout << " " << numCandidatos[d];
-				cout << endl;
-
-				for (int d = 0; d <= (nivel * 2) + 1; d++)
-					cout << " " << ordenDeUso[d];
-
-				cout << "   ->nivel " << nivel << " solparcial " << solParcial;
-
-				if (solParcial < 0)
-					cout << " " << numCandidatos[posOperando1] << " " << operacion.simbolo << " " << numCandidatos[posOperando1];
-
-				cout << endl << endl;;
-				Depuracion fin*/
-
 				//guardo las cifras que utilice, para reconstruir la solucion:
 				//en este vector de max 11 posiciones la primera cifra que guardo la meto en la pos (nvl*2) y la segunda en (nvl*2 +1)
 				//en el nivel 0 guardo los operando en las pos 0 y 1 en el nvl 1 en las pos 2 y 3 en el nvl 2 en las pos 4 y 5
@@ -114,6 +110,8 @@ void DFS::resolvere(int nivel, array<num_t, CIFRAS_INICIALES>& numCandidatos, ar
 					sol._solMejor = solParcial;
 					sol._problema._numCandidatos = numCandidatos;
 					sol._nivel = nivel;
+					statsPtr->statsComunes.nivelSolucion = nivel;
+					statsPtr->statsComunes.numeroDeVecesActualizaSolucion += 1;
 
 					//si encontramos la solucion acabamos
 					if (numObjetivo == sol._solMejor)
@@ -132,8 +130,10 @@ void DFS::resolvere(int nivel, array<num_t, CIFRAS_INICIALES>& numCandidatos, ar
 				//las demas estructuras se rellenan con el nivel por lo cual no es necesario restaurarlas, para ello nos guardamos
 				//en la estructura sol el nivel de altura donde se obtuvo la mejor sol, para no confundirnos con celdas rellenas por otras soluciones
 			}
+
 		}
 	}
+	statsPtr->statsComunes.numeroDeNodosCompletamenteExplorados += 1;
 }
 
 bool DFS::contained(array<int, CIFRAS_INICIALES>& ordenDeUso, int cifra, int solMejor) {

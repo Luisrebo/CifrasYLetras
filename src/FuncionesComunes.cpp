@@ -20,6 +20,8 @@ num_t calcular(char operacion, num_t solucionParcial, num_t operando) {
 		return solucionParcial;
 	}
 }
+
+
 SearchResult::SearchResult(const std::array<char, CIFRAS_INICIALES>& operacionesEnOrden,
 	const std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS>& ordendeUso,
 	num_t nivel, num_t mejorSol) :_mejorSol(mejorSol)
