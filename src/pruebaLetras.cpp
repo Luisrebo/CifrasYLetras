@@ -8,7 +8,7 @@
 
 using namespace std;
 
-SolucionLetras resuelveCasoLetras(const std::string letras) {
+SolucionLetras resuelveCasoLetras( std::string letras) {
 	// Obtén la única instancia del Trie mediante el singleton.
 	Trie& trie = Trie::getInstance();
 

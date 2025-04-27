@@ -126,7 +126,7 @@ void Trie::resuelve(std::istream& archivo)  {
 			 auto sol=solve(letrasCasoi);
 	}
 
-	imprimirGlobalStatsResolutions();
+	//imprimirGlobalStatsResolutions();
 }
 //para llamarla tambien desde emscriptem
 SolucionLetras Trie::solve(std::string letras)  {
