@@ -12,7 +12,7 @@ SolucionLetras TrieSolver::solve(Trie::Link raiz, const string& letras, Promedio
 	//añadimos al promedio global las stats de la resolucion de este caso
 	promedioGlobalLetras.updateStatsToGlobal(statsSingleCase.statsComunes);
 
-	//problema.imprimirSolucion();
+	problema.imprimirSolucion();
 
 	return problema.mejorSolucion;
 }

@@ -72,6 +72,23 @@ struct StatsSingleCaseCifras {
 	int numeroOperacionesEfectuadas;
 };
 
+
+//Para la heuristica que recorre los hijos en funcion a sus probabilidades de aparecer, segun las palabras del diccionario/corpus, segun la combinacion de caracter padre e hijo y caracter nivel
+using Matriz = vector<vector<double>>;
+struct MatricesDeProbabilidades {
+	MatricesDeProbabilidades();
+	Matriz probabilidadLetraPorNivel; //registramos en cada fila(que representa los niveles del arbol) el numero de veces que aparece una letra (represetado por las columnas)
+	Matriz probabilidadLetraPosterior;//matriz cuadrada muestra para cada letra (i) cuantas veces es otra letra(columna) su sucesora
+};
+
+struct ProbabilidadesParaHeuristica {
+	ProbabilidadesParaHeuristica();
+
+	MatricesDeProbabilidades matricesDeProbabilidades;
+	vector<double> sumaTotalDeProbabilidadesPorFilasLetraPorNivel;//lleva la cuenta del total acumulado de las probabilidades de cada fila para hacer las probabilidades celda/total
+	vector<double> sumaTotalDeProbabilidadesPorFilasLetraPosterior;
+
+};
 struct Operacion {
 	char simbolo;  // el símbolo de la operación
 	function<num_t(num_t, num_t)> op;  // la operación misma

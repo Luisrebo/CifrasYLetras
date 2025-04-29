@@ -58,6 +58,9 @@ Trie::TreeNode* Trie::search(string const& palabraBuscada, Trie::Link nodo) { //
 
 // Inserta una palabra en el trie
 void Trie::insert(const std::string& palabra) {
+
+	builderProbabilidades.update(palabra);
+
 	Link nodoObjetivo = search(palabra, raiz);
 
 	//cuidado si queremos instertar una cadena que sea subcadena de otra existente el flag terminal no estara a true pero existira su camino
@@ -94,7 +97,7 @@ int Trie::inserta(string const& palabra, Link nodo) {
 
 // Cambia la heurística utilizada
 void Trie::setHeuristica(TipoHeuristica tipo) {
-	heuristica = HeuristicaFactory::crearHeuristica(tipo);
+	heuristica = HeuristicaFactory::crearHeuristica(tipo,builderProbabilidades.getProbabilidades());
 }
 
 
@@ -108,15 +111,17 @@ void Trie::preparar() {
 // Resuelve todos los casos del flujo, línea a línea
 void Trie::resuelve(std::istream& archivo)  {
 
+	int numProblemas;
+	string letrasCasoi,MODE;
+
+	archivo >> numProblemas>>MODE;
+
+	setHeuristica(parseTipoHeuristica(MODE));
+
 	//despues de cargar el arbol y antes de resolver
 	//necesito cargar el vector heuristica de cada nodo y ordenarlo en funcion a ella 
 	//para poder explorar y encontrrar soluciones
 	preparar();
-
-	int numProblemas;
-	string letrasCasoi;
-
-	archivo >> numProblemas;
 
 	for (int i = 0; i < numProblemas; ++i) {
 		archivo >> letrasCasoi;
@@ -126,7 +131,7 @@ void Trie::resuelve(std::istream& archivo)  {
 			 auto sol=solve(letrasCasoi);
 	}
 
-	//imprimirGlobalStatsResolutions();
+	imprimirGlobalStatsResolutions();
 }
 //para llamarla tambien desde emscriptem
 SolucionLetras Trie::solve(std::string letras)  {
@@ -148,3 +153,12 @@ bool Trie::existe(string const& palabra, Link const& nodo) {
 }
 
 void Trie::imprimirGlobalStatsResolutions() { promediosResolucionesLetras.imprimirResumen(); }
+
+TipoHeuristica Trie::parseTipoHeuristica(const std::string& s) {
+	if (s == "AlFABETICO" || s == "alfabetico")   return TipoHeuristica::AlFABETICO;
+	if (s == "PROBABILIDADES" || s == "probabilidades") return TipoHeuristica::PROBABILIDADES;
+	if (s == "ALTURA" || s == "altura")       return TipoHeuristica::ALTURA;
+	else return TipoHeuristica::PALABRASALCANZABLES;
+
+	
+}

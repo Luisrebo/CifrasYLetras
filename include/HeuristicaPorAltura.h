@@ -13,6 +13,8 @@ public:
 	
 	std::string nombre() const override { return "Heuristica Por Altura"; }
 
+	void ordenaVectorHijosSegunHeuristica(Trie::Link nodo)const override;
+
 	virtual ~HeuristicaPorAltura() = default;
 
 protected:

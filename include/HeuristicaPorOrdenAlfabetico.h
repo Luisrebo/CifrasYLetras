@@ -11,6 +11,7 @@ public:
 
 	void prepararAtributosHeuristicaNodo(Trie::Link nodo) override;
 
+	void ordenaVectorHijosSegunHeuristica(Trie::Link nodo)const override;
 
 	std::string nombre() const override { return "Heuristica Por Orden Alfabetico"; }
 

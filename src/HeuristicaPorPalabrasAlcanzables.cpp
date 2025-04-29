@@ -20,3 +20,17 @@ int HeuristicaPorPalabrasAlcanzables::prepararPalabrasAlcanzablesHeuristicaNodo(
 	nodo->numPalabrasAlcanzables = sumaPalabrasAlcanzables;
 	return sumaPalabrasAlcanzables;
 }
+//ordenamos los hijos que vamos a recorrer buscando soluciones por su comparador de heuristica
+void HeuristicaPorPalabrasAlcanzables::ordenaVectorHijosSegunHeuristica(Trie::Link nodo) const {
+
+	if (!nodo)
+		return;
+
+	//los ordenamos en funcion al coparador que termina la heuristica
+	std::sort(nodo->listaHijosOrdenadosPorHeuristica.begin(), nodo->listaHijosOrdenadosPorHeuristica.end(), getComparator());
+
+	for (auto hijo : nodo->listaHijosOrdenadosPorHeuristica)
+		if (hijo)
+			ordenaVectorHijosSegunHeuristica(hijo);
+}
+

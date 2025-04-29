@@ -6,3 +6,15 @@ void HeuristicaPorAltura::prepararAtributosHeuristicaNodo(Trie::Link) {}
 
 
 
+void HeuristicaPorAltura::ordenaVectorHijosSegunHeuristica(Trie::Link nodo) const {
+
+	if (!nodo)
+		return;
+
+	//los ordenamos en funcion al coparador que termina la heuristica
+	std::sort(nodo->listaHijosOrdenadosPorHeuristica.begin(), nodo->listaHijosOrdenadosPorHeuristica.end(), getComparator());
+
+	for (auto hijo : nodo->listaHijosOrdenadosPorHeuristica)
+		if (hijo)
+			ordenaVectorHijosSegunHeuristica(hijo);
+}

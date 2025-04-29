@@ -23,7 +23,7 @@ protected:
 	//Preparamos toda la heuristica
 	 void prepareTrieParaExplorarPorHeuristica(Trie::Link);
 	 void fillVectoresDeNodosSegunHeuristica(Trie::Link nodo);//recorre todos los nodos del arbol rellenando los vectores de cada nodo que van a tener sus hijos ordenados por el comparador de la heuristica
-	 void ordenaVectorHijosSegunHeuristica(Trie::Link nodo);//ordena el vector de hijos segun heuristica que va a tener  
+	 virtual void ordenaVectorHijosSegunHeuristica(Trie::Link nodo)const=0;//ordena el vector de hijos segun heuristica que va a tener  
 	 
 	//todas las heuristicas hacen lo mismo, primero rellenan el vector  de heuristica y luego lo ordenan por comparador
 	virtual std::function<bool(Trie::Link, Trie::Link)> getComparator() const = 0;

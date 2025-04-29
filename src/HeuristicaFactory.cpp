@@ -4,6 +4,7 @@
 #include "HeuristicaPorAltura.h"
 #include "HeuristicaPorPalabrasAlcanzables.h"
 #include "HeuristicaPorOrdenAlfabetico.h"
+#include "HeuristicaPorOrdenDeProbabilidades.h"
 
 std::unique_ptr<IHeuristica> HeuristicaFactory::crearHeuristica(TipoHeuristica tipo) {
 
@@ -27,3 +28,12 @@ std::unique_ptr<IHeuristica> HeuristicaFactory::crearHeuristica(TipoHeuristica t
 	}
 }
 
+
+//para la de probabilidades.
+std::unique_ptr<IHeuristica> HeuristicaFactory::crearHeuristica(TipoHeuristica tipo, const MatricesDeProbabilidades& probs) {
+
+	if (tipo==TipoHeuristica::PROBABILIDADES) {
+		return std::make_unique<HeuristicaPorOrdenDeProbabilidades>(probs);
+	}
+	return crearHeuristica(tipo);
+}

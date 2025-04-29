@@ -17,7 +17,7 @@ SearchResult DFS::busqueda(StatsSingleCaseCifras& stats) {
 	setStatsSingleCase(stats);
 
 	resolvere(0, problemaBase._numCandidatos, problemaBase._ordenDeUso, problemaBase._operacionesEnOrden);
-	//mostrarDFS();
+	mostrarDFS();
 
 	return SearchResult(sol._problema._operacionesEnOrden, sol._problema._ordenDeUso, sol._nivel, sol._solMejor);
 	

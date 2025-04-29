@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 
 	//tiempo antes de ejecutar el algoritmo
 	auto start = std::chrono::high_resolution_clock::now();
-	//resuelveCasoCifras(archivoEntrada);
+	resuelveCasoCifras(archivoEntrada);
 
 	/*Segunda parte letras*/
 	Trie& trie = Trie::getInstance();

@@ -21,6 +21,9 @@ num_t calcular(char operacion, num_t solucionParcial, num_t operando) {
 	}
 }
 
+ProbabilidadesParaHeuristica::ProbabilidadesParaHeuristica() : sumaTotalDeProbabilidadesPorFilasLetraPorNivel(10, 0), sumaTotalDeProbabilidadesPorFilasLetraPosterior(27, 0) {}
+
+MatricesDeProbabilidades::MatricesDeProbabilidades() :probabilidadLetraPorNivel(10, std::vector<double>(27, 0)), probabilidadLetraPosterior(27, std::vector<double>(27, 0)) {}
 
 SearchResult::SearchResult(const std::array<char, CIFRAS_INICIALES>& operacionesEnOrden,
 	const std::array<num_t, CIFRAS_MAXIMAS_ENCADENADAS>& ordendeUso,

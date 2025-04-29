@@ -18,7 +18,7 @@ SearchResult BFS::busqueda(StatsSingleCaseCifras& stats) {
 	setStatsSingleCase(stats);
 
 	resolver();
-	//mostrarBFS();
+	mostrarBFS();
 	return SearchResult(sol._problema._operacionesEnOrden, sol._problema._ordenDeUso, sol._nivel, sol._solMejor);
 }
 void BFS::resolver() {

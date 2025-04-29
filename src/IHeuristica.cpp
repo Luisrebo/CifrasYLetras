@@ -49,17 +49,5 @@ void IHeuristica::fillVectoresDeNodosSegunHeuristica(Trie::Link nodo){
 	for (auto hijo : nodo->listaHijosOrdenadosPorHeuristica)
 		fillVectoresDeNodosSegunHeuristica(hijo);
 }
- //ordenamos los hijos que vamos a recorrer buscando soluciones por su comparador de heuristica
-void IHeuristica::ordenaVectorHijosSegunHeuristica(Trie::Link nodo) {
-
-	 if (!nodo)
-		 return;
-
-	 //los ordenamos en funcion al coparador que termina la heuristica
-	 std::sort(nodo->listaHijosOrdenadosPorHeuristica.begin(), nodo->listaHijosOrdenadosPorHeuristica.end(), getComparator());
-
-	 for (auto hijo : nodo->listaHijosOrdenadosPorHeuristica)
-		 if (hijo)
-			 ordenaVectorHijosSegunHeuristica(hijo);
- }
+ 
 

@@ -14,6 +14,8 @@ public:
 
 	int prepararPalabrasAlcanzablesHeuristicaNodo(Trie::Link nodo) ;
 
+	void ordenaVectorHijosSegunHeuristica(Trie::Link nodo)const override;
+
 	std::string nombre() const override { return "Heuristica Por Palabras Alcanzables"; }
 
 	virtual ~HeuristicaPorPalabrasAlcanzables() = default;

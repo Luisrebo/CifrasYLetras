@@ -5,6 +5,7 @@
 #include "TrieQuery.h"
 #include "FuncionesComunes.h"
 #include "PromedioGlobal.h"
+#include "BuilderProbabilidades.h"
 
 
 #include <istream>
@@ -36,6 +37,7 @@ protected:
 	Link raiz;
 	std::unique_ptr<IHeuristica> heuristica;
 	PromedioGlobal promediosResolucionesLetras;
+	BuilderProbabilidades builderProbabilidades;
 
 public:
 	//SINGLETON
@@ -59,6 +61,7 @@ public:
 
 	void imprimirGlobalStatsResolutions();
 
+	TipoHeuristica parseTipoHeuristica(const std::string& s);
 
 private:
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -130,8 +130,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BFS.cpp" />
+    <ClCompile Include="src\BuilderProbabilidades.cpp" />
     <ClCompile Include="src\BusquedaCifras.cpp" />
     <ClCompile Include="src\DFS.cpp" />
+    <ClCompile Include="src\HeuristicaPorOrdenDeProbabilidades.cpp" />
     <ClCompile Include="src\SearchFactory.cpp" />
     <ClCompile Include="src\PromedioGlobal.cpp" />
     <ClCompile Include="src\FuncionesComunes.cpp" />
@@ -149,8 +151,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BFS.h" />
+    <ClInclude Include="include\BuilderProbabilidades.h" />
     <ClInclude Include="include\BusquedaCifras.h" />
     <ClInclude Include="include\DFS.h" />
+    <ClInclude Include="include\HeuristicaPorOrdenDeProbabilidades.h" />
+    <ClInclude Include="include\ProbabilidadesDiccionario.h" />
     <ClInclude Include="include\SearchFactory.h" />
     <ClInclude Include="include\FuncionesComunes.h" />
     <ClInclude Include="include\HeuristicaFactory.h" />
