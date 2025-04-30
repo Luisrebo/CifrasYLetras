@@ -2,14 +2,6 @@
 #define BFS_H
 
 #include "FuncionesComunes.h"
-
-#include <iostream>
-#include <fstream>
-#include <array>
-#include <chrono>
-#include <queue>
-#include <functional> 
-#include <vector>
 #include "Search.h"
 using namespace std;
 

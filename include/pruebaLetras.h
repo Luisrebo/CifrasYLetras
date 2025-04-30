@@ -3,8 +3,6 @@
 
 // Es recomendable incluir los headers necesarios para que se reconozcan los tipos.
 #include <string>
-#include <vector>
-#include <array>
 #include "FuncionesComunes.h"
 #include "Trie.h"
 

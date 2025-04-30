@@ -1,8 +1,7 @@
 #ifndef TRIE_H
 #define TRIE_H
 
-#include <string>
-#include "TrieQuery.h"
+#include <memory>
 #include "FuncionesComunes.h"
 #include "PromedioGlobal.h"
 #include "BuilderProbabilidades.h"
@@ -28,7 +27,7 @@ public:
 		int numPalabrasAlcanzables; //numero de nodos descendencia con terminal=true, palabras alcanzables, para hacer otra poda
 		vector<Link> listaHijosOrdenadosPorHeuristica; //dependiendo la heurstica que hayamos aplicado tendra un orden u otro
 
-		TreeNode(char const& e, int lv) : elem(e), nivel(lv), terminal(false), hijos{}, altura(0), numPalabrasAlcanzables(0) {}
+		TreeNode(char const& e, int lv) : elem(e), hijos{}, nivel(lv), terminal(false), altura(0), numPalabrasAlcanzables(0) {}
 	};
 
 

@@ -1,7 +1,7 @@
 #ifndef TRIE_QUERY_H_
 #define TRIE_QUERY_H_
 
-#include <map>
+#include <iostream>
 #include <string>
 
 #include "FuncionesComunes.h"
@@ -25,7 +25,7 @@ public:
 	string letrasDisponibles;
 
 
-	TrieQuery(string const& cadena) :letrasDisponibles(cadena), letrasDisponibleslist{} {
+	TrieQuery(string const& cadena) :letrasDisponibleslist{}, letrasDisponibles(cadena) {
 
 		//Preparamos el mapa con las letras de las cuales disponemos
 		for (char c : letrasDisponibles) {

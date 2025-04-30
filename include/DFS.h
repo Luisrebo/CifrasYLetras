@@ -2,8 +2,6 @@
 #define DFS_H
 
 #include "FuncionesComunes.h"
-#include <vector>
-#include <array>
 #include "Search.h"
 using namespace std;
 
