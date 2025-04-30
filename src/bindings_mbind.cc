@@ -16,7 +16,6 @@ EMSCRIPTEN_BINDINGS(prueba) {
     // Exponer la clase SolucionLetras como una clase para poder usar métodos.
     class_<SolucionLetras>("SolucionLetras")
         .constructor<>()
-        .property("longitud", &SolucionLetras::longitud)
         .function("getPalabra", &SolucionLetras::getPalabra)
         ;
 

@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <string>
+//#include <windows.h>   // SetConsoleOutputCP
+#include <iostream>
+#include <string>
 
 #include "FuncionesComunes.h"
 //#include "Trie.h"
@@ -37,21 +40,25 @@ public:
 		}
 
 	}
-	void imprimirSolucion() {
+	void imprimirSolucion(const std::string& palabraOriginal) {
+		// Este bloque se ejecutará solo la primera vez que entres aquí:
+		static bool utf8_inicializado = []() {
+			// Cambia el code page de salida a UTF-8
+			//SetConsoleOutputCP(CP_UTF8);
+			return true;
+			}();
+
 		if (mejorSolucion.longitud > 0)
-			cout << "SOLUCION PARA LAS LETRAS ( ";
+			std::cout << "SOLUCION PARA LAS LETRAS ( ";
 		else
-			cout << "NO HAY SOLUCION PARA LAS LETRAS: ( ";
+			std::cout << "NO HAY SOLUCION PARA LAS LETRAS: ( ";
 
 		for (char c : letrasDisponibles)
-			cout << c << " ";
+			std::cout << c << ' ';
+		std::cout << ")\n";
 
-		cout << ')' << '\n';
-
-		cout << "Longitud:" << mejorSolucion.longitud << "  ->  ";
-		for (int i = 0; i < mejorSolucion.longitud; ++i)
-			cout << mejorSolucion.palabraSolucion[i];
-		cout << '\n' << '\n';
+		std::cout << "Longitud:" << mejorSolucion.longitud << "  ->  ";
+		std::cout << palabraOriginal << "\n\n";
 	}
 	std::array<char, NUMERO_DE_LETRAS> devolerSolucion() {
 		return mejorSolucion.palabraSolucion;

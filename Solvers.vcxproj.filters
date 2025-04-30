@@ -214,9 +214,6 @@
     <ClInclude Include="include\BusquedaCifras.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\ProbabilidadesDiccionario.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="include\BuilderProbabilidades.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>

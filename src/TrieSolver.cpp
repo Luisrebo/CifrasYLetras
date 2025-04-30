@@ -12,7 +12,7 @@ SolucionLetras TrieSolver::solve(Trie::Link raiz, const string& letras, Promedio
 	//añadimos al promedio global las stats de la resolucion de este caso
 	promedioGlobalLetras.updateStatsToGlobal(statsSingleCase.statsComunes);
 
-	problema.imprimirSolucion();
+	problema.imprimirSolucion(solParcial.palabraOriginal);
 
 	return problema.mejorSolucion;
 }
@@ -45,6 +45,8 @@ void TrieSolver::explorarSolucion(Trie::Link nodo, TrieQuery &problema, Solucion
 				//si tenemos una solucion mas larga y es una palabra de nuestro vocabulario
 				if (nodoHijo->nivel > problema.mejorSolucion.longitud && nodoHijo->terminal) {
 					problema.mejorSolucion = solParcial;
+					solParcial.palabraOriginal = nodoHijo->palabraOriginal;
+					problema.mejorSolucion.palabraOriginal = nodoHijo->palabraOriginal;
 
 					//contemplamos en las stats la altura de la nueva solucion y que acabamos de realizar una actualizacion de ella 
 					statsSingleCase.statsComunes.nivelSolucion = problema.mejorSolucion.longitud;

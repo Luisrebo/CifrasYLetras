@@ -112,12 +112,13 @@ struct SearchResult {
 struct SolucionLetras {
 	std::array<char, NUMERO_DE_LETRAS> palabraSolucion;
 	short int longitud;
+	string palabraOriginal;
 
 	SolucionLetras() : palabraSolucion{}, longitud(0) {}
 
 	// Método para convertir el array a string 
 	std::string getPalabra() const {
-		return std::string(palabraSolucion.data(), longitud);
+		return palabraOriginal;
 	}
 };
 

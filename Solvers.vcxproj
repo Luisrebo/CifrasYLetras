@@ -155,7 +155,6 @@
     <ClInclude Include="include\BusquedaCifras.h" />
     <ClInclude Include="include\DFS.h" />
     <ClInclude Include="include\HeuristicaPorOrdenDeProbabilidades.h" />
-    <ClInclude Include="include\ProbabilidadesDiccionario.h" />
     <ClInclude Include="include\SearchFactory.h" />
     <ClInclude Include="include\FuncionesComunes.h" />
     <ClInclude Include="include\HeuristicaFactory.h" />

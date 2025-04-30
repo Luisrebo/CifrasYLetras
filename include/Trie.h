@@ -27,6 +27,8 @@ public:
 		int numPalabrasAlcanzables; //numero de nodos descendencia con terminal=true, palabras alcanzables, para hacer otra poda
 		vector<Link> listaHijosOrdenadosPorHeuristica; //dependiendo la heurstica que hayamos aplicado tendra un orden u otro
 
+		string palabraOriginal;
+
 		TreeNode(char const& e, int lv) : elem(e), hijos{}, nivel(lv), terminal(false), altura(0), numPalabrasAlcanzables(0) {}
 	};
 
@@ -70,14 +72,14 @@ private:
 	Trie& operator=(const Trie&) = delete;
 
 	/// Inserta una sola palabra en el trie
-	void insert(const std::string& palabra);
+	void insert(const std::string& palabraOriginal, const std::string& palabraRaw);
 
 	/// Libera memoria recursivamente
 	static void libera(Link nodo);
 
 	//nodo ya es el nodo que representa el ultimo caracter de la cadena que existe en el trie (devuelto por busqueda)
 	//devolvemos true si crecemos en profundidad para actualizar la profundidad de los antecesores
-	int inserta(string const& palabra, Link nodo);
+	int inserta(string const& palabraOriginal, const std::string& palabraRaw, Link nodo);
 
 	//Verificamos si una palabra esta representada en el nodo
 	//Importamte cotejar terminal puede estar representado su cadena al ser sub cadena de una ya insertada(solo-sol)

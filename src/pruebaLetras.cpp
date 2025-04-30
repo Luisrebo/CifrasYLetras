@@ -16,7 +16,7 @@ SolucionLetras resuelveCasoLetras( std::string letras) {
 	//Asi no cargamos mas de una vez el trie
 	static bool diccionarioCargado = false;
 	if (!diccionarioCargado) {
-		ifstream archivoEntradaDiccionario("data/diccionario_todas_sin_tildes.txt");
+		ifstream archivoEntradaDiccionario("data/diccionario_intercalado_sin_repetidos.txt");
 		
 		trie.cargarDesdeArchivo(archivoEntradaDiccionario);
 		diccionarioCargado = true;
