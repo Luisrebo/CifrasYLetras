@@ -4,54 +4,68 @@ Module.onRuntimeInitialized = function () {
     //Solo quiero que se pueda añadir una letra
     document.getElementById("formulario-Letras").addEventListener("submit", function (event) {
         event.preventDefault(); // Evitar recargar la página
-
+    
         let letras = "";
         for (let i = 1; i <= 10; ++i) {
             let valorInput = document.getElementById("inPutLetra" + i).value;
-
-            if (/^[Ñ]$/.test(valorInput))
-                //la ñ la trato como } por ser el siguiente ascii de z
+    
+            if (/^[Ñ]$/.test(valorInput)) {
                 letras += '{';
-            /* Devuelve true si es una letra válida */
-            else if (/^[a-zñ]$/i.test(valorInput))
+            } else if (/^[a-zñ]$/i.test(valorInput)) {
                 letras += valorInput.toLowerCase();
-
-            else
-                // Si no es válida, podemos salir o manejar el error
+            } else {
                 return;
-
+            }
         }
-
+    
         try {
             let resultado = Module.resuelveLetras(letras);
-
-            let outputText = "";
-            outputText += "Resultado para las letras:" + "\n" + "(";
+    
+            // 1) Obtenemos la cadena interna (con '{' en lugar de 'Ñ')
+            let rawPalabra = resultado.getPalabra();
+            // 2) La formateamos con tu función (reemplaza '{'→'Ñ')
+            let palabraSol = formatearSolucion(rawPalabra);
+            // 3) Calculamos la longitud sobre la cadena ya formateada
+            const longitud = palabraSol.length;
+    
+            console.log("Solución formateada:", palabraSol, "Longitud:", longitud);
+    
+            // 4) Construimos el texto de salida
+            let outputText = "Resultado para las letras:\n(";
             for (let i = 0; i < 10; ++i) {
-                let letra;
-
-                if (letras[i] === '{')
-                    letra = 'Ñ';
-                else
-                    letra = letras[i].toUpperCase();
-
+                let letra = (letras[i] === '{') ? 'Ñ' : letras[i].toUpperCase();
                 outputText += letra + " ";
             }
-
-            outputText += ")" + '\n' + "Con longitud " + resultado.longitud + ": \n" +formatearSolucion(resultado.getPalabra()).toUpperCase();
-
-
+            outputText += `)\nCon longitud ${longitud}:\n${palabraSol}`;
+    
+            // 5) Lo mostramos en pantalla
             document.getElementById("container-Solucion-Letras").style.display = "block";
             const divResultado = document.getElementById("resultadoLetras");
-            divResultado.style.whiteSpace = "pre-wrap";  // Esto  conviertan en saltos de línea los \n 
+            divResultado.style.whiteSpace = "pre-wrap";
             divResultado.textContent = outputText;
 
 
-            document.getElementById("container-Solucion-Letras").scrollIntoView({ behavior: "smooth" });
-
-        } catch (e) {
-            console.error("Error al llamar a resuelveLetras:", e);
-        }
+         // Ahora añadimos el enlace al DLE
+         const url = `https://dle.rae.es/${encodeURIComponent(palabraSol)}`;
+         const link = document.createElement("a");
+         link.href = url;
+         link.target = "_blank";
+         link.rel = "noopener noreferrer";
+         link.textContent = `Ver definición de ${palabraSol}`;
+         // Opcional: le añades una clase para estilo
+         link.classList.add("enlace-dle");
+ 
+         // Dos saltos antes del enlace
+         divResultado.appendChild(document.createElement("br"));
+         divResultado.appendChild(document.createElement("br"));
+         divResultado.appendChild(link);
+ 
+         document.getElementById("container-Solucion-Letras")
+                 .scrollIntoView({ behavior: "smooth" });
+ 
+     } catch (e) {
+         console.error("Error al llamar a resuelveLetras:", e);
+     }
     });
 
 
@@ -124,7 +138,7 @@ Module.onRuntimeInitialized = function () {
     }
 
     function formatearSolucion(palabra) {
-        let palabraFormateada="";
+        let palabraFormateada = "";
         for (let letra of palabra) {
             if (letra === '{')
                 letra = 'Ñ';
