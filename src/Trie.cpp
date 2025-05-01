@@ -140,7 +140,7 @@ SolucionLetras Trie::solve(std::string letras)  {
 }
 
 
-void Trie::cargarDesdeArchivo(std::istream& archivo) {
+/*void Trie::cargarDesdeArchivo(std::istream& archivo) {
 	//palabra original es la palabra con tildes, dieresis etc
 	//palabraRaw es la palabra parseada con todos sus componentes transformables a char 
 	string palabraOriginal,palabraRaw;
@@ -149,6 +149,29 @@ void Trie::cargarDesdeArchivo(std::istream& archivo) {
 		if(palabraRaw.size()<=NUMERO_DE_LETRAS)
  			insert(palabraOriginal, palabraRaw);
 	
+}*/
+void Trie::cargarDesdeArchivo(std::istream& archivo) {
+	string palabraOriginal, palabraRaw;
+	size_t leidas = 0, insertadas = 0;
+	while (archivo >> palabraOriginal >> palabraRaw) {
+		++leidas;
+		size_t len = palabraRaw.size();
+		if (len <= NUMERO_DE_LETRAS) {
+			std::cout
+				<< "[+] Insertando: raw=\"" << palabraRaw
+				<< "\" (len=" << len << ")\n";
+			insert(palabraOriginal, palabraRaw);
+			++insertadas;
+		}
+		else {
+			std::cout
+				<< "[-] Descartada (> " << NUMERO_DE_LETRAS
+				<< "): raw=\"" << palabraRaw
+				<< "\" (len=" << len << ")\n";
+		}
+	}
+	std::cout << "==> Leídas: " << leidas
+		<< ", Insertadas: " << insertadas << "\n";
 }
 Trie::~Trie() {
 	libera(raiz);
