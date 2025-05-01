@@ -1,5 +1,5 @@
 Module.onRuntimeInitialized = function () {
-    console.log("Letrassss")
+   
     /* LETRAS */
     //Solo quiero que se pueda añadir una letra
     document.getElementById("formulario-Letras").addEventListener("submit", function (event) {
@@ -72,7 +72,7 @@ Module.onRuntimeInitialized = function () {
     document.getElementById("btnLetrasAleatorias").addEventListener("click", generarLetrasAleatorias);
 
     function generarLetrasAleatorias() {
-        event.preventDefault();
+       //
 
         const totalInputs = 10;
         const vowels = ["A", "E", "I", "O", "U"];
@@ -108,7 +108,7 @@ Module.onRuntimeInitialized = function () {
 
     document.getElementById("btnClearResultadoLetras").addEventListener("click", borrarResultadoLetras);
     function borrarResultadoLetras() {
-        event.preventDefault();
+        //
         document.getElementById("resultadoLetras").textContent = '';
         document.getElementById("container-Solucion-Letras").style.display = "none";
 
@@ -131,7 +131,7 @@ Module.onRuntimeInitialized = function () {
 
     document.getElementById("btnClearLetras").addEventListener("click", borrarLetras);
     function borrarLetras() {
-        event.preventDefault();
+        //
         for (let i = 1; i <= 10; ++i) {
             document.getElementById("inPutLetra" + i).value = '';
         }

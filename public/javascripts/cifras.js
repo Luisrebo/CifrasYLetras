@@ -1,8 +1,8 @@
 Module.onRuntimeInitialized = function () {
-    console.log("Emscripten module loaded LUIS");
+    
 
     document.getElementById("formulario-Cifras").addEventListener("submit", function (event) {
-        event.preventDefault(); // Evitar recargar la página
+        event.preventDefault();
 
         let vectorCifras = [];
         for (let i = 1; i < 7; ++i) {
@@ -68,7 +68,7 @@ Module.onRuntimeInitialized = function () {
     document.getElementById("btnAleatorios").addEventListener("click", generarAleatorios);
 
     function generarAleatorios() {
-        event.preventDefault();
+        //
         // Posibles cifras
         const posiblesCifras = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100];
 
@@ -90,7 +90,7 @@ Module.onRuntimeInitialized = function () {
 
     document.getElementById("btnClear").addEventListener("click", borrarCifras);
     function borrarCifras() {
-        event.preventDefault();
+        //
         for (let i = 1; i <= 6; ++i) {
             document.getElementById("inPutCifra" + i).value = '';
         }
@@ -98,7 +98,7 @@ Module.onRuntimeInitialized = function () {
     }
     document.getElementById("btnClearResultado").addEventListener("click", borrarResultado);
     function borrarResultado() {
-        event.preventDefault();
+        //
         document.getElementById("resultado").textContent = '';
         document.getElementById("container-Solucion-Cifras").style.display = "none";
 
