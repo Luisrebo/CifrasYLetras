@@ -2,10 +2,18 @@
 
 using namespace std;
 SolucionLetras TrieSolver::solve(Trie::Link raiz, const string& letras, PromedioGlobal&promedioGlobalLetras) {
+	cout << "resolvemos en trie solver" << letras<<'\n';
 
 	TrieQuery problema(letras);
 	SolucionLetras solParcial;
 	StatsSingleCaseLetras statsSingleCase;
+
+	cout<<"Antes de resolver"<<'\n';
+	char a='a';
+	for (int num : problema.letrasDisponibleslist) {
+		cout << a << " " << num << '\n';
+		a += 1;
+	}
 
 	explorarSolucion(raiz, problema, solParcial, statsSingleCase);
 

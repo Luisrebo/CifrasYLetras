@@ -152,25 +152,26 @@ SolucionLetras Trie::solve(std::string letras)  {
 }*/
 void Trie::cargarDesdeArchivo(std::istream& archivo) {
 	string palabraOriginal, palabraRaw;
-	size_t leidas = 0, insertadas = 0;
+	size_t leidas = 0, insertadas = 0,global=0;
 	while (archivo >> palabraOriginal >> palabraRaw) {
 		++leidas;
 		size_t len = palabraRaw.size();
 		if (len <= NUMERO_DE_LETRAS) {
 			std::cout
-				<< "[+] Insertando: raw=\"" << palabraRaw
+				<< global<< "[+] Insertando: raw=\"" << palabraRaw
 				<< "\" (len=" << len << ")\n";
 			insert(palabraOriginal, palabraRaw);
 			++insertadas;
 		}
 		else {
 			std::cout
-				<< "[-] Descartada (> " << NUMERO_DE_LETRAS
+				<< global << "[-] Descartada (> " << NUMERO_DE_LETRAS
 				<< "): raw=\"" << palabraRaw
 				<< "\" (len=" << len << ")\n";
 		}
+		global += 1;
 	}
-	std::cout << "==> Leídas: " << leidas
+	std::cout << "==> Leidas: " << leidas
 		<< ", Insertadas: " << insertadas << "\n";
 }
 Trie::~Trie() {
