@@ -16,7 +16,7 @@ SolucionLetras resuelveCasoLetras(const std::string letras) {
 	//Asi no cargamos mas de una vez el trie
 	static bool diccionarioCargado = false;
 	if (!diccionarioCargado) {
-		ifstream archivoEntradaDiccionario("data/diccionario_intercalado_tratado_solucion_unica.txt");
+		ifstream archivoEntradaDiccionario("data/diccionario.txt");
 		
 		trie.cargarDesdeArchivo(archivoEntradaDiccionario);
 		diccionarioCargado = true;
