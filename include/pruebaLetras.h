@@ -7,7 +7,7 @@
 #include "Trie.h"
 
 // "using namespace std;" en el header no es lo ideal,
-SolucionLetras resuelveCasoLetras(std::string letras);
+SolucionLetras resuelveCasoLetras(const std::string letras);
 std::string formatearSolucionLetras(const SolucionLetras& solucion, std::string letrasDisponibles);
 void loadDiccionario(Trie& trie, std::istream& archivo);
 

@@ -8,10 +8,10 @@
 
 using namespace std;
 
-SolucionLetras resuelveCasoLetras( std::string letras) {
+SolucionLetras resuelveCasoLetras(const std::string letras) {
 	// Obtén la única instancia del Trie mediante el singleton.
 	Trie& trie = Trie::getInstance();
-
+	cout << " ------>  " << letras << "    ";
 	// variable estática local se inicializa solo la primera vez que se ejecuta la función yuna vez asignado su valo se mantiene para todas las llamadas posteriores
 	//Asi no cargamos mas de una vez el trie
 	static bool diccionarioCargado = false;
