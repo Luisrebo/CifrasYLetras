@@ -38,7 +38,7 @@ Module.onRuntimeInitialized = function () {
             //funcio en c++
             let resultado = Module.resuelveCifras("BFS", vectorInput);
 
-            console.log(resultado);
+            
             //variable con el texto a agregar al div
             let outputText = "";
             for (let i = 0; i < resultado.operacionesEnOrden.size(); i++) {

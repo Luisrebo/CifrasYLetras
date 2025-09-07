@@ -28,7 +28,7 @@ Module.onRuntimeInitialized = function () {
             // 3) Calculamos la longitud sobre la cadena ya formateada
             const longitud = palabraSol.length;
     
-            console.log("Solución formateada:", palabraSol, "Longitud:", longitud);
+            
     
             // 4) Construimos el texto de salida
             let outputText = "Resultado para las letras:\n(";

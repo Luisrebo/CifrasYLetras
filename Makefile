@@ -4,7 +4,6 @@ EMCC := em++
 # ---- Opciones ----
 CFLAGS := -O3 -std=c++20 \
   -s WASM=1 \
-  -s SINGLE_FILE=1 \
   -s ALLOW_MEMORY_GROWTH=1 \
   -s INITIAL_MEMORY=134217728 \
   -s MAXIMUM_MEMORY=536870912 \
@@ -12,7 +11,7 @@ CFLAGS := -O3 -std=c++20 \
   -ICommon/include \
   -INumbersChallenge/include \
   -ILettersChallenge/include \
-  --embed-file data@/data \
+  --preload-file data@/data \
   -finput-charset=UTF-8
 
 # ---- Fuentes ----
@@ -52,7 +51,6 @@ $(TARGET): $(SOURCES)
 
 clean:
 	rm -f $(OUTDIR)/index.js \
-	      $(OUTDIR)/cifras.js \
 	      $(OUTDIR)/index.wasm \
 	      $(OUTDIR)/index.data
 

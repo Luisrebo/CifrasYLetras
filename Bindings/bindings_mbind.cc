@@ -1,7 +1,7 @@
 #include <emscripten/bind.h>
 #include "numbersChallenge.h"
 #include "lettersChallenge.h"
-#include "commonFunctions.h" // Asegúrate que aquí se incluya también el header de SearchResult, si es necesario
+#include "commonFunctions.h" 
 #include <vector>
 
 using namespace emscripten;
