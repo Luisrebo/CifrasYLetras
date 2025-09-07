@@ -1,121 +1,137 @@
-body {
+body{
   padding-top:4rem;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #DFDBE5;
-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E");
+  font:14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color:#DFDBE5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E");
+  overflow-x:hidden;
 }
 
-
-#prueba {
-  height: calc(100vh - 4rem); /* 100% del viewport menos la altura estimada del navbar */
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Centrado vertical */
-  align-items: center;
-  padding: 1rem;
-  padding-top: 3rem;
-  background: #1a1a2e;
-  box-sizing: border-box;
-  overflow: hidden; /* Evita scroll, pero cuidado: si no se reduce el tamaño, se recortará */
+#prueba{
+  min-height:calc(100vh - 4rem);
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:center;
+  padding:1rem;
+  padding-top:3rem;
+  padding-bottom:4rem;
+  background:#1a1a2e;
+  box-sizing:border-box;
+  overflow:visible;
 }
 
-/* Permite que los hijos directos se puedan reducir */
-#prueba > * {
-  flex-shrink: 1;
+@supports (height: 100dvh){
+  #prueba{ min-height:calc(100dvh - 4rem); }
 }
 
-.panelNumObjetivo{
-  margin-top: 1rem;;
+#prueba > *{
+  flex-shrink:1;
+  max-width:100%;
 }
 
-#container-Solucion-Cifras{
-  display:none
+.panelNumObjetivo{ margin-top:1rem; }
+
+#container-Solucion-Cifras{ display:none; }
+#container-Solucion-Letras{ display:none; }
+
+a{ color:#00B7FF; }
+
+.input-letra:focus{
+  box-shadow:0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f;
+  border-color:#00f;
 }
-#container-Solucion-Letras{
-  display:none
+
+.panelInputs{
+  background:linear-gradient(135deg, rgba(9,18,53,0.9), rgba(0,0,0,0.8));
+  color:white;
+  border-radius:10px;
+  text-align:center;
+  border:2px solid rgba(0,140,255,0.8);
+  box-shadow:0 0 15px rgba(0,140,255,0.5), 0 0 30px rgba(0,140,255,0.3);
+  transition:0.3s;
 }
-a {
-  color: #00B7FF;
-}
-.input-letra:focus {
-  box-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f; 
-  border-color: #00f;}
-  .panelInputs{
-    background: linear-gradient(135deg, rgba(9, 18, 53, 0.9), rgba(0, 0, 0, 0.8)); 
-    color: white; /* Para buen contraste */
-    
-    border-radius: 10px;
-    text-align: center;
-    border: 2px solid rgba(0, 140, 255, 0.8); /* Azul neón */
-    box-shadow: 0 0 15px rgba(0, 140, 255, 0.5), 0 0 30px rgba(0, 140, 255, 0.3); /* Efecto glow */
-    transition: 0.3s;
-}
+
 .panelSoluciones{
-  background: linear-gradient(135deg, rgba(2, 18, 94, 0.85), rgba(130, 133, 146, 0.8)); 
-  color: white; /* Contraste para texto */
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  border: 2px solid rgba(0, 140, 255, 0.8); /* Azul neón */
-  box-shadow: 0 0 15px rgba(0, 140, 255, 0.5), 0 0 30px rgba(0, 140, 255, 0.3); /* Glow */
-  transition: 0.3s;}
-  .panelSoluciones:hover {
-    box-shadow: 0 0 20px rgba(0, 140, 255, 0.7), 0 0 40px rgba(0, 140, 255, 0.5);
-    border-color: rgba(0, 140, 255, 1);
+  background:linear-gradient(135deg, rgba(2,18,94,0.85), rgba(130,133,146,0.8));
+  color:white;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  border:2px solid rgba(0,140,255,0.8);
+  box-shadow:0 0 15px rgba(0,140,255,0.5), 0 0 30px rgba(0,140,255,0.3);
+  transition:0.3s;
+  margin-bottom:2rem;
 }
+
+.panelSoluciones:hover{
+  box-shadow:0 0 20px rgba(0,140,255,0.7), 0 0 40px rgba(0,140,255,0.5);
+  border-color:rgba(0,140,255,1);
+}
+
 #choosePruebaContainer{
-  background: linear-gradient(135deg, rgba(9, 18, 53, 0.9), rgba(0, 0, 0, 0.8)); 
-  color: white; /* Para buen contraste */
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  border: 2px solid rgba(0, 140, 255, 0.8); /* Azul neón */
-  box-shadow: 0 0 15px rgba(0, 140, 255, 0.5), 0 0 30px rgba(0, 140, 255, 0.3); /* Efecto glow */
-  transition: 0.3s;
-}
-.navbar-nav .nav-link {
-  font-size: 1.8rem; /* Puedes ajustar el tamaño */
-  font-weight: 500; /* También puedes hacerla más gruesa si quieres */
-}
-.text-responsive-size {
-  /* Tamaño mínimo de 1rem, ideal basado en 4vw, máximo de 2rem */
-  font-size: clamp(1rem, 4vw, 2rem);
-  line-height: 1.2;
+  background:linear-gradient(135deg, rgba(9,18,53,0.9), rgba(0,0,0,0.8));
+  color:white;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  border:2px solid rgba(0,140,255,0.8);
+  box-shadow:0 0 15px rgba(0,140,255,0.5), 0 0 30px rgba(0,140,255,0.3);
+  transition:0.3s;
 }
 
-.input-prueba {
-  /* Para los inputs: tamaño de fuente adaptable */
-  font-size: clamp(0.8rem, 2.5vw, 1.2rem);
-  /* Puedes ajustar padding y ancho en porcentajes o con clamp() también */
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  width: 100%;
+.navbar-nav .nav-link{
+  font-size:1.8rem;
+  font-weight:500;
 }
+
+.text-responsive-size{
+  font-size:clamp(1rem, 4vw, 2rem);
+  line-height:1.2;
+}
+
+.input-prueba{
+  font-size:clamp(0.8rem, 2.5vw, 1.2rem);
+  margin-bottom:0.5rem;
+  padding:0.5rem;
+  width:100%;
+}
+
 .input-letra{
-   /* Para los inputs: tamaño de fuente adaptable */
-  font-size: clamp(0.8rem, 2.5vw, 1.2rem);
-  /* Puedes ajustar padding y ancho en porcentajes o con clamp() también */
-  padding: 0.5rem;
-  width: 100%;
+  font-size:clamp(0.8rem, 2.5vw, 1.2rem);
+  padding:0.5rem;
+  width:100%;
 }
 
+@media (max-width: 576px){
+  .panelBoton{ margin-top:1rem; margin-bottom:1rem; }
+}
 
-/* Ajustar márgenes responsivos para el panel de botones */
-@media (max-width: 576px) {
-  .panelBoton {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+@media (min-width: 577px){
+  .panelBoton{ margin-top:2rem; margin-bottom:2rem; }
+}
+
+@media (min-width: 992px) {
+  
+  #prueba{
+    justify-content: center;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .panelInputs,
+  .panelSoluciones{
+    width: min(1200px, 90vw);   
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .text-responsive-size{
+    font-size: clamp(1.4rem, 2.2vw, 2.4rem);
   }
 }
-@media (min-width: 577px) {
-  .panelBoton {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-  }
+
+.panelInputs h1{
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
 }
-
-
-
-
-

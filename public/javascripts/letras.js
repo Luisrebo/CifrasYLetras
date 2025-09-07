@@ -43,6 +43,7 @@ Module.onRuntimeInitialized = function () {
             const divResultado = document.getElementById("resultadoLetras");
             divResultado.style.whiteSpace = "pre-wrap";
             divResultado.textContent = outputText;
+            scrollToIfMobile(document.getElementById("container-Solucion-Letras"));
 
 
          // Ahora añadimos el enlace al DLE
@@ -60,8 +61,8 @@ Module.onRuntimeInitialized = function () {
          divResultado.appendChild(document.createElement("br"));
          divResultado.appendChild(link);
  
-         document.getElementById("container-Solucion-Letras")
-                 .scrollIntoView({ behavior: "smooth" });
+         //document.getElementById("container-Solucion-Letras")
+                 //.scrollIntoView({ behavior: "smooth" });
  
      } catch (e) {
          console.error("Error al llamar a resuelveLetras:", e);
@@ -113,21 +114,58 @@ Module.onRuntimeInitialized = function () {
         document.getElementById("container-Solucion-Letras").style.display = "none";
 
         //vuelvo a llevar la vista al formulario de input
-        document.getElementById("formulario-Letras").scrollIntoView({ behavior: "smooth" });
+        //document.getElementById("formulario-Letras").scrollIntoView({ behavior: "smooth" });
     }
-    /* LETRAS */
-    // Solo quiero que se pueda añadir una letra en los inputs
-    document.getElementById("ContenedorLetras").addEventListener("input", function (event) {
-        // Verifica si el evento proviene de un input con la clase "input-letra"
-        console.log("Evento input detectado en:", event.target.id); // Esto debe imprimirse al escribir en un input
-        if (event.target.classList.contains("input-letra")) {
-            console.log("Dentro del input de letras");
-            let valor = event.target.value;
+    
 
-            // Mantiene solo la primera letra minúscula y permite la ñ
-            event.target.value = valor.toLowerCase().slice(0, 1).replace(/[^a-zñ]/g, "");
-        }
+    // Autoavance, retroceso y pegado en inputs de LETRAS
+(function () {
+  const N = 10;
+  const inputs = Array.from({ length: N }, (_, i) => document.getElementById(`inPutLetra${i + 1}`));
+
+  const oneChar = (v) => {
+    if (!v) return "";
+    const s = v.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const m = s.match(/[a-zA-ZñÑ]/);
+    return m ? m[0].toUpperCase() : "";
+  };
+
+  inputs.forEach((el, i) => {
+    el.addEventListener("focus", () => el.select());
+
+    el.addEventListener("input", () => {
+      el.value = oneChar(el.value);
+      if (el.value && i < N - 1) inputs[i + 1].focus();
     });
+
+    el.addEventListener("keydown", (e) => {
+      if ((e.key === "Backspace" || e.key === "Delete") && !el.value && i > 0) {
+        inputs[i - 1].focus();
+      } else if (e.key === "ArrowLeft" && i > 0) {
+        e.preventDefault(); inputs[i - 1].focus();
+      } else if (e.key === "ArrowRight" && i < N - 1) {
+        e.preventDefault(); inputs[i + 1].focus();
+      }
+    });
+
+    el.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const raw = (e.clipboardData || window.clipboardData).getData("text") || "";
+      const norm = raw.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const chars = Array.from(norm).filter(ch => /[a-zA-ZñÑ]/.test(ch)).map(ch => ch.toUpperCase());
+      if (!chars.length) return;
+
+      let j = i;
+      for (const ch of chars) {
+        if (j >= N) break;
+        inputs[j].value = ch;
+        j++;
+      }
+      (j < N ? inputs[j] : inputs[N - 1]).focus();
+    });
+  });
+})();
+
 
     document.getElementById("btnClearLetras").addEventListener("click", borrarLetras);
     function borrarLetras() {
@@ -147,4 +185,18 @@ Module.onRuntimeInitialized = function () {
         }
         return palabraFormateada;
     }
+
+    function scrollToIfMobile(el) {
+  const isSmall = window.matchMedia("(max-width: 768px)").matches;
+  if (!isSmall || !el) return;
+
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  const r = el.getBoundingClientRect();
+  const notFullyVisible = r.top < 0 || r.bottom > vh;
+
+  if (notFullyVisible) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 };
