@@ -1,39 +1,59 @@
-# Definición del compilador de Emscripten
-EMCC = emcc
+# ---- Compilador ----
+EMCC := em++
 
-# Opciones de compilación
-CFLAGS = -O2 \
-         -s WASM=1 \
-         -lembind \
-         -Iinclude \
-         --preload-file data \
-         -s INITIAL_MEMORY=134217728 \
-         -s MAXIMUM_MEMORY=536870912 \
-         -s ALLOW_MEMORY_GROWTH=1 \
-         -finput-charset=UTF-8
+# ---- Opciones ----
+CFLAGS := -O3 -std=c++20 \
+  -s WASM=1 \
+  -s SINGLE_FILE=1 \
+  -s ALLOW_MEMORY_GROWTH=1 \
+  -s INITIAL_MEMORY=134217728 \
+  -s MAXIMUM_MEMORY=536870912 \
+  -lembind \
+  -ICommon/include \
+  -INumbersChallenge/include \
+  -ILettersChallenge/include \
+  --embed-file data@/data \
+  -finput-charset=UTF-8
 
-# Archivos fuente: incluye .cpp y .cc, excluyendo Source.cpp si es necesario
-SOURCES = $(filter-out src/Source.cpp, $(wildcard src/*.cpp) $(wildcard src/*.cc))
+# ---- Fuentes ----
+SOURCES := \
+  NumbersChallenge/src/BFS.cpp \
+  NumbersChallenge/src/DFS.cpp \
+  NumbersChallenge/src/Search.cpp \
+  NumbersChallenge/src/SearchFactory.cpp \
+  NumbersChallenge/src/SearchNumbers.cpp \
+  NumbersChallenge/src/numbersChallenge.cpp \
+  LettersChallenge/src/Trie.cpp \
+  LettersChallenge/src/TrieSolver.cpp \
+  LettersChallenge/src/AlphabeticalOrderHeuristic.cpp \
+  LettersChallenge/src/HeightHeuristic.cpp \
+  LettersChallenge/src/ProbabilityOrderHeuristic.cpp \
+  LettersChallenge/src/ReachableWordsHeuristic.cpp \
+  LettersChallenge/src/HeuristicFactory.cpp \
+  LettersChallenge/src/IHeuristic.cpp \
+  LettersChallenge/src/ProbabilityBuilder.cpp \
+  LettersChallenge/src/lettersChallenge.cpp \
+  Common/src/GlobalAverage.cpp \
+  Common/src/commonFunctions.cpp \
+  Bindings/bindings_mbind.cc
 
-# Salida en la carpeta docs/
-OUTDIR = docs
-TARGET = $(OUTDIR)/index.js
+# ---- Salida ----
+OUTDIR := docs
+TARGET := $(OUTDIR)/index.js
 
-# Regla principal
+# ---- Reglas ----
 all: $(OUTDIR) $(TARGET)
 
-# Asegura que exista docs/
 $(OUTDIR):
 	mkdir -p $(OUTDIR)
 
-# Regla para compilar el proyecto dentro de docs/
 $(TARGET): $(SOURCES)
 	$(EMCC) $(SOURCES) $(CFLAGS) -o $(TARGET)
 
-# Limpiar archivos generados en docs/
 clean:
-	rm -f $(TARGET) \
-	       $(OUTDIR)/index.wasm \
-	       $(OUTDIR)/index.data
+	rm -f $(OUTDIR)/index.js \
+	      $(OUTDIR)/cifras.js \
+	      $(OUTDIR)/index.wasm \
+	      $(OUTDIR)/index.data
 
 .PHONY: all clean

@@ -18,82 +18,82 @@
   <!-- 2. Wildcards únicos para cada tipo -->
   <ItemGroup>
     <!-- Todos los .cpp bajo src\ y subcarpetas -->
-    <ClCompile Include="src\DFS.cpp">
+    <ClCompile Include="NumbersChallenge\src\DFS.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\FuncionesComunes.cpp">
+    <ClCompile Include="Common\src\commonFunctions.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\HeuristicaFactory.cpp">
+    <ClCompile Include="LettersChallenge\src\HeuristicFactory.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\HeuristicaPorAltura.cpp">
+    <ClCompile Include="LettersChallenge\src\HeightHeuristic.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\HeuristicaPorOrdenAlfabetico.cpp">
+    <ClCompile Include="LettersChallenge\src\AlphabeticalOrderHeuristic.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\HeuristicaPorPalabrasAlcanzables.cpp">
+    <ClCompile Include="LettersChallenge\src\ReachableWordsHeuristic.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\IHeuristica.cpp">
+    <ClCompile Include="LettersChallenge\src\IHeuristic.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\pruebaCifras.cpp">
+    <ClCompile Include="NumbersChallenge\src\numbersChallenge.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\pruebaLetras.cpp">
+    <ClCompile Include="LettersChallenge\src\lettersChallenge.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\Search.cpp">
+    <ClCompile Include="NumbersChallenge\src\Search.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\Source.cpp">
+    <ClCompile Include="CLI\Source.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\Trie.cpp">
+    <ClCompile Include="LettersChallenge\src\Trie.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\TrieSolver.cpp">
+    <ClCompile Include="LettersChallenge\src\TrieSolver.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClInclude Include="include\DFS.h">
+    <ClInclude Include="NumbersChallenge\include\DFS.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\FuncionesComunes.h">
+    <ClInclude Include="Common\include\commonFunctions.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\HeuristicaFactory.h">
+    <ClInclude Include="LettersChallenge\include\HeuristicFactory.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\HeuristicaPorAltura.h">
+    <ClInclude Include="LettersChallenge\include\HeightHeuristic.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\HeuristicaPorOrdenAlfabetico.h">
+    <ClInclude Include="LettersChallenge\include\AlphabeticalOrderHeuristic.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\HeuristicaPorPalabrasAlcanzables.h">
+    <ClInclude Include="LettersChallenge\include\ReachableWordsHeuristic.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\IHeuristica.h">
+    <ClInclude Include="LettersChallenge\include\IHeuristic.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\pruebaCifras.h">
+    <ClInclude Include="NumbersChallenge\include\numbersChallenge.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\pruebaLetras.h">
+    <ClInclude Include="LettersChallenge\include\lettersChallenge.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\Search.h">
+    <ClInclude Include="NumbersChallenge\include\Search.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\Trie.h">
+    <ClInclude Include="LettersChallenge\include\Trie.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\TrieQuery.h">
+    <ClInclude Include="LettersChallenge\include\TrieQuery.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\TrieSolver.h">
+    <ClInclude Include="LettersChallenge\include\TrieSolver.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <Text Include="data\inCifras.txt">
@@ -104,120 +104,42 @@
     </Text>
     <!-- Todos los .h bajo include\ y subcarpetas -->
     <!-- Si tienes otros recursos de texto -->
-    <ClCompile Include="src\BFS.cpp">
+    <ClCompile Include="NumbersChallenge\src\BFS.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\DFS.cpp">
+    <ClCompile Include="NumbersChallenge\src\SearchFactory.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\SearchFactory.cpp">
+    <ClCompile Include="Common\src\GlobalAverage.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\PromedioGlobal.cpp">
+    <ClCompile Include="NumbersChallenge\src\SearchNumbers.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\FuncionesComunes.cpp">
+    <ClCompile Include="LettersChallenge\src\ProbabilityBuilder.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\HeuristicaFactory.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\HeuristicaPorAltura.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\HeuristicaPorOrdenAlfabetico.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\HeuristicaPorPalabrasAlcanzables.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\IHeuristica.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pruebaCifras.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pruebaLetras.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Search.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Source.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Trie.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TrieSolver.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BusquedaCifras.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BuilderProbabilidades.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\HeuristicaPorOrdenDeProbabilidades.cpp">
+    <ClCompile Include="LettersChallenge\src\ProbabilityOrderHeuristic.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\BFS.h">
+    <ClInclude Include="NumbersChallenge\include\BFS.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\DFS.h">
+    <ClInclude Include="NumbersChallenge\include\SearchFactory.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\SearchFactory.h">
+    <ClInclude Include="Common\include\GlobalAverage.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\FuncionesComunes.h">
+    <ClInclude Include="NumbersChallenge\include\SearchNumbers.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\HeuristicaFactory.h">
+    <ClInclude Include="LettersChallenge\include\ProbabilityBuilder.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\HeuristicaPorAltura.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\HeuristicaPorOrdenAlfabetico.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\HeuristicaPorPalabrasAlcanzables.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IHeuristica.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\PromedioGlobal.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\pruebaCifras.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\pruebaLetras.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Search.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Trie.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TrieQuery.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TrieSolver.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\BusquedaCifras.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\BuilderProbabilidades.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\HeuristicaPorOrdenDeProbabilidades.h">
+    <ClInclude Include="LettersChallenge\include\ProbabilityOrderHeuristic.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

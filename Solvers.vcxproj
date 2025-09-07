@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Common\include;$(ProjectDir)LettersChallenge\include;$(ProjectDir)NumbersChallenge\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Common\include;$(ProjectDir)LettersChallenge\include;$(ProjectDir)NumbersChallenge\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,46 +129,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\BFS.cpp" />
-    <ClCompile Include="src\BuilderProbabilidades.cpp" />
-    <ClCompile Include="src\BusquedaCifras.cpp" />
-    <ClCompile Include="src\DFS.cpp" />
-    <ClCompile Include="src\HeuristicaPorOrdenDeProbabilidades.cpp" />
-    <ClCompile Include="src\SearchFactory.cpp" />
-    <ClCompile Include="src\PromedioGlobal.cpp" />
-    <ClCompile Include="src\FuncionesComunes.cpp" />
-    <ClCompile Include="src\HeuristicaFactory.cpp" />
-    <ClCompile Include="src\HeuristicaPorAltura.cpp" />
-    <ClCompile Include="src\HeuristicaPorOrdenAlfabetico.cpp" />
-    <ClCompile Include="src\HeuristicaPorPalabrasAlcanzables.cpp" />
-    <ClCompile Include="src\IHeuristica.cpp" />
-    <ClCompile Include="src\pruebaCifras.cpp" />
-    <ClCompile Include="src\pruebaLetras.cpp" />
-    <ClCompile Include="src\Search.cpp" />
-    <ClCompile Include="src\Source.cpp" />
-    <ClCompile Include="src\Trie.cpp" />
-    <ClCompile Include="src\TrieSolver.cpp" />
+    <ClCompile Include="NumbersChallenge\src\BFS.cpp" />
+    <ClCompile Include="LettersChallenge\src\ProbabilityBuilder.cpp" />
+    <ClCompile Include="NumbersChallenge\src\SearchNumbers.cpp" />
+    <ClCompile Include="NumbersChallenge\src\DFS.cpp" />
+    <ClCompile Include="LettersChallenge\src\ProbabilityOrderHeuristic.cpp" />
+    <ClCompile Include="NumbersChallenge\src\SearchFactory.cpp" />
+    <ClCompile Include="Common\src\GlobalAverage.cpp" />
+    <ClCompile Include="Common\src\commonFunctions.cpp" />
+    <ClCompile Include="LettersChallenge\src\HeuristicFactory.cpp" />
+    <ClCompile Include="LettersChallenge\src\HeightHeuristic.cpp" />
+    <ClCompile Include="LettersChallenge\src\AlphabeticalOrderHeuristic.cpp" />
+    <ClCompile Include="LettersChallenge\src\ReachableWordsHeuristic.cpp" />
+    <ClCompile Include="LettersChallenge\src\IHeuristic.cpp" />
+    <ClCompile Include="NumbersChallenge\src\numbersChallenge.cpp" />
+    <ClCompile Include="LettersChallenge\src\lettersChallenge.cpp" />
+    <ClCompile Include="NumbersChallenge\src\Search.cpp" />
+    <ClCompile Include="CLI\Source.cpp" />
+    <ClCompile Include="LettersChallenge\src\Trie.cpp" />
+    <ClCompile Include="LettersChallenge\src\TrieSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\BFS.h" />
-    <ClInclude Include="include\BuilderProbabilidades.h" />
-    <ClInclude Include="include\BusquedaCifras.h" />
-    <ClInclude Include="include\DFS.h" />
-    <ClInclude Include="include\HeuristicaPorOrdenDeProbabilidades.h" />
-    <ClInclude Include="include\SearchFactory.h" />
-    <ClInclude Include="include\FuncionesComunes.h" />
-    <ClInclude Include="include\HeuristicaFactory.h" />
-    <ClInclude Include="include\HeuristicaPorAltura.h" />
-    <ClInclude Include="include\HeuristicaPorOrdenAlfabetico.h" />
-    <ClInclude Include="include\HeuristicaPorPalabrasAlcanzables.h" />
-    <ClInclude Include="include\IHeuristica.h" />
-    <ClInclude Include="include\PromedioGlobal.h" />
-    <ClInclude Include="include\pruebaCifras.h" />
-    <ClInclude Include="include\pruebaLetras.h" />
-    <ClInclude Include="include\Search.h" />
-    <ClInclude Include="include\Trie.h" />
-    <ClInclude Include="include\TrieQuery.h" />
-    <ClInclude Include="include\TrieSolver.h" />
+    <ClInclude Include="NumbersChallenge\include\BFS.h" />
+    <ClInclude Include="LettersChallenge\include\ProbabilityBuilder.h" />
+    <ClInclude Include="NumbersChallenge\include\SearchNumbers.h" />
+    <ClInclude Include="NumbersChallenge\include\DFS.h" />
+    <ClInclude Include="LettersChallenge\include\ProbabilityOrderHeuristic.h" />
+    <ClInclude Include="NumbersChallenge\include\SearchFactory.h" />
+    <ClInclude Include="Common\include\commonFunctions.h" />
+    <ClInclude Include="LettersChallenge\include\HeuristicFactory.h" />
+    <ClInclude Include="LettersChallenge\include\HeightHeuristic.h" />
+    <ClInclude Include="LettersChallenge\include\AlphabeticalOrderHeuristic.h" />
+    <ClInclude Include="LettersChallenge\include\ReachableWordsHeuristic.h" />
+    <ClInclude Include="LettersChallenge\include\IHeuristic.h" />
+    <ClInclude Include="Common\include\GlobalAverage.h" />
+    <ClInclude Include="NumbersChallenge\include\numbersChallenge.h" />
+    <ClInclude Include="LettersChallenge\include\lettersChallenge.h" />
+    <ClInclude Include="NumbersChallenge\include\Search.h" />
+    <ClInclude Include="LettersChallenge\include\Trie.h" />
+    <ClInclude Include="LettersChallenge\include\TrieQuery.h" />
+    <ClInclude Include="LettersChallenge\include\TrieSolver.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\diccionario_todas_sin_tildes.txt" />

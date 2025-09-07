@@ -1,0 +1,97 @@
+#ifndef TRIE_H
+#define TRIE_H
+
+#include <memory>
+#include "commonFunctions.h"
+#include "GlobalAverage.h"
+#include "ProbabilityBuilder.h"
+#include <array>
+#include <vector>
+#include <string>
+#include <istream>
+
+
+
+class IHeuristic;
+
+class Trie {
+
+public:
+	struct TreeNode;
+	using Link = TreeNode*;
+	struct TreeNode {
+		char elem;
+		std::array<Link, NUMERO_LETRAS_ABECEDARIO> hijos;//cambiamos el mapa por un array de 25 elementos (uno por letra)
+		int nivel;//distancia en nodos del nodo actual respeccto a la raiz
+		bool terminal;//flag para ver si es palabra de nuestro abecedario
+		int altura;//dist maxima hasta su hoja mas alejada,lo usaremos para podar
+		int numPalabrasAlcanzables; //numero de nodos descendencia con terminal=true, palabras alcanzables, para hacer otra poda
+		std::vector<Link> listaHijosOrdenadosPorHeuristica; //dependiendo la heurstica que hayamos aplicado tendra un orden u otro
+
+		std::string palabraOriginal;
+
+		TreeNode(char const& e, int lv) : elem(e), hijos{}, nivel(lv), terminal(false), altura(0), numPalabrasAlcanzables(0) {}
+	};
+
+
+protected:
+	// puntero a la raíz de la estructura jerárquica de nodos
+	Link raiz;
+	std::unique_ptr<IHeuristic> heuristica;
+	GlobalAverage promediosResolucionesLetras;
+	ProbabilityBuilder builderProbabilidades;
+
+public:
+	//SINGLETON
+	// Devuelve la única instancia de Trie
+	static Trie& getInstance();
+
+	// Carga todas las palabras del diccionario/corpus
+	void cargarDesdeArchivo(std::istream& in);
+
+	// Prepara alturas y ordena hijos en todo el trie según la heurística que queramos utilizar para explorar
+	void preparar();
+
+	// Resuelve todos los casos llamando uno a uno a solve
+	void resuelve(std::istream& in) ;
+
+	//Resuelve cada caso(línea) para tambien llamar de uno en uno en emscriptem
+	SolucionLetras solve(std::string letras) ;
+
+	// Cambiamos la heurística que se usamos para ordenar los hijos de cada nodo 
+	void setHeuristica(TipoHeuristica tipo);
+
+	void imprimirGlobalStatsResolutions(std::ostream& os);
+
+
+	TipoHeuristica parseTipoHeuristica(const std::string& s);
+
+private:
+
+	Trie();
+	~Trie();
+	Trie(const Trie&) = delete;
+	Trie& operator=(const Trie&) = delete;
+
+	/// Inserta una sola palabra en el trie
+	void insert(const std::string& palabraOriginal, const std::string& palabraRaw);
+
+	/// Libera memoria recursivamente
+	static void libera(Link nodo);
+
+	//nodo ya es el nodo que representa el ultimo caracter de la cadena que existe en el trie (devuelto por busqueda)
+	//devolvemos true si crecemos en profundidad para actualizar la profundidad de los antecesores
+	int inserta(const std::string& palabraOriginal, const std::string& palabraRaw, Link nodo);
+
+	//Verificamos si una palabra esta representada en el nodo
+	//Importamte cotejar terminal puede estar representado su cadena al ser sub cadena de una ya insertada(solo-sol)
+	bool existe(const std::string& palabra, Link const& nodo);
+
+	 int MappingCharToPosition(char c);
+
+	 TreeNode* search(const std::string& palabraBuscada, Link nodo);
+
+};
+
+#endif
+

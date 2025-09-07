@@ -56,6 +56,8 @@ Module.onRuntimeInitialized = function () {
             const divResultado = document.getElementById("resultado");
             divResultado.style.whiteSpace = "pre-wrap";  // Esto  conviertan en saltos de línea los \n 
             divResultado.textContent = outputText;
+            scrollToIfMobile(document.getElementById("container-Solucion-Cifras"));
+
             
             //movemos la vista hasta el div que estaba oculto
             document.getElementById("container-Solucion-Cifras").scrollIntoView({ behavior: "smooth" });
@@ -105,6 +107,20 @@ Module.onRuntimeInitialized = function () {
         //vuelvo a llevar la vista al formulario de input
         document.getElementById("panelBotonesCifras").scrollIntoView({ behavior: "smooth" });
     }
+
+    function scrollToIfMobile(el) {
+  const isSmall = window.matchMedia("(max-width: 768px)").matches;
+  if (!isSmall || !el) return;
+
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  const r = el.getBoundingClientRect();
+  const notFullyVisible = r.top < 0 || r.bottom > vh;
+
+  if (notFullyVisible) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 };
 
 function calcular_result(op1, op2, op) {

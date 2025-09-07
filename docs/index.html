@@ -40,14 +40,33 @@
             </div>
         </div>
     </div>
-</body>
 
-</html>
 
-<!-- script de glue code -->
-<script src="./index.js"></script>
+
+
+
 
 <!-- scripts -->
 <script src="./public/javascripts/jquery.min.js"></script>
 <script src="./public/javascripts/bootstrap.min.js"></script>
+
+<script>
+    // Si desde aquí llamas a funciones C++ (no parece), deja esto.
+    window.Module = window.Module || {};
+    Module.onRuntimeInitializedQueue = Module.onRuntimeInitializedQueue || [];
+    Module.onRuntimeInitialized = function () {
+      Module.calledRun = true;
+      Module.onRuntimeInitializedQueue.forEach(fn => { try { fn(); } catch(e){ console.error(e); } });
+      Module.onRuntimeInitializedQueue.length = 0;
+    };
+  </script>
+
+      <!-- script de glue code -->
+<script src="./index.js" defer></script>
 <script src="./public/javascripts/main.js"></script>
+</body>
+
+
+
+</html>
+

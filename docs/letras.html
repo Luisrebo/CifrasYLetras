@@ -93,13 +93,22 @@
 
         <!-- prueba -->
     </div>
-</body>
 
-</html>
-
-<!-- script de glue code -->
-<script src="./index.js"></script>
+<script>
+    window.Module = window.Module || {};
+    Module.onRuntimeInitializedQueue = Module.onRuntimeInitializedQueue || [];
+    Module.onRuntimeInitialized = function () {
+      Module.calledRun = true;
+      Module.onRuntimeInitializedQueue.forEach(fn => { try { fn(); } catch(e){ console.error(e); } });
+      Module.onRuntimeInitializedQueue.length = 0;
+    };
+  </script>
+    <!-- script de glue code -->
+<script src="./index.js"defer></script>
 <!-- mis scripts -->
 <script src="./public/javascripts/jquery.min.js"></script>
 <script src="./public/javascripts/bootstrap.min.js"></script>
 <script src="./public/javascripts/letras.js"></script>
+</body>
+</html>
+
