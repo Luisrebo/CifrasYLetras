@@ -35,11 +35,11 @@ void GlobalAverage::updateStatsToGlobal(const CommonStatsCifrasYLetrasSingleCase
 void GlobalAverage::imprimirResumen(std::ostream& os) const {
 
 	//resuemn de os promedios de resolver todos los casos de la rueba de letras
-	os << std::fixed << std::setprecision(2)
-		 << "=== Resumen de promedios (cifras/letras) ===\n"
-		 << "Promedio nodos visitados: " << PromedioNumeroDeNodosVisitados << '\n'
-		 << "Promedio nodos explorados completamente: " << PromedionumeroDeNodosCompletamenteExplorados << '\n'
-		 << "Promedio nivel/longitud de soluciones: " << PromedioNivelSolucion << '\n'
-		 << "Promedio actualizaciones de solución: " << PromedioNumeroDeVecesActualizaSolucion << "\n"
-		 << "============================================\n";
+	//os << std::fixed << std::setprecision(2)
+	//	 << "=== Resumen de promedios (cifras/letras) ===\n"
+		// << "Promedio nodos visitados: " << PromedioNumeroDeNodosVisitados << '\n'
+		// << "Promedio nodos explorados completamente: " << PromedionumeroDeNodosCompletamenteExplorados << '\n'
+		// << "Promedio nivel/longitud de soluciones: " << PromedioNivelSolucion << '\n'
+		// << "Promedio actualizaciones de solución: " << PromedioNumeroDeVecesActualizaSolucion << "\n"
+		// << "============================================\n";
 }
