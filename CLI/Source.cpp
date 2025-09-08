@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>//para el formateo de solucion hacia html
+#include <sstream>
 #include <vector>
 #include <array>
 #include <chrono>
@@ -9,19 +9,18 @@
 #include <string>
 #include <cctype>
 #include <functional>  // lo necesito para std::function
-
 #include "commonFunctions.h"
 #include "SearchNumbers.h"
 #include "Trie.h"
-/*Segunda parte letras*/ //compilar ctl+shift+b
+#include "SearchExperiment.h"
+
 using namespace std;
-//
+
 void resuelveCasoCifras( istream& archivo ) {
 	SearchNumbers busquedaCifras;
 	busquedaCifras.resuelve(archivo);
 }
 
-/*Segunda Parte Letras*/
 void loadDiccionario(Trie& trie, istream& archivo) {
 	trie.cargarDesdeArchivo(archivo);
 }
@@ -29,17 +28,12 @@ void resuelveCasoLetras(Trie& trie, istream& archivo) {
 	trie.resuelve(archivo);
 }
 
-
-//@ </answer>
-//  Lo que se escriba dejado de esta línea ya no forma parte de la solución.
-
 int main(int argc, char* argv[]) {
-	// Verificp si se paso un archivo como argumento
+	
 	if (argc < 4) {
 		std::cerr << "Uso: " << argv[0] << " <archivo_casos.txt> <archivo_diccionario.txt> <archivo_casos_letras.txt>" << std::endl;
 		return 1;
 	}
-
 
 	string nombreArchivo = argv[1];
 
@@ -83,6 +77,11 @@ int main(int argc, char* argv[]) {
 	auto cinbuf = cin.rdbuf(archivoCasosLetras.rdbuf());
 
 	resuelveCasoLetras(trie, archivoCasosLetras);
+
+	SearchExperiment experiment("data/inCifras.txt");
+
+	experiment.runAll();
+	experiment.printSummary();
 
 	//guardamos el tiempo despues de ejecutar el algoritmo
 	auto end = std::chrono::high_resolution_clock::now();
